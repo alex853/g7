@@ -1,16 +1,46 @@
 <link rel="stylesheet" href="TestButton.css" />
 <script type="text/html" id="TestButton">
     <div id="Mainframe">
-        <div id="content">hello world here</div>
+        <div id="content">
+            <div id="irs-apu-batt-tab" class="content-tab hidden"></div>
+            <div id="ecs-tab" class="content-tab hidden"></div>
+            <div id="external-lights-tab" class="external-lights-tab content-tab hidden">
+                <div class="external-lights-tab-row">
+                    <button class="external-lights-tab-button">Nav</button>
+                    <button class="external-lights-tab-button">Beacon</button>
+                    <button class="external-lights-tab-button">Strobe</button>
+                    <button class="external-lights-tab-button">Logo</button>
+                    <button class="external-lights-tab-button">Wingtip</button>
+                </div>
+                <div class="external-lights-tab-row">
+                    <button class="external-lights-tab-button">Taxi</button>
+                    <button class="external-lights-tab-button">Pulse</button>
+                    <button class="external-lights-tab-button">Left<br>Landing</button>
+                    <button class="external-lights-tab-button">Right<br>Landing</button>
+                    <button class="external-lights-tab-button">Ice</button>
+                </div>
+                <div class="external-lights-tab-row">
+                    <div class="external-lights-tab-aircraft-diagram">AIRCRAFT<br>DIAGRAM</div>
+                    <button class="external-lights-tab-button">Seat Belt</button>
+                    <button class="external-lights-tab-button">No Smoke</button>
+                    <button class="external-lights-tab-button">Wheel Well</button>
+                </div>
+            </div>
+            <div id="fuel-tab" class="content-tab hidden"></div>
+            <div id="hyd-cpcs-tab" class="content-tab hidden"></div>
+            <div id="cockpit-lights-tab" class="content-tab hidden"></div>
+            <div id="anti-ice-tab" class="content-tab hidden"></div>
+            <div id="du-ctrl-test-tab" class="content-tab hidden"></div>
+        </div>
         <div id="menu">
-            <button class="menu-button">IRS/<br>APU/<br>Batt</button>
-            <button class="menu-button">ECS</button>
-            <button class="menu-button">Exterior<br>Lights</button>
-            <button class="menu-button">Fuel</button>
-            <button class="menu-button">Hyd/<br>CPCS</button>
-            <button class="menu-button">Cockpit<br>Lights</button>
-            <button class="menu-button">Anti-Ice</button>
-            <button class="menu-button">DU Ctrl/<br>Test</button>
+            <button id="irs-apu-batt-btn" class="menu-button">IRS/<br>APU/<br>Batt</button>
+            <button id="ecs-btn" class="menu-button">ECS</button>
+            <button id="external-lights-btn" class="menu-button">Exterior<br>Lights</button>
+            <button id="fuel-btn" class="menu-button">Fuel</button>
+            <button id="hyd-cpcs-btn" class="menu-button">Hyd/<br>CPCS</button>
+            <button id="cockpit-lights-btn" class="menu-button">Cockpit<br>Lights</button>
+            <button id="anti-ice-btn" class="menu-button">Anti-Ice</button>
+            <button id="du-ctrl-test-btn" class="menu-button">DU Ctrl/<br>Test</button>
         </div>
     </div>
 </script>

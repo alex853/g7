@@ -14,13 +14,7 @@ class TestButton extends BaseInstrument {
 
         console.log("connected callback");
 
-//    this.addEventListener("click", () => {
-//        console.log("Root clicked");
-//    });
-
-//    requestAnimationFrame(() => {
         this.initButtons();
-//    });
     }
 
     disconnectedCallback() {
@@ -46,10 +40,49 @@ class TestButton extends BaseInstrument {
 
     onMenuPressed(index, button) {
         console.log("Pressed button index:", index);
-
-        this.querySelectorAll(".menu-button")
-            .forEach(b => b.classList.remove("active"));
-        button.classList.add("active");
+        this.openTab(index);
     }
+
+    openTab(index) {
+        const page = this.Pages[index];
+
+        this.querySelectorAll('.menu-button')
+            .forEach(b => b.classList.remove('active'));
+        this.querySelectorAll('#' + page.id + '-btn')
+            .forEach(b => b.classList.add('active'));
+
+        this.querySelectorAll('.content-tab')
+            .forEach(b => b.classList.add('hidden'));
+        this.querySelectorAll('#' + page.id + '-tab')
+            .forEach(b => b.classList.remove('hidden'));
+    }
+
+    Pages = [
+        {
+            id: "irs-apu-batt",
+        },
+        {
+            id: "ecs",
+        },
+        {
+            id: "external-lights",
+        },
+        {
+            id: "fuel",
+        },
+        {
+            id: "hyd-cpcs",
+        },
+        {
+            id: "cockpit-lights",
+        },
+        {
+            id: "anti-ice",
+        },
+        {
+            id: "du-ctrl-test",
+        }
+    ];
 }
+
 registerInstrument("test-button-element", TestButton);

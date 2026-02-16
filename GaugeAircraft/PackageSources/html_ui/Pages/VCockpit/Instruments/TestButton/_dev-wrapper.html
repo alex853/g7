@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="TestButton.css" />
+
+<script src="./_dev-stubs.js"></script>
+
+<div id="dev-root"></div>
+
+<script>
+    fetch("./TestButton.html")
+        .then(r => r.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            const template = doc.querySelector('script[type="text/html"]');
+
+            if (!template) {
+                console.error("Template not found");
+                return;
+            }
+
+            // document.getElementById("dev-root").innerHTML = template.innerHTML;
+            setInstrumentTemplateHtml(template.innerHTML);
+
+            initWrapper();
+        });
+</script>
+
+<script src="./TestButton.js"></script>
