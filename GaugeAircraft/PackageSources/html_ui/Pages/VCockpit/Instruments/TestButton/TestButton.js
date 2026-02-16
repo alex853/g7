@@ -55,7 +55,7 @@ class TestButton extends BaseInstrument {
 
     openTab(index) {
         this.currentPageIndex = index;
-        const page = this.Pages[this.currentPageIndex];
+        const page = Pages[this.currentPageIndex];
 
         this.querySelectorAll('.menu-button')
             .forEach(b => b.classList.remove('active'));
@@ -71,7 +71,7 @@ class TestButton extends BaseInstrument {
     onExternalLightsButtonPressed(button) {
         const action = button.dataset.action;
         console.log("Pressed external lights button:", action);
-        const page = this.Pages[2];
+        const page = Pages[2];
         const state = page.state;
 
         state[action] = !state[action];
@@ -81,7 +81,7 @@ class TestButton extends BaseInstrument {
     }
 
     updateExternalLightsButtons() { // todo ak call it from updateFromSim
-        const page = this.Pages[2];
+        const page = Pages[2];
         const state = page.state;
 
         this.querySelectorAll('.external-lights-tab-button')
@@ -113,41 +113,42 @@ class TestButton extends BaseInstrument {
             ],
      */
 
-    Pages = [
-        {
-            id: "irs-apu-batt",
-        },
-        {
-            id: "ecs",
-        },
-        {
-            id: "external-lights",
-            state: {
-                nav: false,
-                beacon: false,
-                strobe: false,
-                taxi: false,
-                landing: false,
-                "seat-belt": false,
-                "no-smoke": false
-            }
-        },
-        {
-            id: "fuel",
-        },
-        {
-            id: "hyd-cpcs",
-        },
-        {
-            id: "cockpit-lights",
-        },
-        {
-            id: "anti-ice",
-        },
-        {
-            id: "du-ctrl-test",
-        }
-    ];
 }
+
+Pages = [
+    {
+        id: "irs-apu-batt",
+    },
+    {
+        id: "ecs",
+    },
+    {
+        id: "external-lights",
+        state: {
+            nav: false,
+            beacon: false,
+            strobe: false,
+            taxi: false,
+            landing: false,
+            "seat-belt": false,
+            "no-smoke": false
+        }
+    },
+    {
+        id: "fuel",
+    },
+    {
+        id: "hyd-cpcs",
+    },
+    {
+        id: "cockpit-lights",
+    },
+    {
+        id: "anti-ice",
+    },
+    {
+        id: "du-ctrl-test",
+    }
+];
 
 registerInstrument("test-button-element", TestButton);
