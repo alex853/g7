@@ -24,11 +24,22 @@ class BaseInstrument extends HTMLElement {
 }
 
 const SimVar = {
+    store: {},
+
     GetSimVarValue: function(name, unit) {
-        return 1; // todo ak read it from somewhere
+        return this.store[name] || 0;
     },
+
     SetSimVarValue: function(name, unit, value) {
-        // todo ak store it somewhere
+        if (name === "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE") {
+            name = "CABIN SEATBELTS ALERT SWITCH";
+            value = !this.GetSimVarValue(name);
+        } else if (name === "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE") {
+            name = "CABIN NO SMOKING ALERT SWITCH";
+            value = !this.GetSimVarValue(name);
+        }
+
+        this.store[name] = value;
     }
 }
 

@@ -1,4 +1,4 @@
-class TestButton extends BaseInstrument {
+class TestButton extends BaseInstrument { // todo ak rename to OverheadDisplay
     constructor() {
         super();
     }
@@ -113,10 +113,6 @@ class TestButton extends BaseInstrument {
                     b.classList.remove('active');
             });
     }
-
-    // todo ak         let hour = SimVar.GetSimVarValue("GENERAL ENG ELAPSED TIME:1", "hour");
-    // todo ak SimVar.SetSimVarValue(name, "Bool", value);
-
 }
 
 Pages = [
@@ -132,6 +128,7 @@ Pages = [
             nav: false,
             beacon: false,
             strobe: false,
+            logo: false,
             taxi: false,
             landing: false,
             "seat-belt": false,
@@ -141,20 +138,29 @@ Pages = [
             this.state["nav"] = SimVar.GetSimVarValue("LIGHT NAV", "Bool");
             this.state["beacon"] = SimVar.GetSimVarValue("LIGHT BEACON", "Bool");
             this.state["strobe"] = SimVar.GetSimVarValue("LIGHT STROBE", "Bool");
+            this.state["logo"] = SimVar.GetSimVarValue("LIGHT LOGO", "Bool");
+            this.state["taxi"] = SimVar.GetSimVarValue("LIGHT TAXI", "Bool");
+            this.state["landing"] = SimVar.GetSimVarValue("LIGHT LANDING", "Bool");
+            this.state["seat-belt"] = SimVar.GetSimVarValue("CABIN SEATBELTS ALERT SWITCH", "Bool");
+            this.state["no-smoke"] = SimVar.GetSimVarValue("CABIN NO SMOKING ALERT SWITCH", "Bool");
         },
         actions: {
-            "nav": function (page) {
-                page.state["nav"] = !page.state["nav"];
-                SimVar.SetSimVarValue("LIGHT NAV", "Bool", page.state["nav"]);
+            "nav": function (page) { page.actions.toggleBoolean(page, "nav", "LIGHT NAV"); },
+            "beacon": function (page) { page.actions.toggleBoolean(page, "beacon", "LIGHT BEACON"); },
+            "strobe": function (page) { page.actions.toggleBoolean(page, "strobe", "LIGHT STROBE"); },
+            "logo": function (page) { page.actions.toggleBoolean(page, "logo", "LIGHT LOGO"); },
+            "taxi": function (page) { page.actions.toggleBoolean(page, "taxi", "LIGHT TAXI"); },
+            "landing": function (page) { page.actions.toggleBoolean(page, "landing", "LIGHT LANDING"); },
+            "seat-belt": function (page) { page.actions.toggleEvent(page, "seat-belt", "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE"); },
+            "no-smoke": function (page) { page.actions.toggleEvent(page, "no-smoke", "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE"); },
+            "toggleBoolean": function (page, stateName, simName) {
+                page.state[stateName] = !page.state[stateName];
+                SimVar.SetSimVarValue(simName, "Bool", page.state[stateName]);
             },
-            "beacon": function (page) {
-                page.state["beacon"] = !page.state["beacon"];
-                SimVar.SetSimVarValue("LIGHT BEACON", "Bool", page.state["beacon"]);
-            },
-            "strobe": function (page) {
-                page.state["strobe"] = !page.state["strobe"];
-                SimVar.SetSimVarValue("LIGHT STROBE", "Bool", page.state["strobe"]);
-            },
+            "toggleEvent": function (page, stateName, simName) {
+                page.state[stateName] = !page.state[stateName];
+                SimVar.SetSimVarValue(simName, "Number", 0);
+            }
         }
     },
     {
