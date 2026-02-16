@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="OverheadDisplay.css" />
+
+<script src="./_dev-stubs.js"></script>
+
+<div id="dev-root"></div>
+
+<script>
+    fetch("./OverheadDisplay.html")
+        .then(r => r.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            const template = doc.querySelector('script[type="text/html"]');
+
+            if (!template) {
+                console.error("Template not found");
+                return;
+            }
+
+            setInstrumentTemplateHtml(template.innerHTML);
+
+            initWrapper();
+        });
+</script>
+
+<script src="OverheadDisplay.js"></script>
