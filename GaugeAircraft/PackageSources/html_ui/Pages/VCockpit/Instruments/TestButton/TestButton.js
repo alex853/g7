@@ -20,10 +20,16 @@ class TestButton extends BaseInstrument {
 
         this.currentPageIndex = 2;
         this.openTab(this.currentPageIndex);
+
+        this.startUpdatesFromSim();
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
+
+        if (this._simUpdateInterval) {
+            clearInterval(this._simUpdateInterval);
+        }
     }
 
     parseXMLConfig() {
@@ -32,6 +38,18 @@ class TestButton extends BaseInstrument {
 
     Update() {
         super.Update();
+    }
+
+    startUpdatesFromSim() {
+        this._simUpdateInterval = setInterval(() => {
+            const page = Pages[this.currentPageIndex];
+            if (page.updateFromSim)
+                page.updateFromSim();
+
+            if (this.currentPageIndex === 2) {
+                this.updateExternalLightsButtons();
+            }
+        }, 100);
     }
 
     initButtons() {
@@ -75,12 +93,13 @@ class TestButton extends BaseInstrument {
         const state = page.state;
 
         state[action] = !state[action];
-        // todo ak call simvar
+        // todo ak call simvar - depending on action
+        SimVar.SetSimVarValue("LIGHT NAV", "Bool", state[action]);
 
         this.updateExternalLightsButtons();
     }
 
-    updateExternalLightsButtons() { // todo ak call it from updateFromSim
+    updateExternalLightsButtons() {
         const page = Pages[2];
         const state = page.state;
 
@@ -97,21 +116,7 @@ class TestButton extends BaseInstrument {
     }
 
     // todo ak         let hour = SimVar.GetSimVarValue("GENERAL ENG ELAPSED TIME:1", "hour");
-    /* todo ak
-            updateFromSim() {
-                this.state.Nav     = Sim.getBool("LIGHT NAV");
-                this.state.Beacon  = Sim.getBool("LIGHT BEACON");
-                this.state.Strobe  = Sim.getBool("LIGHT STROBE");
-            },
-     */
     // todo ak SimVar.SetSimVarValue(name, "Bool", value);
-    /* todo ak
-                vars: [
-                ["LIGHT NAV", "Bool"],
-                ["LIGHT BEACON", "Bool"],
-                ["LIGHT STROBE", "Bool"]
-            ],
-     */
 
 }
 
@@ -132,6 +137,11 @@ Pages = [
             landing: false,
             "seat-belt": false,
             "no-smoke": false
+        },
+        updateFromSim: function() {
+            this.state["nav"] = SimVar.GetSimVarValue("LIGHT NAV", "Bool");
+            this.state["beacon"] = SimVar.GetSimVarValue("LIGHT BEACON", "Bool");
+            this.state["strobe"] = SimVar.GetSimVarValue("LIGHT STROBE", "Bool");
         }
     },
     {

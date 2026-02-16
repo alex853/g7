@@ -23,6 +23,15 @@ class BaseInstrument extends HTMLElement {
     }
 }
 
+const SimVar = {
+    GetSimVarValue: function(name, unit) {
+        return 1; // todo ak read it from somewhere
+    },
+    SetSimVarValue: function(name, unit, value) {
+        // todo ak store it somewhere
+    }
+}
+
 let instrumentTagName;
 let instrumentClass;
 let instrumentTemplateHtml;
