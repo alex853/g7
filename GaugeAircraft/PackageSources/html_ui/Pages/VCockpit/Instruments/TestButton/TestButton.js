@@ -15,6 +15,7 @@ class TestButton extends BaseInstrument {
         console.log("connected callback");
 
         this.initButtons();
+        this.openTab(2);
     }
 
     disconnectedCallback() {
@@ -30,10 +31,15 @@ class TestButton extends BaseInstrument {
     }
 
     initButtons() {
-        const buttons = this.querySelectorAll(".menu-button");
-        buttons.forEach((btn, index) => {
+        this.querySelectorAll(".menu-button").forEach((btn, index) => {
             btn.addEventListener("click", () => {
                 this.onMenuPressed(index, btn);
+            });
+        });
+
+        this.querySelectorAll(".external-lights-tab-button").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.onExternalLightsButtonPressed(btn);
             });
         });
     }
@@ -57,6 +63,34 @@ class TestButton extends BaseInstrument {
             .forEach(b => b.classList.remove('hidden'));
     }
 
+    onExternalLightsButtonPressed(button) {
+        const action = button.dataset.action;
+        console.log("Pressed external lights button:", action);
+        const page = this.Pages[2];
+        const state = page.state;
+
+        state[action] = !state[action];
+        // todo ak call simvar
+
+        this.updateExternalLightsButtons();
+    }
+
+    updateExternalLightsButtons() { // todo ak call it from updateFromSim
+        const page = this.Pages[2];
+        const state = page.state;
+
+        this.querySelectorAll('.external-lights-tab-button')
+            .forEach(b => {
+                const action = b.dataset.action;
+                if (!action) return;
+
+                if (state[action])
+                    b.classList.add('active');
+                else
+                    b.classList.remove('active');
+            });
+    }
+
     Pages = [
         {
             id: "irs-apu-batt",
@@ -66,6 +100,15 @@ class TestButton extends BaseInstrument {
         },
         {
             id: "external-lights",
+            state: {
+                nav: false,
+                beacon: false,
+                strobe: false,
+                taxi: false,
+                landing: false,
+                "seat-belt": false,
+                "no-smoke": false
+            }
         },
         {
             id: "fuel",
