@@ -89,12 +89,11 @@ class TestButton extends BaseInstrument {
     onExternalLightsButtonPressed(button) {
         const action = button.dataset.action;
         console.log("Pressed external lights button:", action);
-        const page = Pages[2];
-        const state = page.state;
 
-        state[action] = !state[action];
-        // todo ak call simvar - depending on action
-        SimVar.SetSimVarValue("LIGHT NAV", "Bool", state[action]);
+        const page = Pages[2];
+        if (page.actions && page.actions[action]) {
+            page.actions[action](page);
+        }
 
         this.updateExternalLightsButtons();
     }
@@ -142,6 +141,20 @@ Pages = [
             this.state["nav"] = SimVar.GetSimVarValue("LIGHT NAV", "Bool");
             this.state["beacon"] = SimVar.GetSimVarValue("LIGHT BEACON", "Bool");
             this.state["strobe"] = SimVar.GetSimVarValue("LIGHT STROBE", "Bool");
+        },
+        actions: {
+            "nav": function (page) {
+                page.state["nav"] = !page.state["nav"];
+                SimVar.SetSimVarValue("LIGHT NAV", "Bool", page.state["nav"]);
+            },
+            "beacon": function (page) {
+                page.state["beacon"] = !page.state["beacon"];
+                SimVar.SetSimVarValue("LIGHT BEACON", "Bool", page.state["beacon"]);
+            },
+            "strobe": function (page) {
+                page.state["strobe"] = !page.state["strobe"];
+                SimVar.SetSimVarValue("LIGHT STROBE", "Bool", page.state["strobe"]);
+            },
         }
     },
     {
