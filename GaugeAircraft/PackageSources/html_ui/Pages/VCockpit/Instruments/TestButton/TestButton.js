@@ -3,7 +3,9 @@ class TestButton extends BaseInstrument {
         super();
     }
 
-    get templateID() { return "TestButton"; }
+    get templateID() {
+        return "TestButton";
+    }
 
     get isInteractive() { 
         return true; 
@@ -15,7 +17,9 @@ class TestButton extends BaseInstrument {
         console.log("connected callback");
 
         this.initButtons();
-        this.openTab(2);
+
+        this.currentPageIndex = 2;
+        this.openTab(this.currentPageIndex);
     }
 
     disconnectedCallback() {
@@ -50,7 +54,8 @@ class TestButton extends BaseInstrument {
     }
 
     openTab(index) {
-        const page = this.Pages[index];
+        this.currentPageIndex = index;
+        const page = this.Pages[this.currentPageIndex];
 
         this.querySelectorAll('.menu-button')
             .forEach(b => b.classList.remove('active'));
@@ -90,6 +95,23 @@ class TestButton extends BaseInstrument {
                     b.classList.remove('active');
             });
     }
+
+    // todo ak         let hour = SimVar.GetSimVarValue("GENERAL ENG ELAPSED TIME:1", "hour");
+    /* todo ak
+            updateFromSim() {
+                this.state.Nav     = Sim.getBool("LIGHT NAV");
+                this.state.Beacon  = Sim.getBool("LIGHT BEACON");
+                this.state.Strobe  = Sim.getBool("LIGHT STROBE");
+            },
+     */
+    // todo ak SimVar.SetSimVarValue(name, "Bool", value);
+    /* todo ak
+                vars: [
+                ["LIGHT NAV", "Bool"],
+                ["LIGHT BEACON", "Bool"],
+                ["LIGHT STROBE", "Bool"]
+            ],
+     */
 
     Pages = [
         {
