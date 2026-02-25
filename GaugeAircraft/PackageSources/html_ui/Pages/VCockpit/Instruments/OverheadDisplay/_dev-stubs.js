@@ -122,7 +122,9 @@ const FSRemoteControlSimVar = {
     }
 }
 
-const SimVar = FSRemoteControlSimVar;
+const SimVar = window.location.search.includes("fsremote")
+    ? FSRemoteControlSimVar
+    : StubSimVar;
 
 let instrumentTagName;
 let instrumentClass;
