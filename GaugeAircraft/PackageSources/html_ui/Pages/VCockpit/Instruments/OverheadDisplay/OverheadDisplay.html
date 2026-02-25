@@ -1,36 +1,79 @@
-<link rel="stylesheet" href="OverheadDisplay.css" />
+<link rel="stylesheet" href="OverheadDisplay.css"/>
 <script type="text/html" id="OverheadDisplay">
     <div id="Mainframe">
-        <div id="content">
-            <div id="irs-apu-batt-tab" class="content-tab hidden"></div>
-            <div id="ecs-tab" class="content-tab hidden"></div>
-            <div id="external-lights-tab" class="external-lights-tab content-tab hidden">
-                <div class="external-lights-tab-row">
-                    <button class="external-lights-tab-button" data-action="nav">Nav</button>
-                    <button class="external-lights-tab-button" data-action="beacon">Beacon</button>
-                    <button class="external-lights-tab-button" data-action="strobe">Strobe</button>
-                    <button class="external-lights-tab-button" data-action="logo">Logo</button>
-                    <button class="external-lights-tab-button" disabled>Wingtip</button>
+        <div id="content-wrapper">
+            <div id="dim-bar">D<br>I<br>M</div>
+            <div id="content">
+                <div id="irs-apu-batt-tab" class="content-tab hidden"></div>
+                <div id="ecs-tab" class="content-tab hidden"></div>
+                <div id="external-lights-tab" class="external-lights-tab content-tab hidden">
+                    <div class="external-lights-tab-row">
+                        <button class="external-lights-tab-button" data-action="nav">Nav</button>
+                        <button class="external-lights-tab-button" data-action="beacon">Beacon</button>
+                        <button class="external-lights-tab-button" data-action="strobe">Strobe</button>
+                        <button class="external-lights-tab-button" data-action="logo">Logo</button>
+                        <button class="external-lights-tab-button" disabled>Wingtip</button>
+                    </div>
+                    <div class="external-lights-tab-row">
+                        <button class="external-lights-tab-button" data-action="taxi">Taxi</button>
+                        <button class="external-lights-tab-button" disabled>Pulse</button>
+                        <button class="external-lights-tab-button" data-action="landing">Left<br>Landing</button>
+                        <button class="external-lights-tab-button" data-action="landing">Right<br>Landing</button>
+                        <button class="external-lights-tab-button" disabled>Ice</button>
+                    </div>
+                    <div class="external-lights-tab-row">
+                        <div class="external-lights-tab-aircraft-diagram">AIRCRAFT<br>DIAGRAM</div>
+                        <button class="external-lights-tab-button" data-action="seat-belt">Seat Belt</button>
+                        <button class="external-lights-tab-button" data-action="no-smoke">No Smoke</button>
+                        <button class="external-lights-tab-button" disabled>Wheel Well</button>
+                    </div>
                 </div>
-                <div class="external-lights-tab-row">
-                    <button class="external-lights-tab-button" data-action="taxi">Taxi</button>
-                    <button class="external-lights-tab-button" disabled>Pulse</button>
-                    <button class="external-lights-tab-button" data-action="landing">Left<br>Landing</button>
-                    <button class="external-lights-tab-button" data-action="landing">Right<br>Landing</button>
-                    <button class="external-lights-tab-button" disabled>Ice</button>
+                <div id="fuel-tab" class="content-tab hidden">
+                    <div class="fuel-tab-layer fuel-tab-svg-layer">
+                        <svg viewBox="0 0 1000 600" preserveAspectRatio="none" style="width:100%; height:100%;">
+                            <!-- left wing - main area -->
+                            <polyline points="45,272 395,80 395,400 350,400 330,402 45,470 45,272"
+                                      stroke="#666"
+                                      stroke-width="2"
+                                      fill="none"/>
+                            <!-- left wing - slats -->
+                            <line x1="395" y1="120" x2="45" y2="288" stroke="#666" stroke-width="2"/>
+                            <line x1="295" y1="135" x2="319" y2="156" stroke="#666" stroke-width="2"/>
+                            <line x1="282" y1="141" x2="307" y2="162" stroke="#666" stroke-width="2"/>
+                            <!-- left wing - flaps -->
+                            <line x1="45" y1="418" x2="232" y2="361" stroke="#666" stroke-width="2"/>
+                            <line x1="45" y1="445" x2="295" y2="377" stroke="#666" stroke-width="2"/>
+                            <line x1="250" y1="389" x2="232" y2="361" stroke="#666" stroke-width="2"/>
+
+                            <!-- right wing - main area -->
+                            <polyline points="935,272 585,80 585,400 630,400 650,402 935,470 935,272"
+                                      stroke="#666"
+                                      stroke-width="2"
+                                      fill="none"/>
+                            <!-- right wing - slats -->
+                            <line x1="585" y1="120" x2="935" y2="288" stroke="#666" stroke-width="2"/>
+                            <line x1="685" y1="135" x2="661" y2="156" stroke="#666" stroke-width="2"/>
+                            <line x1="698" y1="141" x2="673" y2="162" stroke="#666" stroke-width="2"/>
+                            <!-- right wing - flaps -->
+                            <line x1="935" y1="418" x2="748" y2="361" stroke="#666" stroke-width="2"/>
+                            <line x1="935" y1="445" x2="685" y2="377" stroke="#666" stroke-width="2"/>
+                            <line x1="730" y1="389" x2="748" y2="361" stroke="#666" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="fuel-tab-layer fuel-tab-buttons-layer">
+                        <button class="fuel-tab-pump-button" style="left: 4%; top: 39%;">L Alt<br>Pump</button>
+                        <button class="fuel-tab-pump-button" style="left: 24%; top: 39%;">L Main<br>Pump</button>
+                        <button class="fuel-tab-pump-button" style="left: 63%; top: 39%;">R Main<br>Pump</button>
+                        <button class="fuel-tab-pump-button" style="left: 83%; top: 39%;">R Alt<br>Pump</button>
+                    </div>
+                    <div class="fuel-tab-layer fuel-tab-text-layer">
+                    </div>
                 </div>
-                <div class="external-lights-tab-row">
-                    <div class="external-lights-tab-aircraft-diagram">AIRCRAFT<br>DIAGRAM</div>
-                    <button class="external-lights-tab-button" data-action="seat-belt">Seat Belt</button>
-                    <button class="external-lights-tab-button" data-action="no-smoke">No Smoke</button>
-                    <button class="external-lights-tab-button" disabled>Wheel Well</button>
-                </div>
+                <div id="hyd-cpcs-tab" class="content-tab hidden"></div>
+                <div id="cockpit-lights-tab" class="content-tab hidden"></div>
+                <div id="anti-ice-tab" class="content-tab hidden"></div>
+                <div id="du-ctrl-test-tab" class="content-tab hidden"></div>
             </div>
-            <div id="fuel-tab" class="content-tab hidden"></div>
-            <div id="hyd-cpcs-tab" class="content-tab hidden"></div>
-            <div id="cockpit-lights-tab" class="content-tab hidden"></div>
-            <div id="anti-ice-tab" class="content-tab hidden"></div>
-            <div id="du-ctrl-test-tab" class="content-tab hidden"></div>
         </div>
         <div id="menu">
             <button id="irs-apu-batt-btn" class="menu-button">IRS/<br>APU/<br>Batt</button>

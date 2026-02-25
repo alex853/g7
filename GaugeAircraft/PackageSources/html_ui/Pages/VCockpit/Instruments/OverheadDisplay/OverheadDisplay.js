@@ -18,7 +18,7 @@ class OverheadDisplay extends BaseInstrument {
 
         this.initButtons();
 
-        this.currentPageIndex = 2;
+        this.currentPageIndex = 3;
         this.openTab(this.currentPageIndex);
 
         this.startUpdatesFromSim();
