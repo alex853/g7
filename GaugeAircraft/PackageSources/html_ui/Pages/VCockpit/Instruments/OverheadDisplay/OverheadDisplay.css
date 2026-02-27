@@ -19,11 +19,11 @@ html body {
     flex-direction: column;
     height: 100%;
 
-    /*background-image: url("dev-backgrounds/fuel-tab.png");
+    background-image: url("dev-backgrounds/fuel-tab.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;/**/
-    background: black;/**/
+    /*background: black;/**/
 }
 
 #Electricity {
@@ -111,7 +111,6 @@ html body {
     color: #777;
     border: 2px solid #555;
     cursor: not-allowed;
-    opacity: 0.6;
 }
 
 .external-lights-tab-aircraft-diagram {
@@ -142,7 +141,7 @@ html body {
     inset: 0;
 }
 
-.fuel-tab-pump-button {
+.fuel-tab-button {
     position: absolute;
     width: 11%;
     height: 18%;
@@ -155,6 +154,32 @@ html body {
 
     font-size: 25pt;
     cursor: pointer;
+}
+
+.fuel-tab-button:disabled {
+    background: linear-gradient(to bottom, #222, #555);
+    color: #777;
+    border: 2px solid #555;
+    cursor: not-allowed;
+}
+
+.fuel-tab-label {
+    position: absolute;
+
+    font-size: 30pt;
+    font-family: arial, serif;
+
+    color: #ccc;
+}
+
+.fuel-tab-label.active {
+    color: #00ff66;
+}
+
+.fuel-tab-closed-label {
+    border: 2px solid #999;
+    box-sizing: border-box;
+    padding: 5px;
 }
 
 
