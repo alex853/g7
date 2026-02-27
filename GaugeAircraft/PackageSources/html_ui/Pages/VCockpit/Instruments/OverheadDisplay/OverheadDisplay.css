@@ -6,7 +6,7 @@ html {
 
 html body {
     -webkit-user-select: none;
-    font-size: 50pt;
+    font-size: 10vh;
     color: red;
     height: 100%;
     width: 100%;
@@ -19,11 +19,11 @@ html body {
     flex-direction: column;
     height: 100%;
 
-    background-image: url("dev-backgrounds/fuel-tab.png");
+    /*background-image: url("dev-backgrounds/fuel-tab.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;/**/
-    /*background: black;/**/
+    background: black;/**/
 }
 
 #Electricity {
@@ -92,7 +92,7 @@ html body {
     background: linear-gradient(to bottom, #222, #111);
     color: #ccc;
 
-    font-size: 25pt;
+    font-size: 3.8vh;
     cursor: pointer;
 
     display: flex;
@@ -152,7 +152,7 @@ html body {
     background: linear-gradient(to bottom, #222, #111);
     color: #ccc;
 
-    font-size: 25pt;
+    font-size: 3.8vh;
     cursor: pointer;
 }
 
@@ -166,10 +166,21 @@ html body {
 .fuel-tab-label {
     position: absolute;
 
-    font-size: 30pt;
+    font-size: 4vh;
     font-family: arial, serif;
 
     color: #ccc;
+}
+
+.fuel-tab-label-with-transform {
+    position: absolute;
+
+    font-size: 4vh;
+    font-family: arial, serif;
+
+    color: #ccc;
+
+    transform: translate(-50%, 0%);
 }
 
 .fuel-tab-label.active {
@@ -201,7 +212,7 @@ html body {
     background: linear-gradient(to bottom, #444, #111);
 
     color: #ccc;
-    font-size: 25px;
+    font-size: 3.8vh;
 
     cursor: pointer;
 
@@ -223,7 +234,7 @@ html body {
     top: 10px;
     right: 10px;
 
-    font-size: 10pt;
+    font-size: 2vh;
     font-weight: bold;
 
     color: #000;
