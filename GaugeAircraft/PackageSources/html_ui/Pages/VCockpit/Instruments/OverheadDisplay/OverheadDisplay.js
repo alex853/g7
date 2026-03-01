@@ -21,7 +21,7 @@ class OverheadDisplay extends BaseInstrument {
         this.currentPageIndex = 3;
         this.openTab(this.currentPageIndex);
 
-        this.startUpdatesFromSim();
+        this.startUpdateStateCycle();
     }
 
     disconnectedCallback() {
@@ -40,14 +40,14 @@ class OverheadDisplay extends BaseInstrument {
         super.Update();
     }
 
-    startUpdatesFromSim() {
+    startUpdateStateCycle() {
         this._simUpdateInterval = setInterval(() => {
             const page = Pages[this.currentPageIndex];
-            if (page.updateFromSim)
-                page.updateFromSim();
+            if (page.updateState)
+                page.updateState();
 
-            if (this.currentPageIndex === 2) {
-                this.updateExternalLightsButtons();
+            if (page.updateUI) {
+                page.updateUI(this);
             }
         }, 100);
     }
@@ -93,25 +93,8 @@ class OverheadDisplay extends BaseInstrument {
         const page = Pages[2];
         if (page.actions && page.actions[action]) {
             page.actions[action](page);
+            page.updateUI(this);
         }
-
-        this.updateExternalLightsButtons();
-    }
-
-    updateExternalLightsButtons() {
-        const page = Pages[2];
-        const state = page.state;
-
-        this.querySelectorAll('.external-lights-tab-button')
-            .forEach(b => {
-                const action = b.dataset.action;
-                if (!action) return;
-
-                if (state[action])
-                    b.classList.add('active');
-                else
-                    b.classList.remove('active');
-            });
     }
 }
 
@@ -134,7 +117,7 @@ Pages = [
             "seat-belt": false,
             "no-smoke": false
         },
-        updateFromSim: function() {
+        updateState: function() {
             this.state["nav"] = SimVar.GetSimVarValue("LIGHT NAV", "Bool");
             this.state["beacon"] = SimVar.GetSimVarValue("LIGHT BEACON", "Bool");
             this.state["strobe"] = SimVar.GetSimVarValue("LIGHT STROBE", "Bool");
@@ -143,6 +126,21 @@ Pages = [
             this.state["landing"] = SimVar.GetSimVarValue("LIGHT LANDING", "Bool");
             this.state["seat-belt"] = SimVar.GetSimVarValue("CABIN SEATBELTS ALERT SWITCH", "Bool");
             this.state["no-smoke"] = SimVar.GetSimVarValue("CABIN NO SMOKING ALERT SWITCH", "Bool");
+        },
+        updateUI: function(display) {
+            const page = Pages[2];
+            const state = page.state;
+
+            display.querySelectorAll('.external-lights-tab-button')
+                .forEach(b => {
+                    const action = b.dataset.action;
+                    if (!action) return;
+
+                    if (state[action])
+                        b.classList.add('active');
+                    else
+                        b.classList.remove('active');
+                });
         },
         actions: {
             "nav": function (page) { page.actions.toggleBoolean(page, "nav", "LIGHT NAV"); },
@@ -165,6 +163,23 @@ Pages = [
     },
     {
         id: "fuel",
+        state: {
+            leftFuel: 0,
+            rightFuel: 0
+        },
+        updateState: function () {
+            this.state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
+            this.state.rightFuel = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons");
+        },
+        updateUI: function (display) {
+            const gallonsToLb = 6.7;
+            display.querySelector('#fuel-tab-left-fuel-label').textContent = (this.state.leftFuel * gallonsToLb).toFixed(0);
+            display.querySelector('#fuel-tab-right-fuel-label').textContent = (this.state.rightFuel * gallonsToLb).toFixed(0);
+            display.querySelector('#fuel-tab-total-fuel-label').textContent = ((this.state.leftFuel + this.state.rightFuel) * gallonsToLb).toFixed(0);
+        },
+        actions: {
+            "bla-bla": function (page) { /* bla-bla */ }
+        }
     },
     {
         id: "hyd-cpcs",
