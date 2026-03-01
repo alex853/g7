@@ -167,22 +167,33 @@ Pages = [
             leftFuel: 0,
             rightFuel: 0,
 
-            // As Is: Main Pump and Alt Pump on the same side are controlled separately in UI only,
-            // but in fact they control only one actual pump in the model.
-            // Next steps: WASM keeping that state AND/OR migrating to new fuel system.
             leftMainPump: 0,
             leftAltPump: 0,
             rightMainPump: 0,
-            rightAltPump: 0
+            rightAltPump: 0,
+
+            apuRunning: 0,
+
+            leftEngineRunning: 0,
+            rightEngineRunning: 0
         },
         updateState: function () {
             this.state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
             this.state.rightFuel = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons");
 
-            this.state.leftMainPump = SimVar.GetSimVarValue("FUEL TRANSFER PUMP ON:1", "Bool");
-            this.state.leftAltPump = SimVar.GetSimVarValue("FUEL TRANSFER PUMP ON:1", "Bool");
-            this.state.rightMainPump = SimVar.GetSimVarValue("FUEL TRANSFER PUMP ON:2", "Bool");
-            this.state.rightAltPump = SimVar.GetSimVarValue("FUEL TRANSFER PUMP ON:2", "Bool");
+            // As Is: Main Pump and Alt Pump on the same side are controlled separately in UI only,
+            // but in fact they control only one actual pump in the model.
+            // Next steps: WASM keeping that state AND/OR migrating to new fuel system.
+            this.state.leftMainPump = SimVar.GetSimVarValue("GENERAL ENG FUEL PUMP ON:1", "Bool");
+            this.state.leftAltPump = SimVar.GetSimVarValue("GENERAL ENG FUEL PUMP ON:1", "Bool");
+            this.state.rightMainPump = SimVar.GetSimVarValue("GENERAL ENG FUEL PUMP ON:2", "Bool");
+            this.state.rightAltPump = SimVar.GetSimVarValue("GENERAL ENG FUEL PUMP ON:2", "Bool");
+
+            this.state.apuRunning = SimVar.GetSimVarValue("APU SWITCH", "Bool");
+
+            // Is it better to use ENG FUEL FLOW GPH:index ?
+            this.state.leftEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
+            this.state.rightEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
         },
         updateUI: function (display) {
             const gallonsToLb = 6.7;
