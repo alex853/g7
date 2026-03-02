@@ -64,6 +64,12 @@ class OverheadDisplay extends BaseInstrument {
                 this.onExternalLightsButtonPressed(btn);
             });
         });
+
+        this.querySelectorAll(".button-onclick").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.onButtonClick(btn, this);
+            });
+        });
     }
 
     onMenuPressed(index, button) {
@@ -94,6 +100,31 @@ class OverheadDisplay extends BaseInstrument {
         if (page.actions && page.actions[action]) {
             page.actions[action](page);
             page.updateUI(this);
+        }
+    }
+
+    onButtonClick(button, display) {
+        const action = button.dataset.action;
+        console.log("Pressed button:", action);
+
+        if (!action) {
+            return;
+        }
+
+        const pageId = action.split(':')[0];
+        const actionId = action.split(':')[1];
+
+        const page = Pages.find(p => p.id === pageId);
+        if (!page) {
+            return;
+        }
+
+        if (page.actions && page.actions[actionId]) {
+            page.actions[actionId](page);
+        }
+
+        if (page.updateUI) {
+            page.updateUI(display);
         }
     }
 }
@@ -143,22 +174,14 @@ Pages = [
                 });
         },
         actions: {
-            "nav": function (page) { page.actions.toggleBoolean(page, "nav", "LIGHT NAV"); },
-            "beacon": function (page) { page.actions.toggleBoolean(page, "beacon", "LIGHT BEACON"); },
-            "strobe": function (page) { page.actions.toggleBoolean(page, "strobe", "LIGHT STROBE"); },
-            "logo": function (page) { page.actions.toggleBoolean(page, "logo", "LIGHT LOGO"); },
-            "taxi": function (page) { page.actions.toggleBoolean(page, "taxi", "LIGHT TAXI"); },
-            "landing": function (page) { page.actions.toggleBoolean(page, "landing", "LIGHT LANDING"); },
-            "seat-belt": function (page) { page.actions.toggleEvent(page, "seat-belt", "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE"); },
-            "no-smoke": function (page) { page.actions.toggleEvent(page, "no-smoke", "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE"); },
-            "toggleBoolean": function (page, stateName, simName) {
-                page.state[stateName] = !page.state[stateName];
-                SimVar.SetSimVarValue(simName, "Bool", page.state[stateName]);
-            },
-            "toggleEvent": function (page, stateName, simName) {
-                page.state[stateName] = !page.state[stateName];
-                SimVar.SetSimVarValue(simName, "Number", 0);
-            }
+            "nav": function (page) { Tools.toggleBool(page, "nav", "LIGHT NAV"); },
+            "beacon": function (page) { Tools.toggleBool(page, "beacon", "LIGHT BEACON"); },
+            "strobe": function (page) { Tools.toggleBool(page, "strobe", "LIGHT STROBE"); },
+            "logo": function (page) { Tools.toggleBool(page, "logo", "LIGHT LOGO"); },
+            "taxi": function (page) { Tools.toggleBool(page, "taxi", "LIGHT TAXI"); },
+            "landing": function (page) { Tools.toggleBool(page, "landing", "LIGHT LANDING"); },
+            "seat-belt": function (page) { Tools.toggleEvent(page, "seat-belt", "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE"); },
+            "no-smoke": function (page) { Tools.toggleEvent(page, "no-smoke", "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE"); },
         }
     },
     {
@@ -175,7 +198,10 @@ Pages = [
             apuRunning: 0,
 
             leftEngineRunning: 0,
-            rightEngineRunning: 0
+            rightEngineRunning: 0,
+
+            crossflow: 0,
+            intertank: 0
         },
         updateState: function () {
             this.state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
@@ -194,15 +220,99 @@ Pages = [
             // Is it better to use ENG FUEL FLOW GPH:index ?
             this.state.leftEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
             this.state.rightEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
+
+            // todo ak intertank
+            // todo ak crossflow
         },
         updateUI: function (display) {
             const gallonsToLb = 6.7;
             display.querySelector('#fuel-tab-left-fuel-label').textContent = (this.state.leftFuel * gallonsToLb).toFixed(0);
             display.querySelector('#fuel-tab-right-fuel-label').textContent = (this.state.rightFuel * gallonsToLb).toFixed(0);
             display.querySelector('#fuel-tab-total-fuel-label').textContent = ((this.state.leftFuel + this.state.rightFuel) * gallonsToLb).toFixed(0);
+
+            const inactiveColor = "#ccc";
+            const activeColor = "#00ff66";
+
+            updatePumpElements('l-alt-pump', this.state.leftAltPump);
+            updatePumpElements('l-main-pump', this.state.leftMainPump);
+            updatePumpElements('r-main-pump', this.state.rightMainPump);
+            updatePumpElements('r-alt-pump', this.state.rightAltPump);
+
+            updateConsumerElements('apu', this.state.apuRunning);
+            updateConsumerElements('left-engine', this.state.leftEngineRunning);
+            updateConsumerElements('right-engine', this.state.rightEngineRunning);
+
+            updateLineColors(this.state);
+
+            updateTransferButton('crossflow', this.state.crossflow);
+            updateTransferButton('intertank', this.state.intertank);
+
+            function updatePumpElements(name, state) {
+                const enabled = state !== 0;
+                updateButtonState(name, enabled);
+                updateLineColor(`#fuel-tab-line-${name}-connection`, enabled);
+            }
+
+            function updateConsumerElements(name, state) {
+                const enabled = state !== 0;
+                updateLabelState(name, enabled);
+                updateLineColor(`#fuel-tab-line-${name}-connection`, enabled);
+            }
+
+            function updateLineColors(state) {
+                const leftSidePumps = state.leftMainPump !== 0 || state.leftAltPump !== 0;
+                const rightSidePumps = state.rightMainPump !== 0 || state.rightAltPump !== 0;
+
+                const leftSideConsumers = state.leftEngineRunning !== 0 || state.apuRunning !== 0;
+                const rightSideConsumers = state.rightEngineRunning !== 0;
+
+                const crossflow = state.crossflow !== 0;
+                const crossflowCondition = crossflow && (leftSidePumps || rightSidePumps) && (leftSideConsumers || rightSideConsumers);
+
+                const leftSideActive = (leftSidePumps && leftSideConsumers) || crossflowCondition;
+                const rightSideActive = (rightSidePumps && rightSideConsumers) || crossflowCondition;
+
+                updateLineColor('#fuel-tab-line-left-side', leftSideActive);
+                updateLineColor('#fuel-tab-line-right-side', rightSideActive);
+            }
+
+            function updateTransferButton(name, state) {
+                const enabled = state !== 0;
+                updateButtonState(name, enabled);
+                updateLabelState(name, enabled);
+                display.querySelector(`#fuel-tab-${name}-label`).textContent = enabled ? 'Open' : 'Closed';
+                display.querySelector(`#fuel-tab-line-${name}-open`).style.display = enabled ? 'inline' : 'none';
+            }
+
+            function updateButtonState(name, enabled) {
+                updateElementState(`#fuel-tab-${name}-button`, enabled);
+            }
+
+            function updateLabelState(name, enabled) {
+                updateElementState(`#fuel-tab-${name}-label`, enabled);
+            }
+
+            function updateElementState(elementName, enabled) {
+                if (enabled) {
+                    display.querySelector(elementName).classList.add('active');
+                } else {
+                    display.querySelector(elementName).classList.remove('active');
+                }
+            }
+
+            function updateLineColor(name, enabled) {
+                display.querySelector(name)
+                    .setAttribute("stroke", enabled ? activeColor : inactiveColor);
+            }
         },
         actions: {
-            "bla-bla": function (page) { /* bla-bla */ }
+            "l-alt-pump": function (page) { Tools.toggleEvent(page, "leftAltPump", "K:ELECT_FUEL_PUMP1_SET"); },
+            "l-main-pump": function (page) { Tools.toggleEvent(page, "leftMainPump", "K:ELECT_FUEL_PUMP1_SET"); },
+            "r-main-pump": function (page) { Tools.toggleEvent(page, "rightMainPump", "K:ELECT_FUEL_PUMP2_SET"); },
+            "r-alt-pump": function (page) { Tools.toggleEvent(page, "rightAltPump", "K:ELECT_FUEL_PUMP2_SET"); },
+            "intertank": function (page) { page.state.intertank = Tools.negateBool(page.state.intertank); }, // todo ak intertank
+            "crossflow": function (page) { page.state.crossflow = Tools.negateBool(page.state.crossflow); }, // todo ak crossflow
+            "bla-bla": function (page) { /* bla-bla */ },
         }
     },
     {
@@ -220,3 +330,23 @@ Pages = [
 ];
 
 registerInstrument("overhead-display-element", OverheadDisplay);
+
+Tools = {
+    toggleBool: function (page, stateName, simName) {
+        page.state[stateName] = this.negateBool(page.state[stateName]);
+        SimVar.SetSimVarValue(simName, "Bool", page.state[stateName]);
+    },
+    toggleEvent: function (page, stateName, simName) {
+        page.state[stateName] = this.negateBool(page.state[stateName]);
+        SimVar.SetSimVarValue(simName, "Number", page.state[stateName]);
+    },
+    negateBool: function (v) {
+        if (v === 0) {
+            return 1;
+        } else if (v === 1) {
+            return 0;
+        } else {
+            return 0;
+        }
+    }
+}

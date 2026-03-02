@@ -27,19 +27,52 @@ const StubSimVar = {
     store: {},
 
     GetSimVarValue: function(name, unit) {
-        return this.store[name] || 0;
+        //return this.store[name] || 0;
+        const rawValue = localStorage.getItem(name);
+        if (unit === "Bool") {
+            if (rawValue === undefined) {
+                return 0;
+            } else if (rawValue === 0 || rawValue === '0') {
+                return 0;
+            } else if (rawValue === 1 || rawValue === '1') {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        return rawValue || 0;
     },
 
     SetSimVarValue: function(name, unit, value) {
         if (name === "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE") {
             name = "CABIN SEATBELTS ALERT SWITCH";
-            value = !this.GetSimVarValue(name);
+            value = this.negateBool(this.GetSimVarValue(name, "Bool"));
         } else if (name === "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE") {
             name = "CABIN NO SMOKING ALERT SWITCH";
-            value = !this.GetSimVarValue(name);
+            value = this.negateBool(this.GetSimVarValue(name, "Bool"));
+        } else if (name === "K:ELECT_FUEL_PUMP1_SET") {
+            name = "GENERAL ENG FUEL PUMP ON:1";
+            value = this.negateBool(this.GetSimVarValue(name, "Bool"));
+        } else if (name === "K:ELECT_FUEL_PUMP2_SET") {
+            name = "GENERAL ENG FUEL PUMP ON:2";
+            value = this.negateBool(this.GetSimVarValue(name, "Bool"));
+        } else if (name.indexOf("K:") === 0) {
+            console.error("don't know what to do with " + name + " event");
+            return;
         }
 
-        this.store[name] = value;
+        //this.store[name] = value;
+        localStorage.setItem(name, value);
+    },
+
+    negateBool: function (v) {
+        if (v === 0) {
+            return 1;
+        } else if (v === 1) {
+            return 0;
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -105,20 +138,6 @@ const FSRemoteControlSimVar = {
                 console.error("error loading data");
             }
         });
-/*
-
-        fetch("https://d1.simforge.net:7775/service/v2/ui/poll?session=2", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: this.nameStore
-        })
-            .then(res => res.json())
-            .then(data => {
-                Object.assign(this.valueStore, data);
-            })
-            .catch(err => {
-                console.error("SimVar fetch error:", err);
-            });*/
     }
 }
 

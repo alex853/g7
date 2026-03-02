@@ -156,6 +156,12 @@ html body {
     cursor: pointer;
 }
 
+.fuel-tab-button.active {
+    border: 2px solid #00ff66;
+    color: #00ff66;
+    background: linear-gradient(to bottom, #003300, #000);
+}
+
 .fuel-tab-button:disabled {
     background: linear-gradient(to bottom, #222, #555);
     color: #777;
@@ -172,6 +178,10 @@ html body {
     color: #ccc;
 }
 
+.fuel-tab-label.active {
+    color: #00ff66;
+}
+
 .fuel-tab-label-with-transform {
     position: absolute;
 
@@ -183,15 +193,21 @@ html body {
     transform: translate(-50%, 0%);
 }
 
-.fuel-tab-label.active {
+.fuel-tab-label-with-transform.active {
     color: #00ff66;
 }
 
-.fuel-tab-closed-label {
+.fuel-tab-closed-or-open-label {
     border: 2px solid #999;
     box-sizing: border-box;
     padding: 5px;
 }
+
+.fuel-tab-closed-or-open-label.active {
+    border: 2px solid #00ff66;
+    transform: translate(0%, -60%);
+}
+
 
 
 #menu {
@@ -244,5 +260,23 @@ html body {
     border-radius: 3px;
 
     transform: rotate(-20deg);
+    pointer-events: none;
+}
+
+.todo-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+
+    font-size: 1.3vh;
+    font-weight: bold;
+
+    color: #aaa;
+    background: #003cff;
+
+    padding: 2px 6px;
+    border-radius: 3px;
+
+    transform: rotate(10deg);
     pointer-events: none;
 }
