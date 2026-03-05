@@ -109,7 +109,7 @@ html body {
 
 
 .primary-engine-panel-dev-background {
-    background-image: url("dev-backgrounds/primary-engine.png");
+    background-image: url("dev-backgrounds/primary-engine-pwc.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
@@ -117,7 +117,7 @@ html body {
 }
 
 .secondary-engine-panel-dev-background {
-    background-image: url("dev-backgrounds/secondary-engine.png");
+    background-image: url("dev-backgrounds/secondary-engine-pwc.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
