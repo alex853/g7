@@ -106,10 +106,15 @@ html body {
 }
 
 
-
+.dev-background#map-panel {
+    background-image: url("dev-backgrounds/g800-du2-map.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0.5;
+}
 
 .dev-background#primary-engine-panel {
-    /*background-image: url("dev-backgrounds/g500-doc-primary-engine-pwc.png");*/
     background-image: url("dev-backgrounds/g800-du2-primary-engine.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -118,7 +123,6 @@ html body {
 }
 
 .dev-background#secondary-engine-panel {
-    /*background-image: url("dev-backgrounds/g500-doc-secondary-engine-pwc.png");*/
     background-image: url("dev-backgrounds/g800-du2-secondary-engine.png");
     background-repeat: no-repeat;
     background-position: center;
