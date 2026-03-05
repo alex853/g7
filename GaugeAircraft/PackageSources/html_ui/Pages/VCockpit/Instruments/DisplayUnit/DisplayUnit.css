@@ -108,16 +108,18 @@ html body {
 
 
 
-.primary-engine-panel-dev-background {
-    background-image: url("dev-backgrounds/primary-engine-pwc.png");
+.dev-background#primary-engine-panel {
+    /*background-image: url("dev-backgrounds/g500-doc-primary-engine-pwc.png");*/
+    background-image: url("dev-backgrounds/g800-du2-primary-engine.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
     opacity: 0.5;
 }
 
-.secondary-engine-panel-dev-background {
-    background-image: url("dev-backgrounds/secondary-engine-pwc.png");
+.dev-background#secondary-engine-panel {
+    /*background-image: url("dev-backgrounds/g500-doc-secondary-engine-pwc.png");*/
+    background-image: url("dev-backgrounds/g800-du2-secondary-engine.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
