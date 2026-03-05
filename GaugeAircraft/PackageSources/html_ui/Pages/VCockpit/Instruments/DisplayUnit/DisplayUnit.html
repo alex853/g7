@@ -5,11 +5,70 @@
             MAP
         </div>
         <div class="layout-one-column">
-            <div class="layout-one-sixth panel-frame text-placeholder" id="primary-engine-panel-dev">
-                PRIMARY<br>ENGINE
+            <div class="layout-one-sixth panel-frame primary-engine-panel-dev-background" id="primary-engine-panel">
+                <div class="text-placeholder">PRIMARY<br>ENGINE</div>
+                <div class="absolute-positioning">
+                    <svg viewBox="0 0 300 450" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <defs>
+                            <marker id="arrow"
+                                    markerWidth="10"
+                                    markerHeight="10"
+                                    refX="0"
+                                    refY="1.5"
+                                    orient="auto"
+                                    markerUnits="strokeWidth">
+                                <path d="M0,0 L2.5,1.5 L0,3 z" fill="#ccc"/>
+                            </marker>
+                        </defs>
+
+                        <!-- engine to fuel separator -->
+                        <line x1="8" y1="328" x2="293" y2="328" stroke="#aaa" stroke-width="2"/>
+
+                        <!-- fuel balance diagram -->
+                        <line x1="150.5" y1="366" x2="150.5" y2="401" stroke="#ccc" stroke-width="3"/>
+                        <line x1="115" y1="387" x2="139" y2="387" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>
+                        <line x1="186" y1="380" x2="162" y2="380" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>
+                    </svg>
+                </div>
+                <div class="absolute-positioning">
+                    <!-- engine N1 -->
+                    <div class="centered-absolute-label gauge-label" style="top: 10%; left: 50%;">N1</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 10%; left: 29%;">&nbsp;22.6</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 10%; left: 88%;">&nbsp;22.7</div>
+
+                    <!-- engine TGT -->
+                    <div class="centered-absolute-label gauge-label" style="top: 34%; left: 50%;">TGT</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 34%; left: 26%;">&nbsp;530</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 34%; left: 85%;">&nbsp;528</div>
+
+                    <!-- engine N2 -->
+                    <div class="centered-absolute-label gauge-label" style="top: 55%; left: 50%;">N2</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 55%; left: 26%;">&nbsp;65.2</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 55%; left: 74%;">&nbsp;65.0</div>
+
+                    <!-- engine FF -->
+                    <div class="centered-absolute-label gauge-label" style="top: 65%; left: 50%;">FF</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 65%; left: 26%;">&nbsp;&nbsp;&nbsp;0</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 65%; left: 74%;">&nbsp;&nbsp;&nbsp;0</div>
+
+                    <!-- fuel gauges -->
+                    <div class="centered-absolute-label gauge-label" style="top: 74%; left: 50%;">Fuel Qty</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 81.7%; left: 16%;">&nbsp;9900</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 81.7%; left: 84%;">11000</div>
+                    <div class="centered-absolute-label gauge-value" style="top: 91%; left: 50%;">20000</div>
+                </div>
             </div>
-            <div class="layout-one-sixth panel-frame text-placeholder" id="secondary-engine-panel-dev">
-                SECONDARY<br>ENGINE
+            <div class="layout-one-sixth panel-frame secondary-engine-panel-dev-background" id="secondary-engine-panel">
+                <div class="text-placeholder">SECONDARY<br>ENGINE</div>
+                <div class="absolute-positioning">
+                    <svg viewBox="0 0 300 450" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <line x1="8" y1="102" x2="293" y2="102" stroke="#aaa" stroke-width="2"/>
+                        <line x1="8" y1="192" x2="293" y2="192" stroke="#aaa" stroke-width="2"/>
+                        <line x1="8" y1="287" x2="293" y2="287" stroke="#aaa" stroke-width="2"/>
+                        <line x1="8" y1="335" x2="293" y2="335" stroke="#aaa" stroke-width="2"/>
+                        <line x1="8" y1="402" x2="293" y2="402" stroke="#aaa" stroke-width="2"/>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
