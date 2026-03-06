@@ -129,3 +129,14 @@ html body {
     background-size: 100% 100%;
     opacity: 0.5;
 }
+
+.dev-wip {
+    background: repeating-linear-gradient(
+            45deg,
+            #333 0px,
+            #333 5px,
+            #440 10px,
+            #440 15px
+    );
+    color: #777;
+}
