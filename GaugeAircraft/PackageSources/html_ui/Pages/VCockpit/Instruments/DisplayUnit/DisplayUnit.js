@@ -1,6 +1,19 @@
 class DisplayUnit extends BaseInstrument {
     constructor() {
         super();
+        this.secondaryPanelState = {
+            leftFuel: 0,
+            rightFuel: 0,
+
+            leftEngine: {
+                oilPressure: 0,
+                oilTemperature: 0,
+            },
+            rightEngine: {
+                oilPressure: 0,
+                oilTemperature: 0,
+            },
+        };
     }
 
     get templateID() {
@@ -57,12 +70,64 @@ class DisplayUnit extends BaseInstrument {
             //     page.updateUI(this);
             // }
 
+            this.updateState();
+            this.updateUI();
+
             angle += 1;
             if (angle >= 225) {
                 angle = 0;
             }
             this.leftEngineTgtGauge.setNeedleAngle(angle)
         }, 100);
+    }
+
+    updateState() {
+        this.updateSecondaryEngineState();
+    }
+
+    updatePrimaryEngineState() {
+        // ENG PRESSURE RATIO:index Ratio TURB ENG PRESSURE RATIO:index
+        // ENG EXHAUST GAS TEMPERATURE:index Rankine // todo ak TGT instead of EGT
+        // ENG FUEL FLOW GPH:index Gallons per hour
+    }
+
+    updateSecondaryEngineState() {
+        const state = this.secondaryPanelState;
+
+        state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
+        state.rightFuel = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
+
+        state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf"); // 10104.487 ==== 70
+        state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");
+
+        state.rightEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:2", "psf");
+        state.rightEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:2", "celsius");
+
+        SimVar.GetSimVarValue("ENG PRESSURE RATIO:1", "ratio");
+        SimVar.GetSimVarValue("TURB ENG PRESSURE RATIO:1", "ratio");
+        SimVar.GetSimVarValue("ENG FUEL FLOW GPH:1", "gallons per hour");
+        SimVar.GetSimVarValue("GENERAL ENG EXHAUST GAS TEMPERATURE:1", "celsius");
+        SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:1", "celsius");
+    }
+
+    updateUI() {
+        this.updateSecondaryEngineUI();
+    }
+
+    updateSecondaryEngineUI() {
+        const state = this.secondaryPanelState;
+
+        const gallonsToLb = 6.7;
+        this.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftFuel * gallonsToLb).toFixed(0), 5);
+        this.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightFuel * gallonsToLb).toFixed(0), 5);
+        this.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftFuel + state.rightFuel) * gallonsToLb).toFixed(0), 5);
+
+        const psfToWhat = 0.01; // todo ak
+        this.querySelector('#secondary-engine-panel-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * psfToWhat).toFixed(0), 4);
+        this.querySelector('#secondary-engine-panel-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * psfToWhat).toFixed(0), 4);
+
+        this.querySelector('#secondary-engine-panel-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilTemperature).toFixed(0), 4);
+        this.querySelector('#secondary-engine-panel-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilTemperature).toFixed(0), 4);
     }
 }
 
@@ -182,5 +247,16 @@ class EngineGauge {
             "transform",
             `translate(${this.cx},${this.cy}) rotate(${angleDeg})`
         );
+    }
+}
+
+Tools = {
+    alignWithNbsp: function (str, len) {
+        let actual = str.length;
+        while (actual < len) {
+            str = "&nbsp;" + str;
+            actual++;
+        }
+        return str;
     }
 }
