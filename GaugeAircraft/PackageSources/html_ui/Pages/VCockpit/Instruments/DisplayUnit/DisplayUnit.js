@@ -53,7 +53,7 @@ class DisplayUnit extends BaseInstrument {
     }
 
     get isInteractive() { 
-        return true; 
+        return false;
     }
 
     connectedCallback() {

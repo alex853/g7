@@ -5,7 +5,12 @@
             <div class="panel-frame" id="map-header" style="height: 6.5%;">
                 <!-- 9 sections go here -->
             </div>
-            <div class="text-placeholder">MAP</div>
+            <!--map-instrument
+                    id="main-map"
+                    bing-id="MFD"
+                    config-path="/Pages/VCockpit/Instruments/NavSystems/Shared/Map/MapConfig.json"
+                    style="display: block; width: 100%; height: 93.5%;">
+            </map-instrument-->
         </div>
         <div class="layout-one-column">
             <div class="layout-one-sixth panel-frame" id="primary-engine-panel">
@@ -109,7 +114,7 @@
                             </marker>
                         </defs>
 
-                        <!-- todo fuel balance diagram -->
+                        <!-- todo ak fuel balance diagram -->
                         <!--                        <line x1="200" y1=" 47" x2="200" y2=" 82" stroke="#ccc" stroke-width="3"/>-->
                         <!--                        <line x1="144" y1=" 67" x2="189" y2=" 67" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
                         <!--                        <line x1="256" y1=" 57" x2="211" y2=" 57" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
@@ -134,4 +139,5 @@
         </div>
     </div>
 </script>
+<!--<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Map/MapInstrument.js"></script>-->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/DisplayUnit.js"></script>
