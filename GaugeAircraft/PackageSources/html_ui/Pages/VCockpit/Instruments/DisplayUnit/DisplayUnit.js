@@ -1,7 +1,23 @@
 class DisplayUnit extends BaseInstrument {
     constructor() {
         super();
-        this.secondaryPanelState = {
+        this.primaryEngineState = {
+            leftEngine: {
+                epr: 0,
+                tgt: 0,
+                n1: 0,
+                n2: 0,
+                fuelFlow: 0,
+            },
+            rightEngine: {
+                epr: 0,
+                tgt: 0,
+                n1: 0,
+                n2: 0,
+                fuelFlow: 0,
+            }
+        }
+        this.secondaryEngineState = {
             leftFuel: 0,
             rightFuel: 0,
 
@@ -12,7 +28,7 @@ class DisplayUnit extends BaseInstrument {
             rightEngine: {
                 oilPressure: 0,
                 oilTemperature: 0,
-            },
+            }
         };
     }
 
@@ -82,18 +98,34 @@ class DisplayUnit extends BaseInstrument {
     }
 
     updateState() {
+        this.updatePrimaryEngineState();
         this.updateSecondaryEngineState();
     }
 
     updatePrimaryEngineState() {
-        // ENG PRESSURE RATIO:index Ratio TURB ENG PRESSURE RATIO:index
+        const state = this.primaryEngineState;
+
+        state.leftEngine.epr = SimVar.GetSimVarValue("TURB ENG PRESSURE RATIO:1", "ratio");
+        state.leftEngine.n1 = SimVar.GetSimVarValue("TURB ENG CORRECTED N1:1", "percent");
+        state.leftEngine.n2 = SimVar.GetSimVarValue("TURB ENG CORRECTED N2:1", "percent");
+        state.leftEngine.fuelFlow = SimVar.GetSimVarValue("ENG FUEL FLOW GPH:1", "gallons per hour");
+
+        state.rightEngine.epr = SimVar.GetSimVarValue("TURB ENG PRESSURE RATIO:2", "ratio");
+        state.rightEngine.n1 = SimVar.GetSimVarValue("TURB ENG CORRECTED N1:2", "percent");
+        state.rightEngine.n2 = SimVar.GetSimVarValue("TURB ENG CORRECTED N2:2", "percent");
+        state.rightEngine.fuelFlow = SimVar.GetSimVarValue("ENG FUEL FLOW GPH:2", "gallons per hour");
+
         // ENG EXHAUST GAS TEMPERATURE:index Rankine // todo ak TGT instead of EGT
-        // ENG FUEL FLOW GPH:index Gallons per hour
-        // ENG N1 RPM:index, ENG N2 RPM:index
+
+        /*
+        SimVar.GetSimVarValue("GENERAL ENG EXHAUST GAS TEMPERATURE:1", "celsius");
+        SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:1", "celsius");
+        */
+
     }
 
     updateSecondaryEngineState() {
-        const state = this.secondaryPanelState;
+        const state = this.secondaryEngineState;
 
         state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
         state.rightFuel = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
@@ -103,32 +135,38 @@ class DisplayUnit extends BaseInstrument {
 
         state.rightEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:2", "psf");
         state.rightEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:2", "celsius");
-
-        SimVar.GetSimVarValue("ENG PRESSURE RATIO:1", "ratio");
-        SimVar.GetSimVarValue("TURB ENG PRESSURE RATIO:1", "ratio");
-        SimVar.GetSimVarValue("ENG FUEL FLOW GPH:1", "gallons per hour");
-        SimVar.GetSimVarValue("GENERAL ENG EXHAUST GAS TEMPERATURE:1", "celsius");
-        SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:1", "celsius");
-        SimVar.GetSimVarValue("ENG N1 RPM:1", "rpm");
-        SimVar.GetSimVarValue("TURB ENG CORRECTED N1:1", "percent");
-
     }
 
     updateUI() {
+        this.updatePrimaryEngineUI();
         this.updateSecondaryEngineUI();
     }
 
+    updatePrimaryEngineUI() {
+        const state = this.primaryEngineState;
+
+        this.querySelector('#primary-engine-left-epr-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.epr).toFixed(2), 4);
+        this.querySelector('#primary-engine-right-epr-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.epr).toFixed(2), 4);
+
+        this.querySelector('#primary-engine-left-n1-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n1).toFixed(1), 5);
+        this.querySelector('#primary-engine-right-n1-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n1).toFixed(1), 5);
+
+        this.querySelector('#primary-engine-left-n2-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n2).toFixed(1), 5);
+        this.querySelector('#primary-engine-right-n2-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n2).toFixed(1), 5);
+
+        this.querySelector('#primary-engine-left-fuel-flow-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.fuelFlow * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#primary-engine-right-fuel-flow-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.fuelFlow * Tools.GALLONS_TO_LB).toFixed(0), 5);
+    }
+
     updateSecondaryEngineUI() {
-        const state = this.secondaryPanelState;
+        const state = this.secondaryEngineState;
 
-        const gallonsToLb = 6.7;
-        this.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftFuel * gallonsToLb).toFixed(0), 5);
-        this.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightFuel * gallonsToLb).toFixed(0), 5);
-        this.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftFuel + state.rightFuel) * gallonsToLb).toFixed(0), 5);
+        this.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftFuel * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightFuel * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftFuel + state.rightFuel) * Tools.GALLONS_TO_LB).toFixed(0), 5);
 
-        const psfToWhat = 0.01; // todo ak
-        this.querySelector('#secondary-engine-panel-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * psfToWhat).toFixed(0), 4);
-        this.querySelector('#secondary-engine-panel-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * psfToWhat).toFixed(0), 4);
+        this.querySelector('#secondary-engine-panel-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-panel-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
 
         this.querySelector('#secondary-engine-panel-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilTemperature).toFixed(0), 4);
         this.querySelector('#secondary-engine-panel-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilTemperature).toFixed(0), 4);
@@ -255,6 +293,9 @@ class EngineGauge {
 }
 
 Tools = {
+    GALLONS_TO_LB: 6.7,
+    PSF_TO_PSI: 1/144,
+
     alignWithNbsp: function (str, len) {
         let actual = str.length;
         while (actual < len) {
