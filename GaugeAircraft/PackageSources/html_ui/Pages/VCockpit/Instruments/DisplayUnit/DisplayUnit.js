@@ -22,16 +22,28 @@ class DisplayUnit extends BaseInstrument {
             }
         }
         this.secondaryEngineState = {
-            leftFuel: 0,
-            rightFuel: 0,
+            leftTank: {
+                quantity: 0,
+                temp: NaN
+            },
+            rightTank: {
+                quantity: 0,
+                temp: NaN
+            },
 
             leftEngine: {
                 oilPressure: 0,
                 oilTemperature: 0,
+                engVibration: 0,
+                lpEvm: 0,
+                hpEvm: 0
             },
             rightEngine: {
                 oilPressure: 0,
                 oilTemperature: 0,
+                engVibration: 0,
+                lpEvm: 0,
+                hpEvm: 0
             }
         };
     }
@@ -80,16 +92,9 @@ class DisplayUnit extends BaseInstrument {
     }
 
     startUpdateStateCycle() {
-        let angle = 0;
         this._simUpdateInterval = setInterval(() => {
             this.updateState();
             this.updateUI();
-
-            angle += 1;
-            if (angle >= 225) {
-                angle = 0;
-            }
-            this.leftEngineTgtGauge.setNeedleAngle(angle)
         }, 100);
     }
 
@@ -119,14 +124,22 @@ class DisplayUnit extends BaseInstrument {
     updateSecondaryEngineState() {
         const state = this.secondaryEngineState;
 
-        state.leftFuel = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
-        state.rightFuel = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
+        state.leftTank.quantity = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
+        state.leftTank.temp = ULRBJ.estimateFuelTemp(state.leftTank);
+        state.rightTank.quantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
+        state.rightTank.temp = ULRBJ.estimateFuelTemp(state.rightTank);
 
         state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf"); // 10104.487 ==== 70
         state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");
+        state.leftEngine.engVibration = SimVar.GetSimVarValue("TURB ENG VIBRATION:1", "number");
+        state.leftEngine.lpEvm = ULRBJ.estimateLpEvm(state.leftEngine);
+        state.leftEngine.hpEvm = ULRBJ.estimateHpEvm(state.leftEngine);
 
         state.rightEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:2", "psf");
         state.rightEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:2", "celsius");
+        state.rightEngine.engVibration = SimVar.GetSimVarValue("TURB ENG VIBRATION:2", "number");
+        state.rightEngine.lpEvm = ULRBJ.estimateLpEvm(state.rightEngine);
+        state.rightEngine.hpEvm = ULRBJ.estimateHpEvm(state.rightEngine);
     }
 
     updateUI() {
@@ -139,15 +152,21 @@ class DisplayUnit extends BaseInstrument {
 
         this.querySelector('#primary-engine-left-epr-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.epr).toFixed(2), 4);
         this.querySelector('#primary-engine-right-epr-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.epr).toFixed(2), 4);
+        this.leftEngineEprGauge.setValue(state.leftEngine.epr);
+        this.rightEngineEprGauge.setValue(state.rightEngine.epr);
 
         this.querySelector('#primary-engine-left-tgt-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.tgt).toFixed(0), 4);
         this.querySelector('#primary-engine-right-tgt-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.tgt).toFixed(0), 4);
+        this.leftEngineTgtGauge.setValue(state.leftEngine.tgt);
+        this.rightEngineTgtGauge.setValue(state.rightEngine.tgt);
 
         this.querySelector('#primary-engine-left-egt-label').innerHTML = (state.leftEngine.egt).toFixed(0);
         this.querySelector('#primary-engine-right-egt-label').innerHTML = (state.rightEngine.egt).toFixed(0);
 
         this.querySelector('#primary-engine-left-n1-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n1).toFixed(1), 5);
         this.querySelector('#primary-engine-right-n1-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n1).toFixed(1), 5);
+        this.leftEngineLpGauge.setValue(state.leftEngine.n1);
+        this.rightEngineLpGauge.setValue(state.rightEngine.n1);
 
         this.querySelector('#primary-engine-left-n2-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n2).toFixed(1), 5);
         this.querySelector('#primary-engine-right-n2-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n2).toFixed(1), 5);
@@ -159,15 +178,27 @@ class DisplayUnit extends BaseInstrument {
     updateSecondaryEngineUI() {
         const state = this.secondaryEngineState;
 
-        this.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftFuel * Tools.GALLONS_TO_LB).toFixed(0), 5);
-        this.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightFuel * Tools.GALLONS_TO_LB).toFixed(0), 5);
-        this.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftFuel + state.rightFuel) * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftTank.quantity * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightTank.quantity * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftTank.quantity + state.rightTank.quantity) * Tools.GALLONS_TO_LB).toFixed(0), 5);
 
-        this.querySelector('#secondary-engine-panel-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
-        this.querySelector('#secondary-engine-panel-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
 
-        this.querySelector('#secondary-engine-panel-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilTemperature).toFixed(0), 4);
-        this.querySelector('#secondary-engine-panel-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilTemperature).toFixed(0), 4);
+        this.querySelector('#secondary-engine-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilTemperature).toFixed(0), 4);
+        this.querySelector('#secondary-engine-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilTemperature).toFixed(0), 4);
+
+        this.querySelector('#secondary-engine-left-lp-evm-label').innerHTML = state.leftEngine.lpEvm < 0.3 ? '<0.30'
+            : Tools.alignWithNbsp((state.leftEngine.lpEvm).toFixed(2), 5);
+        this.querySelector('#secondary-engine-right-lp-evm-label').innerHTML = state.rightEngine.lpEvm < 0.3 ? '<0.30'
+            : Tools.alignWithNbsp((state.rightEngine.lpEvm).toFixed(2), 5);
+        this.querySelector('#secondary-engine-left-hp-evm-label').innerHTML = state.leftEngine.hpEvm < 0.6 ? '<0.60'
+            : Tools.alignWithNbsp((state.leftEngine.hpEvm).toFixed(2), 5);
+        this.querySelector('#secondary-engine-right-hp-evm-label').innerHTML = state.rightEngine.hpEvm < 0.6 ? '<0.60'
+            : Tools.alignWithNbsp((state.rightEngine.hpEvm).toFixed(2), 5);
+
+        this.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftTank.temp).toFixed(0), 4);
+        this.querySelector('#secondary-engine-right-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightTank.temp).toFixed(0), 4);
     }
 }
 
@@ -179,27 +210,43 @@ class EngineGauge {
 
         this.cx = cx;
         this.cy = cy;
+        this.arcLength = 225;
 
         const r = 52;
-        const arcLength = 225;
         const arcWidth = 3;
 
-        const backgroundColor = "black";
+        const backgroundColor = "#000";
         const whiteColor = "#ddd";
         const yellowArcColor = "#e0c000";
         const redArcColor = "#d33";
 
-        this.createSector(cx, cy, r, 0, arcLength, backgroundColor);
+        this.createSector(cx, cy, r, 0, this.arcLength, backgroundColor);
 
         if (type === "epr") {
-            this.createArc(cx, cy, r, 0, arcLength, whiteColor, arcWidth);
+            this.minValue = 1.00;
+            this.maxValue = 1.80;
+
+            this.createArc(cx, cy, r, 0, this.arcLength, whiteColor, arcWidth);
         } else {
-            const yellowStart = type === "tgt" ? 150 : 185;
-            const redStart = type === "tgt" ? 190 : 205;
+            let yellowStart;
+            let redStart;
+            if (type === "tgt") {
+                this.minValue = 0;
+                this.maxValue = 950;
+
+                yellowStart = this.calcNeedleAngle(850);
+                redStart = this.calcNeedleAngle(900);
+            } else {
+                this.minValue = 0;
+                this.maxValue = 110; // percent
+
+                yellowStart = this.calcNeedleAngle(95); // percent
+                redStart = this.calcNeedleAngle(100); // percent
+            }
 
             this.createArc(cx, cy, r, 0, yellowStart, whiteColor, arcWidth);
             this.createArc(cx, cy, r, yellowStart, redStart, yellowArcColor, arcWidth);
-            this.createArc(cx, cy, r, redStart, arcLength, redArcColor, arcWidth);
+            this.createArc(cx, cy, r, redStart, this.arcLength, redArcColor, arcWidth);
         }
 
         this.needle = this.createNeedle(cx, cy, r-arcWidth/2, whiteColor);
@@ -227,7 +274,6 @@ class EngineGauge {
 
         path.setAttribute("d", d);
         path.setAttribute("fill", color);
-        path.setAttribute("opacity", "0.5");
 
         this.svg.appendChild(path);
 
@@ -288,6 +334,21 @@ class EngineGauge {
             `translate(${this.cx},${this.cy}) rotate(${angleDeg})`
         );
     }
+
+    setValue(value) {
+        let angleDeg = this.calcNeedleAngle(value);
+        this.setNeedleAngle(angleDeg);
+    }
+
+    calcNeedleAngle(value) {
+        if (value <= this.minValue) {
+            return 0;
+        } else if (value >= this.maxValue) {
+            return this.maxValue;
+        } else {
+            return (value - this.minValue) / (this.maxValue - this.minValue) * this.arcLength;
+        }
+    }
 }
 
 Tools = {
@@ -305,6 +366,9 @@ Tools = {
 }
 
 ULRBJ = {
+    // todo ak store timestamp and use it for calculations
+    // todo ak build a bit more complex model
+    // todo ak tgt can not be lower than egt
     estimateTgt: function (engineState) {
         const isRunning = SimVar.GetSimVarValue(`ENG COMBUSTION:${engineState.index}`, "bool");
 
@@ -321,5 +385,34 @@ ULRBJ = {
         const targetTgt = isRunning ? targetTgtIfRunning : oat;
 
         return engineState.tgt + (targetTgt - engineState.tgt) * 0.04;
+    },
+
+    // todo ak store timestamp and use it for calculations
+    // todo ak build a bit more complex model - sun heating? direction of flight and shadow from fuselage?
+    // todo ak fuel return simulation?
+    estimateFuelTemp: function (tankState) {
+        const tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
+
+        if (isNaN(tankState.temp)) {
+            return tat;
+        }
+
+        return tankState.temp + (tat - tankState.temp) * 0.0001;
+    },
+
+    // todo ak vibration spike at 40-50%
+    estimateLpEvm: function (engineState) {
+        const engVibration = engineState.engVibration;
+        const n1 = SimVar.GetSimVarValue("TURB ENG CORRECTED N1:1", "percent");
+        const noise = (Math.random() - 0.5) * 0.002;
+        return engVibration * (0.6 + n1 / 400) + noise;
+    },
+
+    // todo ak vibration spike at 40-50%
+    estimateHpEvm: function (engineState) {
+        const engVibration = engineState.engVibration;
+        const n2 = SimVar.GetSimVarValue("TURB ENG CORRECTED N2:1", "percent");
+        const noise = (Math.random() - 0.5) * 0.002;
+        return engVibration * (0.6 + n2 / 200) + noise;
     }
 }
