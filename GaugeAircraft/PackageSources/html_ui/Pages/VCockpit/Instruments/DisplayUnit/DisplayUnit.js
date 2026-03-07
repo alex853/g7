@@ -89,6 +89,7 @@ class DisplayUnit extends BaseInstrument {
         // ENG PRESSURE RATIO:index Ratio TURB ENG PRESSURE RATIO:index
         // ENG EXHAUST GAS TEMPERATURE:index Rankine // todo ak TGT instead of EGT
         // ENG FUEL FLOW GPH:index Gallons per hour
+        // ENG N1 RPM:index, ENG N2 RPM:index
     }
 
     updateSecondaryEngineState() {
@@ -108,6 +109,9 @@ class DisplayUnit extends BaseInstrument {
         SimVar.GetSimVarValue("ENG FUEL FLOW GPH:1", "gallons per hour");
         SimVar.GetSimVarValue("GENERAL ENG EXHAUST GAS TEMPERATURE:1", "celsius");
         SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:1", "celsius");
+        SimVar.GetSimVarValue("ENG N1 RPM:1", "rpm");
+        SimVar.GetSimVarValue("TURB ENG CORRECTED N1:1", "percent");
+
     }
 
     updateUI() {
