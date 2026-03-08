@@ -48,7 +48,10 @@ class DisplayUnit extends BaseInstrument {
                 lpEvm: 0,
                 hpEvm: 0,
                 bleedAirPressure: 0
-            }
+            },
+
+            hydAuxPressure: 0,
+            hydPtuPressure: 0
         };
     }
 
@@ -148,6 +151,8 @@ class DisplayUnit extends BaseInstrument {
         state.rightEngine.hpEvm = ULRBJ.estimateHpEvm(state.rightEngine);
         state.rightEngine.hydPressure = SimVar.GetSimVarValue("ENG HYDRAULIC PRESSURE:2", "psf");
         state.rightEngine.bleedAirPressure = ULRBJ.estimateBleedAirPressure(state.rightEngine);
+
+        ULRBJ.calcHydAuxAndPtuPressure(state);
     }
 
     updateUI() {
@@ -206,6 +211,8 @@ class DisplayUnit extends BaseInstrument {
             : Tools.alignWithNbsp((state.rightEngine.hpEvm).toFixed(2), 5);
 
         this.querySelector('#secondary-engine-left-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-aux-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.hydAuxPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-ptu-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.hydPtuPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
         this.querySelector('#secondary-engine-right-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
 
         this.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftTank.temp).toFixed(0), 4);
@@ -450,5 +457,25 @@ ULRBJ = {
         }
 
         return engineState.bleedAirPressure + (targetPressure - engineState.bleedAirPressure) * 0.05;
+    },
+
+    calcHydAuxAndPtuPressure(state) {
+        const auxPumpOn = SimVar.GetSimVarValue("CIRCUIT HYDRAULIC PUMP ON", "bool");
+        state.hydAuxPressure = auxPumpOn ? 2800 : 0;
+
+        const leftPsi = state.leftEngine.hydPressure * Tools.PSF_TO_PSI;
+        const rightPsi = state.rightEngine.hydPressure * Tools.PSF_TO_PSI;
+
+        if (leftPsi < 2000 && rightPsi > 2500) {
+            state.rightEngine.hydPressure = state.rightEngine.hydPressure * 0.91;
+            state.hydPtuPressure = state.rightEngine.hydPressure * 0.95;
+            state.leftEngine.hydPressure = state.rightEngine.hydPressure * 0.97;
+        } else if (rightPsi < 2000 && leftPsi > 2500) {
+            state.leftEngine.hydPressure = state.leftEngine.hydPressure * 0.91;
+            state.hydPtuPressure = state.leftEngine.hydPressure * 0.95;
+            state.rightEngine.hydPressure = state.leftEngine.hydPressure * 0.97;
+        } else {
+            state.hydPtuPressure = 0;
+        }
     }
 }
