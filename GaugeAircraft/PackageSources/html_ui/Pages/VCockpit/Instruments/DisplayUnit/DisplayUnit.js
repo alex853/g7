@@ -32,18 +32,22 @@ class DisplayUnit extends BaseInstrument {
             },
 
             leftEngine: {
+                index: 1,
                 oilPressure: 0,
                 oilTemperature: 0,
                 engVibration: 0,
                 lpEvm: 0,
-                hpEvm: 0
+                hpEvm: 0,
+                bleedAirPressure: 0
             },
             rightEngine: {
+                index: 1,
                 oilPressure: 0,
                 oilTemperature: 0,
                 engVibration: 0,
                 lpEvm: 0,
-                hpEvm: 0
+                hpEvm: 0,
+                bleedAirPressure: 0
             }
         };
     }
@@ -129,17 +133,21 @@ class DisplayUnit extends BaseInstrument {
         state.rightTank.quantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
         state.rightTank.temp = ULRBJ.estimateFuelTemp(state.rightTank);
 
-        state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf"); // 10104.487 ==== 70
+        state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf");
         state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");
         state.leftEngine.engVibration = SimVar.GetSimVarValue("TURB ENG VIBRATION:1", "number");
         state.leftEngine.lpEvm = ULRBJ.estimateLpEvm(state.leftEngine);
         state.leftEngine.hpEvm = ULRBJ.estimateHpEvm(state.leftEngine);
+        state.leftEngine.hydPressure = SimVar.GetSimVarValue("ENG HYDRAULIC PRESSURE:1", "psf");
+        state.leftEngine.bleedAirPressure = ULRBJ.estimateBleedAirPressure(state.leftEngine);
 
         state.rightEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:2", "psf");
         state.rightEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:2", "celsius");
         state.rightEngine.engVibration = SimVar.GetSimVarValue("TURB ENG VIBRATION:2", "number");
         state.rightEngine.lpEvm = ULRBJ.estimateLpEvm(state.rightEngine);
         state.rightEngine.hpEvm = ULRBJ.estimateHpEvm(state.rightEngine);
+        state.rightEngine.hydPressure = SimVar.GetSimVarValue("ENG HYDRAULIC PRESSURE:2", "psf");
+        state.rightEngine.bleedAirPressure = ULRBJ.estimateBleedAirPressure(state.rightEngine);
     }
 
     updateUI() {
@@ -197,8 +205,14 @@ class DisplayUnit extends BaseInstrument {
         this.querySelector('#secondary-engine-right-hp-evm-label').innerHTML = state.rightEngine.hpEvm < 0.6 ? '<0.60'
             : Tools.alignWithNbsp((state.rightEngine.hpEvm).toFixed(2), 5);
 
+        this.querySelector('#secondary-engine-left-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.querySelector('#secondary-engine-right-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+
         this.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftTank.temp).toFixed(0), 4);
         this.querySelector('#secondary-engine-right-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightTank.temp).toFixed(0), 4);
+
+        this.querySelector('#secondary-engine-left-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.bleedAirPressure).toFixed(0), 4);
+        this.querySelector('#secondary-engine-right-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.bleedAirPressure).toFixed(0), 4);
     }
 }
 
@@ -403,7 +417,7 @@ ULRBJ = {
     // todo ak vibration spike at 40-50%
     estimateLpEvm: function (engineState) {
         const engVibration = engineState.engVibration;
-        const n1 = SimVar.GetSimVarValue("TURB ENG CORRECTED N1:1", "percent");
+        const n1 = SimVar.GetSimVarValue(`TURB ENG CORRECTED N1:${engineState.index}`, "percent");
         const noise = (Math.random() - 0.5) * 0.002;
         return engVibration * (0.6 + n1 / 400) + noise;
     },
@@ -411,8 +425,30 @@ ULRBJ = {
     // todo ak vibration spike at 40-50%
     estimateHpEvm: function (engineState) {
         const engVibration = engineState.engVibration;
-        const n2 = SimVar.GetSimVarValue("TURB ENG CORRECTED N2:1", "percent");
+        const n2 = SimVar.GetSimVarValue(`TURB ENG CORRECTED N2:${engineState.index}`, "percent");
         const noise = (Math.random() - 0.5) * 0.002;
         return engVibration * (0.6 + n2 / 200) + noise;
+    },
+
+    estimateBleedAirPressure(engineState) {
+        const n2 = SimVar.GetSimVarValue(`TURB ENG CORRECTED N2:${engineState.index}`, "percent");
+        const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+        const mach = SimVar.GetSimVarValue("AIRSPEED MACH", "mach");
+
+        let targetPressure;
+
+        const bleedOn = SimVar.GetSimVarValue(`BLEED AIR ENGINE:${engineState.index}`, "bool");
+
+        if (!bleedOn) {
+            targetPressure = 0;
+        } else {
+            const densityFactor = Math.exp(-alt / 45000);
+            const basePressure = (n2 - 20) * 0.7;
+            const ramEffect = mach * 8;
+            const pressure = basePressure * densityFactor + ramEffect;
+            targetPressure = Math.max(0, pressure);
+        }
+
+        return engineState.bleedAirPressure + (targetPressure - engineState.bleedAirPressure) * 0.05;
     }
 }
