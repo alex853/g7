@@ -2,15 +2,17 @@
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe"> <!-- 1260x960 -->
         <div class="layout-two-columns" id="map-panel">
-            <div class="panel-frame" id="map-header" style="height: 6.5%;">
+            <div id="map-header" class="panel-frame">
                 <!-- 9 sections go here -->
             </div>
-            <!--map-instrument
-                    id="main-map"
-                    bing-id="MFD"
-                    config-path="/Pages/VCockpit/Instruments/NavSystems/Shared/Map/MapConfig.json"
-                    style="display: block; width: 100%; height: 93.5%;">
-            </map-instrument-->
+            <div id="map-container">
+                <map-instrument
+                        id="MapInstrument"
+                        bing-id="MFD"
+                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/"
+                >
+                </map-instrument>
+            </div>
         </div>
         <div class="layout-one-column">
             <div class="layout-one-sixth panel-frame" id="primary-engine-panel">
@@ -139,5 +141,7 @@
         </div>
     </div>
 </script>
-<!--<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Map/MapInstrument.js"></script>-->
+
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Shared/Map/MapInstrument.html"></script>
+
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/DisplayUnit.js"></script>

@@ -68,6 +68,12 @@ class DisplayUnit extends BaseInstrument {
 
         console.log("connected callback");
 
+        this.map = this.querySelector('#MapInstrument');
+        this.map.init(this);
+        // this.map.setCenteredOnPlane();
+        // this.map.setZoom(10);
+        // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
+
         const primaryEnginePanelSvg = this.querySelector("#primary-engine-panel-svg");
 
         this.leftEngineEprGauge = new EngineGauge(primaryEnginePanelSvg, 74, 80, "epr");
@@ -96,6 +102,11 @@ class DisplayUnit extends BaseInstrument {
 
     Update() {
         super.Update();
+
+        if (this.map) {
+            this.map.setCenteredOnPlane();
+            this.map.update();
+        }
     }
 
     startUpdateStateCycle() {
