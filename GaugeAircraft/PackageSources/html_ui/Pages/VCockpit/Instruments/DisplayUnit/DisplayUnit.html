@@ -1,16 +1,23 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
-    <div id="Mainframe"> <!-- 1260x960 -->
+    <div id="Mainframe">
         <div class="layout-two-columns" id="map-panel">
-            <div id="map-header" class="panel-frame">
-                <!-- 9 sections go here -->
+            <div id="map-header" class="panel-frame1">
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Map<br>Layers</div> <!-- todo ak replace gauge-label -->
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Map<br>View</div>
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Wx</div>
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Acft<br>Ctr</div>
+                <div class="panel-frame gauge-label" style="width: 11.2%;">North</div>
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Prev<br>INTRS</div>
+                <div class="panel-frame gauge-label" style="width: 11.2%;">Next<br>INTRS</div>
+                <div class="panel-frame gauge-label" style="width: 8.5%;">GLB</div>
+                <div class="panel-frame gauge-label" style="width: 13.1%;">Map</div>
             </div>
             <div id="map-container">
                 <map-instrument
                         id="MapInstrument"
                         bing-id="MFD"
-                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/"
-                >
+                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
                 </map-instrument>
             </div>
         </div>

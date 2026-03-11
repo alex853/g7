@@ -69,7 +69,11 @@ class DisplayUnit extends BaseInstrument {
         console.log("connected callback");
 
         this.map = this.querySelector('#MapInstrument');
-        this.map.init(this);
+        if (this.map.init) {
+            this.map.init(this);
+        } else {
+            this.map = null; // to allow the gauge working outside the sim
+        }
         // this.map.setCenteredOnPlane();
         // this.map.setZoom(10);
         // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
