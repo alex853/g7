@@ -67,44 +67,44 @@
 
   "netBingTextureResolution": 1024,
   "netBingAltitudeColors1": [],
-  "netBingWaterColor1": "#184b77",
-  "netBingSkyColor1": "#00569d",
+  "netBingWaterColor1": "#0f2f4a",
+  "netBingSkyColor1": "#003a6a",
   "netBingHeightColor1": [
     {
       "alt": 0,
-      "color": "#6DA36C"
+      "color": "#445742"
     },
     {
       "alt": 1500,
-      "color": "#9CAF57"
+      "color": "#5d6b45"
     },
     {
       "alt": 6000,
-      "color": "#c8b46e"
+      "color": "#8a834f"
     },
     {
       "alt": 8000,
-      "color": "#b0975b"
+      "color": "#7b7145"
     },
     {
       "alt": 10000,
-      "color": "#9a7c48"
+      "color": "#6b5d3c"
     },
     {
       "alt": 13000,
-      "color": "#906a3b"
+      "color": "#5f4f35"
     },
     {
       "alt": 16000,
-      "color": "#7b5936"
+      "color": "#51412d"
     },
     {
       "alt": 24000,
-      "color": "#5a462e"
+      "color": "#3e3526"
     },
     {
       "alt": 32000,
-      "color": "#abb0b5"
+      "color": "#8f9499"
     }
   ]
 }
