@@ -32,9 +32,21 @@
 
 </script>
 <script>
-    const script = document.createElement("script");
-    script.src = `./${instrumentName}.js`;
-    document.body.appendChild(script);
+
+    loadScript("Tools");
+    loadScript("EngineGauge");
+    loadScript("ULRBJ");
+    loadScript("MapPanel");
+    loadScript("PrimaryEnginePanel");
+    loadScript("SecondaryEnginePanel");
+    loadScript(instrumentName);
+
+    function loadScript(scriptName) {
+        const script = document.createElement("script");
+        script.src = `./${scriptName}.js`;
+        document.body.appendChild(script);
+    }
+
 </script>
 <script>
     setTimeout(() => {
