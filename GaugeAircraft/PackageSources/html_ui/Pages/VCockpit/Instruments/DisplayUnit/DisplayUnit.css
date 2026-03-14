@@ -162,6 +162,25 @@ map-instrument {
     /*min-height: 0;*/
 }
 
+#map-container div.inset-frame {
+    position: relative;
+
+    background: #000;
+
+    box-shadow:
+            inset 2px 2px 0 #4a4944,
+            inset -3px -3px 0 #7a7973;
+}
+
+#map-container div span.inset-text {
+    font-family: "RobotoMono";
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: #ccc;
+
+    line-height: 1;
+}
+
 
 
 .centered-absolute-label {
