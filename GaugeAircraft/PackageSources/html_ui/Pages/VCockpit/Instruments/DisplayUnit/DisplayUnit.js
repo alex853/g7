@@ -51,11 +51,13 @@ class DisplayUnit extends BaseInstrument {
     }
 
     updateState() {
+        this.mapPanel.updateState();
         this.primaryEnginePanel.updateState();
         this.secondaryEnginePanel.updateState();
     }
 
     updateUI() {
+        this.mapPanel.updateUI();
         this.primaryEnginePanel.updateUI();
         this.secondaryEnginePanel.updateUI();
     }
