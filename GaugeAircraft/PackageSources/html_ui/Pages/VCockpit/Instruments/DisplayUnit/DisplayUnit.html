@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe">
-        <div class="layout-two-columns dev-background1" id="map-panel">
+        <div class="layout-two-columns dev-background" id="map-panel">
             <div id="map-header" style1="opacity: 0.5;">
                 <div class="panel-frame" style="width: 11.1%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
                 <div class="panel-frame" style="width: 11.1%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
@@ -25,6 +25,9 @@
                     <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
                     <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
                 </div>
+                <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
+                <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
+                <div class="control-button onclick" data-action="map:orientation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
             </div>
         </div>
         <div class="layout-one-column">

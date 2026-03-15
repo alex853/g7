@@ -144,17 +144,6 @@ html body {
     overflow: hidden;
 }
 
-/*#map-container bing-map {*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*}*/
-
-/*#MapContainer {*/
-/*    position: absolute;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*}*/
-
 map-instrument {
     width: 100%;
     height: 100%;
@@ -181,7 +170,21 @@ map-instrument {
     line-height: 1;
 }
 
+#map-container div.control-button {
+    font-family: "RobotoMono";
+    font-size: 2.5vh;
+    color: #ccc;
 
+    width: 4vh;
+    height: 4vh;
+
+    background: #000;
+
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .centered-absolute-label {
     position: absolute;

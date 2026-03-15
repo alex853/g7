@@ -16,6 +16,8 @@ class DisplayUnit extends BaseInstrument {
 
         console.log("connected callback");
 
+        this.initButtons();
+
         this.mapPanel = new MapPanel(this);
         this.primaryEnginePanel = new PrimaryEnginePanel(this);
         this.secondaryEnginePanel = new SecondaryEnginePanel(this);
@@ -60,6 +62,39 @@ class DisplayUnit extends BaseInstrument {
         this.mapPanel.updateUI();
         this.primaryEnginePanel.updateUI();
         this.secondaryEnginePanel.updateUI();
+    }
+
+    initButtons() {
+        this.querySelectorAll(".onclick").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.onButtonClick(btn, this);
+            });
+        });
+    }
+
+    onButtonClick(button, display) {
+        const action = button.dataset.action;
+        console.log("Pressed button:", action);
+
+        if (!action) {
+            return;
+        }
+
+        const panelId = action.split(':')[0];
+        const actionId = action.split(':')[1];
+
+        const panel = panelId === 'map' ? this.mapPanel : undefined;
+        if (!panel) {
+            return;
+        }
+
+        if (panel.onAction) {
+            panel.onAction(actionId);
+        }
+
+        if (panel.updateUI) {
+            panel.updateUI();
+        }
     }
 }
 

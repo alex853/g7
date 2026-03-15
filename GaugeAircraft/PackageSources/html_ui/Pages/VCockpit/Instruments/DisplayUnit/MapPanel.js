@@ -44,4 +44,10 @@ class MapPanel {
         this.display.querySelector('#map-tas-label').innerHTML = "TAS" + Tools.alignWithNbsp((state.tas).toFixed(0), 4);
         this.display.querySelector('#map-gs-label').innerHTML = "GS" + Tools.alignWithNbsp((state.gs).toFixed(0), 5);
     }
+
+    onAction(action) {
+        if (action === "zoom-plus") {
+            console.info('hello world from zoom plus');
+        }
+    }
 }
