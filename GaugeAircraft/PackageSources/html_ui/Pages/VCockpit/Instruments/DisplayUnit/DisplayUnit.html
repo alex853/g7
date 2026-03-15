@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe">
-        <div class="layout-two-columns dev-background" id="map-panel">
+        <div class="layout-two-columns dev-background1" id="map-panel">
             <div id="map-header" style1="opacity: 0.5;">
                 <div class="panel-frame" style="width: 11.1%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
                 <div class="panel-frame" style="width: 11.1%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
@@ -17,6 +17,8 @@
                 <map-instrument
                         id="MapInstrument"
                         bing-id="MFD"
+                        overdrawFactor="1.4"
+                        show-overlay="false"
                         config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
                 </map-instrument>
                 <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
@@ -27,7 +29,7 @@
                 </div>
                 <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
                 <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
-                <div class="control-button onclick" data-action="map:orientation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
+                <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
             </div>
         </div>
         <div class="layout-one-column">

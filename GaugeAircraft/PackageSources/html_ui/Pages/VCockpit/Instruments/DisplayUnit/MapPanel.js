@@ -5,6 +5,8 @@ class MapPanel {
         this.map = display.querySelector('#MapInstrument');
         if (this.map.init) {
             this.map.init(this);
+            // this.map.setContinuousUpdate(true);
+            // this.map.setSmoothRotation(true);
         } else {
             this.map = null; // to allow the gauge working outside the sim
         }
@@ -47,7 +49,17 @@ class MapPanel {
 
     onAction(action) {
         if (action === "zoom-plus") {
-            console.info('hello world from zoom plus');
+            this.map.zoomOut();
+        } else if (action === 'zoom-minus') {
+            this.map.zoomIn();
+        } else if (action === 'rotation') {
+            let rotationMode = this.map.getRotationMode();
+            if (rotationMode === EMapRotationMode.NorthUp) {
+                rotationMode = EMapRotationMode.HDGUp;
+            } else {
+                rotationMode = EMapRotationMode.NorthUp;
+            }
+            this.map.setRotationMode(rotationMode);
         }
     }
 }
