@@ -11,8 +11,8 @@
 		<CanBeReferenced>true</CanBeReferenced>
 	</Flags>
 	<MarketplaceData>
-		<AssetDir>PackageDefinitions\ian-g7-fw\MarketplaceData</AssetDir>
-		<OutputDir>MarketplaceData\ian-g7-fw</OutputDir>
+		<AssetDir>PackageDefinitions\ian-g7-fw\MarketplaceData\</AssetDir>
+		<OutputDir>MarketplaceData\ian-g7-fw\</OutputDir>
 	</MarketplaceData>
 	<AssetGroups>
 		<AssetGroup Name="ContentInfo">
@@ -20,23 +20,23 @@
 			<Flags>
 				<FSXCompatibility>false</FSXCompatibility>
 			</Flags>
-			<AssetDir>PackageDefinitions\ian-g7-fw\ContentInfo</AssetDir>
-			<OutputDir>ContentInfo\ian-g7-fw</OutputDir>
+			<AssetDir>PackageDefinitions\ian-g7-fw\ContentInfo\</AssetDir>
+			<OutputDir>ContentInfo\ian-g7-fw\</OutputDir>
 		</AssetGroup>
-		<AssetGroup Name="MyCompany_Gauge_Aircraft">
+		<AssetGroup Name="G700">
 			<Type>SimObject</Type>
 			<Flags>
 				<FSXCompatibility>false</FSXCompatibility>
 			</Flags>
-			<AssetDir>PackageSources\SimObjects\Airplanes\MyCompany_Gauge_Aircraft\</AssetDir>
-			<OutputDir>SimObjects\Airplanes\MyCompany_Gauge_Aircraft\</OutputDir>
+			<AssetDir>PackageSources\SimObjects\Airplanes\G700\</AssetDir>
+			<OutputDir>SimObjects\Airplanes\G700\</OutputDir>
 			<Config>
 				<Extras>
 					<File/>
 				</Extras>
 			</Config>
 		</AssetGroup>
-		<AssetGroup Name="MyCompany_Gauge_Aircraft_Data">
+		<AssetGroup Name="G700_Data">
 			<Type>Copy</Type>
 			<Flags>
 				<FSXCompatibility>false</FSXCompatibility>
