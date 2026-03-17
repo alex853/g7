@@ -2,17 +2,17 @@
 <AssetPackage Version="0.1.0">
 	<ItemSettings>
 		<ContentType>AIRCRAFT</ContentType>
-		<Title>Gauge Aircraft</Title>
-		<Manufacturer>My Manufacturer</Manufacturer>
-		<Creator>My Company</Creator>
+		<Title>G7-FW</Title>
+		<Manufacturer>Gulfstream</Manufacturer>
+		<Creator>Ian</Creator>
 	</ItemSettings>
 	<Flags>
 		<VisibleInStore>true</VisibleInStore>
 		<CanBeReferenced>true</CanBeReferenced>
 	</Flags>
 	<MarketplaceData>
-		<AssetDir>PackageDefinitions\mycompany-aircraft-wasm-gauge\MarketplaceData\</AssetDir>
-		<OutputDir>MarketplaceData\mycompany-aircraft-wasm-gauge\</OutputDir>
+		<AssetDir>PackageDefinitions\ian-g7-fw\MarketplaceData</AssetDir>
+		<OutputDir>MarketplaceData\ian-g7-fw</OutputDir>
 	</MarketplaceData>
 	<AssetGroups>
 		<AssetGroup Name="ContentInfo">
@@ -20,8 +20,8 @@
 			<Flags>
 				<FSXCompatibility>false</FSXCompatibility>
 			</Flags>
-			<AssetDir>PackageDefinitions\mycompany-aircraft-wasm-gauge\ContentInfo\</AssetDir>
-			<OutputDir>ContentInfo\mycompany-aircraft-wasm-gauge\</OutputDir>
+			<AssetDir>PackageDefinitions\ian-g7-fw\ContentInfo</AssetDir>
+			<OutputDir>ContentInfo\ian-g7-fw</OutputDir>
 		</AssetGroup>
 		<AssetGroup Name="MyCompany_Gauge_Aircraft">
 			<Type>SimObject</Type>

@@ -4,7 +4,7 @@
 	<TemporaryOutputDirectory>_PackageInt</TemporaryOutputDirectory>
 	<PublishingGroupTemporaryOutputDirectory>_PublishingGroupInt</PublishingGroupTemporaryOutputDirectory>
 	<Packages>
-		<Package>PackageDefinitions\mycompany-aircraft-wasm-gauge.xml</Package>
+		<Package>PackageDefinitions\ian-g7-fw.xml</Package>
 	</Packages>
 	<PublishingGroups/>
 </Project>
