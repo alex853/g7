@@ -8,7 +8,7 @@ class MapPanel {
             // this.map.setContinuousUpdate(true);
             // this.map.setSmoothRotation(true);
         } else {
-            this.map = null; // to allow the gauge working outside the sim
+            this.map = StubMap; // to allow the gauge working outside the sim
         }
         // this.map.setCenteredOnPlane();
         // this.map.setZoom(10);
@@ -23,10 +23,8 @@ class MapPanel {
     }
 
     onUpdate() {
-        if (this.map) {
-            this.map.setCenteredOnPlane();
-            this.map.update();
-        }
+        this.map.setCenteredOnPlane();
+        this.map.update();
     }
 
     updateState() {
@@ -45,6 +43,9 @@ class MapPanel {
         this.display.querySelector('#map-sat-label').innerHTML = "SAT" + Tools.alignWithNbsp((state.sat).toFixed(0), 4);
         this.display.querySelector('#map-tas-label').innerHTML = "TAS" + Tools.alignWithNbsp((state.tas).toFixed(0), 4);
         this.display.querySelector('#map-gs-label').innerHTML = "GS" + Tools.alignWithNbsp((state.gs).toFixed(0), 5);
+
+        const rotationMode = this.map.getRotationMode();
+        this.display.querySelector('#map-header-rotation-label').innerHTML = rotationMode === EMapRotationMode.NorthUp ? "North" : "Hdg";
     }
 
     onAction(action) {

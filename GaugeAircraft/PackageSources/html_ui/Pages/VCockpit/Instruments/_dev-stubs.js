@@ -181,3 +181,23 @@ function startUpdateLoop(instance) {
     }
     loop();
 }
+
+EMapRotationMode = {
+    NorthUp: "north-up",
+    HDGUp: "hdg-up"
+}
+
+const StubMap = {
+    rotationMode: EMapRotationMode.NorthUp,
+
+    setCenteredOnPlane: function () {},
+    update: function () {},
+    zoomOut: function () {},
+    zoomIn: function () {},
+    getRotationMode: function () {
+        return this.rotationMode;
+    },
+    setRotationMode: function (rotationMode) {
+        this.rotationMode = rotationMode;
+    },
+}
