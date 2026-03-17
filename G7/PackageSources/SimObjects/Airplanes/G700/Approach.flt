@@ -1,18 +1,9 @@
-[SimVars.0]
-PVelBodyAxis=0
-BVelBodyAxis=0
-HVelBodyAxis=0
-XVelBodyAxis=0
-YVelBodyAxis=0
-ZVelBodyAxis=0
-SimOnGround=False
-
 [SimVarForSpawningInTheAir.0]
-IAS=236
+IAS=422
 FlapsDegree=0000.00
 
 [Avionics.0]
-Comm1Active=127.850
+Comm1Active=125.900
 Comm1Standby=124.850
 Comm2Active=124.850
 Comm2Standby=124.850
@@ -24,7 +15,8 @@ OBS1=360
 Nav2Active=110.50
 Nav2Standby=113.90
 OBS2=360
-Transponder=1234
+Transponder=0000
+TransponderState=4
 ADFActive=890
 ADF2Active=890
 DMESelected=1
@@ -39,29 +31,47 @@ AudioMarkerListen=True
 AudioDmeListen=False
 AudioAdfListen=False
 AudioAdf2Listen=False
-AvionicsSwitch=True
+AvionicsSwitch=False
 
 [Engine Parameters.1.0]
 ThrottleLeverPct=1
-PropellerLeverPct=0.99993896484375
+PropellerLeverPct=1
 MixtureLeverPct=1
-Pct Engine RPM=1.5087202538296096144
-MaxReachedEngineRPM=4107.6570107070192535
+Pct Engine RPM=0.99
+MaxReachedEngineRPM=0
 LeftMagneto=True
 RightMagneto=True
 GeneratorSwitch=True
-FuelValveOpen=True
 CowlFlapPct=0
-FuelPumpSwitch=True
-FuelPumpSwitch_EX1=-1
+FuelPumpSwitch=False
+FuelPumpSwitch_EX1=0
+FuelValveOpen=True
 CarbHeat/DeiceSwitch=False
-EngineMasterSwitch=True
+EngineMasterSwitch=False
 GlowPlugTemperaturePct=1
-IgnitionSwitch=0
+IgnitionSwitch=1
+StarterSwitch=False
+Afterburner=0
 
-[Propeller.1.0]
-prop_beta=0.2321287905152458475
-prop_max_rpm_percent=1.5087202538296096144
+[Engine Parameters.2.0]
+ThrottleLeverPct=1
+PropellerLeverPct=1
+MixtureLeverPct=1
+Pct Engine RPM=0.99
+MaxReachedEngineRPM=0
+LeftMagneto=True
+RightMagneto=True
+GeneratorSwitch=True
+CowlFlapPct=0
+FuelPumpSwitch=False
+FuelPumpSwitch_EX1=0
+FuelValveOpen=True
+CarbHeat/DeiceSwitch=False
+EngineMasterSwitch=False
+GlowPlugTemperaturePct=0
+IgnitionSwitch=1
+StarterSwitch=False
+Afterburner=0
 
 [Systems.0]
 BatterySwitch=True
@@ -79,30 +89,51 @@ TailhookHandle=False
 TailhookState=0
 FoldingWingsHandle=False
 FoldingWingsState=0, 0
+ExternalPowerSwitch=False
+
+[Electrical.0]
+battery.1=True
+battery.2=True
+alternator.1=True
+alternator.2=True
 
 [Gauges.0]
 KollsmanSetting=29.921342849731445313
 
 [BleedAir.0]
 BleedAirSource=0
+EngineAirBleed.1=True
+EngineAirBleed.2=True
+EngineAirBleed.3=True
+EngineAirBleed.4=True
+APUAirBleed=True
 
 [Switches.0]
 PitotHeat=False
 BeaconLights=True
 LandingLights=False
-LogoLights=True
-NavLights=True
-PanelLights=True
-RecognitionLights=True
-StrobeLights=True
+LogoLights=False
+NavLights=False
+PanelLights=False
+RecognitionLights=False
+StrobeLights=False
 TaxiLights=False
-WingLights=True
-CabinLights=True
+WingLights=False
+CabinLights=False
 GlareshieldLights=False
 PedestalLights=False
+AmbientLights=False
+
+[Electrical.0]
+battery.1=True
+battery.2=True
+battery.3=True
+alternator.1=True
+alternator.2=True
+alternator.3=True
 
 [AutoPilot.0]
-MasterSwitch=False
+MasterSwitch=True
 WingLeveler=False
 Nav1Lock=False
 HeadingLock=False
@@ -124,9 +155,10 @@ BackCourseHold=False
 YawDamper=False
 ToGa=False
 AutoThrottleArm=False
-GPSdrivesNAV1=True
+GPSdrivesNAV1=False
 IsUsedForLesson=False
 ForceDisplayUI=False
+AutopilotDisengaged=False
 
 [Controls.0]
 SpoilersHandle=000.00
@@ -143,9 +175,9 @@ Rudder=050.00
 LeftBrake=000.00
 RightBrake=000.00
 ParkingBrake=000.00
-ElevatorTrim=050.00
 RudderTrimPct=0
 AileronTrimPct=0
 AileronTrimDisabled=False
 ElevatorTrimDisabled=False
 RudderTrimDisabled=False
+SpoilersArmed=True

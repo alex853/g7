@@ -1,0 +1,303 @@
+.engine-instruments-container {
+  display: flex;
+  width: 280px;
+  height: 100%;
+  flex-direction: column;
+}
+
+.double-div{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.double-div2{
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+  font-size: 14px;
+  padding-top: 5px;
+}
+.flow-row{
+	display: flex;
+}
+
+.eng-varis{
+	font-size: 18px;
+	padding-top: 24px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.eng-varis-2{
+	font-size: 18px;
+	padding-top: 6px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.border-bottom{
+	border-bottom:2px solid white;
+}
+.temp-varis{
+	font-size: 18px;
+	padding-top: 6px;
+	border-bottom:2px solid white;
+}
+
+.fuel-cont{
+	font-size: 18px;
+	padding-top: 16px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.green-txt{
+	color: var(--g3000-color-green);
+}
+
+.full-border{
+	border: 1.5px solid white;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-left:8px;
+	border-radius: 2px;
+}
+.temp-border{
+	border: 1.5px solid white;
+	border-radius: 2px;
+}
+
+.dial-gauge {
+  position: relative;
+  width: 140px;
+  height: 93px;
+}
+
+.dial-gauge-title {
+  position: absolute;
+  left: 70px;
+  top: 48px;
+  transform: translateX(-50%);
+  padding: 0px 1px;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+}
+
+.dial-needle {
+  position: absolute;
+  top: 0;
+  transform-origin: 70px 65px;
+  transform: rotate3d(0, 0, 1, -110deg);
+}
+
+.dial-digital-readout {
+  position: absolute;
+  top: 62px;
+  right: 5px;
+  padding: 0px 1px;
+  border-radius: 2px;
+  font-size: 18px;
+  color: var(--g3000-color-green);
+}
+
+.itt-gauge-arc {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  display: none;
+}
+
+.itt-gauge-mode-off .itt-gauge-arc-start,
+.itt-gauge-mode-start .itt-gauge-arc-start {
+  display: block;
+}
+
+.itt-gauge-mode-run .itt-gauge-arc-run {
+  display: block;
+}
+
+.itt-gauge-mode-text {
+  position: absolute;
+  left: 109px;
+  top: 6px;
+  font-size: 10px;
+  color: white;
+}
+
+.flaps-gauge-container {
+  position: relative;
+  margin: -38px 0px 4px -12px;
+}
+.flaps-needle {
+  position: absolute;
+  top: 76px;
+  left: 190px;
+  transform: rotate3d(0, 0, 1, 0deg);
+  transform-origin: 5px 8px;
+}
+
+
+.spoiler-needle {
+  position: absolute;
+  top: 66px;
+  left: 128px;
+  transform: rotate3d(0, 0, 1, -3deg);
+  transform-origin: 6px 6px;
+}
+
+.flaps-cyan-carrot {
+  position: absolute;
+  left: 240px;
+  top: 78px;
+  /* animation: animate 5s infinite; */
+  transform: rotate3d(0, 0, 1, -1deg);
+  transform-origin: -44px 7px;
+}
+
+.trim-class{
+	height: 70px;
+}
+
+#ailSvg{
+ width:88px;
+ position: absolute;
+ left: 189px;
+ top: 550px;
+}
+#ailSvg-marker{
+ position: absolute;
+ width: 17px;
+ left: 227px;
+ top: 556px;
+ transform-origin: center 60px;
+}
+#rudSvg{
+ width:88px;
+ height: 20px;
+ position: absolute;
+ left: 98px;
+ top: 560px; 
+}
+#rudSvg-marker{
+ position: absolute;
+ width: 18px;
+ left: 135px;
+ top: 557px;
+}
+#stabSvg{
+  width: 30px;
+ height: 88px;
+ position: absolute;
+ left: 40px;
+ top: 505px;
+ }
+
+#txt-ail{
+  color:white;
+  font-size:14px;
+  position: absolute;
+  left: 223px;
+  top: 579px;
+}
+#txt-rud{
+  color:white;
+  font-size:14px;
+  position: absolute;
+  left: 127px;
+  top: 579px;
+}
+#txt-stab-nu{
+  color:white;
+  font-size:14px;
+  position: absolute;
+  left: 17px;
+  top: 505px;
+}
+#txt-stab{
+  color:white;
+  font-size:14px;
+  position: absolute;
+  top: 542px;
+  left: 2px;
+}
+#txt-stab-nd{
+  color:white;
+  font-size:14px;
+  position: absolute;
+  left: 17px;
+  top: 578px;
+}
+.stab-needle{
+  color:white;
+  position: absolute;
+  left:47px;
+  top: 536px;
+}
+ #stab-marker{
+ width: 53px;
+}
+#txt-stab-value{
+  color:var(--g3000-color-green);
+  font-size:14px;
+  position: relative;
+  top:-23px;
+  left:18px;
+}
+.doors-container{
+  padding-top: 23px;
+}
+
+#txt-emer{
+  position: absolute;
+  top: 611px;
+  left: 180px;
+  color: white;
+  font-size: 10px;
+}
+
+#txt-cargo{
+  position: absolute;
+  top: 662px;
+  left: 231px;
+  color: white;
+  font-size: 10px;
+}
+
+#txt-pax{
+  position: absolute;
+  top: 666px;
+  left: 110px;
+  color: white;
+  font-size: 10px;
+}
+
+#txt-oxy{
+  position: absolute;
+  top: 631px;
+  left: 24px;
+  color: white;
+  font-size: 9px;
+}
+
+#txt-ckpt{
+  position: absolute;
+  top: 631px;
+  left: 78px;
+  color: white;
+  font-size: 10px;
+}
+#txt-fwd{
+  position: absolute;
+  top: 631px;
+  left: 133px;
+  color: white;
+  font-size: 10px;
+}
+#txt-aft{
+  position: absolute;
+  top: 631px;
+  left: 193px;
+  color: white;
+  font-size: 10px;
+}

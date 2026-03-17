@@ -1,0 +1,162 @@
+<!-- LOD #################################### -->
+<ModelInfo>
+	<LODS>
+		<LOD minSize="0" ModelFile="GULFSTREAM_Ext_LOD00.gltf"/>
+	</LODS>
+		
+<!--INCLUDED BEHAIVORS ###################### -->
+	<Behaviors>
+		<!-- ########################################## -->
+		<Include ModelBehaviorFile="Asobo\Common.xml"/>
+		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
+		<Include ModelBehaviorFile="Asobo\Interior.xml"/>
+        	<Include ModelBehaviorFile="Asobo\Generic\FX.xml"/>
+		<!-- ########################################## -->
+
+<!-- ########################################## -->		
+<!-- CONTROL SURFACES PROPELLER ANIMATION ##### -->
+<!-- ALL PROP PARTS USE prop_anim NLA Name##### -->
+<!-- ########################################## -->
+		<Component ID="HANDLING">
+			<UseTemplate Name="ASOBO_HANDLING_Elevator_Template">
+				<ANIM_NAME>HANDLING_Elevator</ANIM_NAME>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Aileron_Template">
+				<ANIM_NAME_LEFT>HANDLING_Aileron_L</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>HANDLING_Aileron_R</ANIM_NAME_RIGHT>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Rudder_Template">
+				<ANIM_NAME>HANDLING_Rudder</ANIM_NAME>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Flaps_Template">
+				<ANIM_NAME_LEFT>Flaps_L_PCT</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>Flaps_R_PCT</ANIM_NAME_RIGHT>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Spoilers_Template">
+				<ANIM_NAME_LEFT>Spoiler_L_PCT</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>Spoiler_R_PCT</ANIM_NAME_RIGHT>
+			</UseTemplate>
+		</Component>
+		<Component ID="ENGINE">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+				<ID>1</ID>
+				<ANIM_NODE_ID>N1_1_anim</ANIM_NODE_ID>
+				<ANIM_NAME>N1_1_anim</ANIM_NAME>
+				<STILL_NODE_ID>PROP_STILL_LEFT</STILL_NODE_ID>
+				<SLOW_NODE_ID>PROP_SLOW_LEFT</SLOW_NODE_ID>
+				<BLURRED_NODE_ID>PROP_BLURRED_LEFT</BLURRED_NODE_ID>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+				<ID>2</ID>
+				<ANIM_NODE_ID>N1_2_anim</ANIM_NODE_ID>
+				<ANIM_NAME>N1_2_anim</ANIM_NAME>
+				<STILL_NODE_ID>PROP_STILL_RIGHT</STILL_NODE_ID>
+				<SLOW_NODE_ID>PROP_SLOW_RIGHT</SLOW_NODE_ID>
+				<BLURRED_NODE_ID>PROP_BLURRED_RIGHT</BLURRED_NODE_ID>
+			</UseTemplate>
+		</Component>
+<!-- ########################################## -->		
+<!-- LANDING GEAR TIRE ANIMATIONS EFFECTS ##### -->
+<!-- ########################################## -->			
+        	<Component ID="GEARS">
+            		<UseTemplate Name="ASOBO_GEAR_Left_Template">
+                		<ANIM_NAME>Gear_Left</ANIM_NAME>
+           		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Right_Template">
+                		<ANIM_NAME>Gear_Right</ANIM_NAME>
+           		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Center_Template">
+                		<ANIM_NAME>GEAR_Center</ANIM_NAME>
+            		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Back_Template">
+                		<ANIM_NAME>Gear_Back</ANIM_NAME>
+            		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Left_Tire_Template">
+                		<ANIM_NAME>Tire_L_Anim</ANIM_NAME>
+                		<NODE_ID_STILL>TIRE_LEFT_STILL</NODE_ID_STILL>
+                		<NODE_ID_BLURRED>TIRE_LEFT_BLUR</NODE_ID_BLURRED>
+            		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Right_Tire_Template">
+                		<ANIM_NAME>Tire_R_Anim</ANIM_NAME>
+                		<NODE_ID_STILL>TIRE_RIGHT_STILL</NODE_ID_STILL>
+                		<NODE_ID_BLURRED>TIRE_RIGHT_BLUR</NODE_ID_BLURRED>
+            		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Back_Tire_Template">
+                		<ANIM_NAME>Tire_B_Anim</ANIM_NAME>
+                		<NODE_ID_STILL>TIRE_BACK_STILL</NODE_ID_STILL>
+                		<NODE_ID_BLURRED>TIRE_BACK_BLUR</NODE_ID_BLURRED>
+            		</UseTemplate>
+            		<UseTemplate Name="ASOBO_GEAR_Center_Tire_Template">
+                		<ANIM_NAME>Tire_C_Anim</ANIM_NAME>
+                		<NODE_ID_STILL>TIRE_CENTER_STILL</NODE_ID_STILL>
+                		<NODE_ID_BLURRED>TIRE_CENTER_BLUR</NODE_ID_BLURRED>
+            		</UseTemplate>
+					<UseTemplate Name="ASOBO_GEAR_Steering_Template">
+                <ANIM_NAME>GEAR_STEER</ANIM_NAME>
+            </UseTemplate>
+        	</Component>
+		<Component ID="ENGINE">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+				<ID>1</ID>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+				<ID>2</ID>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
+				<ID>1</ID>
+				<ANIM_NAME>l_reverse_key</ANIM_NAME>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
+				<ID>2</ID>
+				<ANIM_NAME>r_reverse_key</ANIM_NAME>
+			</UseTemplate>
+		</Component>
+		<Component ID="FX_CONTRAIL_QUAD">
+			<OverrideTemplateParameters>
+				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt; (A:GENERAL ENG COMBUSTION:1, Bool) 0 &gt; and</FX_CODE>
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<FX_NAME>FX_CONTRAILS</FX_NAME>
+			</OverrideTemplateParameters>
+			<Component ID="FX_CONTRAIL_QUAD_LEFT_IN" Node="FX_EXHAUST_LEFT">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_QUAD_LEFT_OUT" Node="FX_EXHAUST_RIGHT">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+		</Component>
+		<Component ID="FX_CONTRAIL_RIBBON">
+			<OverrideTemplateParameters>
+				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt; (A:GENERAL ENG COMBUSTION:1, Bool) 0 &gt; and</FX_CODE>
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<FX_NAME>FX_CONTRAILS_RIBBON</FX_NAME>
+			</OverrideTemplateParameters>
+			<Component ID="FX_CONTRAIL_RIBBON_LEFT_OUT" Node="FX_EXHAUST_LEFT">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_RIBBON_RIGHT_OUT" Node="FX_EXHAUST_RIGHT">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+		</Component>
+		<Component ID="LANDING_FX">
+			<UseTemplate Name="ASOBO_LANDING_MD_FX"/>
+		</Component>
+	<Component ID="Main_Door_HANDLE_CLICK" Node="Main_Door">
+            <UseTemplate Name="ASOBO_GT_Switch_Code">
+                <ANIM_NAME>Main_Door</ANIM_NAME>
+                <ANIM_LENGTH>100</ANIM_LENGTH>
+                <ANIM_LAG>15</ANIM_LAG >
+                <PART_ID>CARGO_HANDLE</PART_ID>
+                <ANIM_CODE>(L:Main_Door, bool) 1 == if{ 100 } els{ 0 }</ANIM_CODE>
+                <ANIMTIP_0>Open Pilot Door</ANIMTIP_0>
+                <ANIMTIP_1>Close Pilot Door</ANIMTIP_1>
+                <LEFT_SINGLE_CODE>(L:Main_Door, bool) 1 == if{ 0 (&gt;L:Main_Door, bool) } els{ 1 (&gt;L:Main_Door, bool)</LEFT_SINGLE_CODE>
+            </UseTemplate>
+        </Component>
+	</Behaviors>
+</ModelInfo>

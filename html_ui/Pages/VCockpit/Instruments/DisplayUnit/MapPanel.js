@@ -5,6 +5,7 @@ class MapPanel {
         this.map = display.querySelector('#MapInstrument');
         if (this.map.init) {
             this.map.init(this);
+            this.map.flightPlanManager.registerListener();
             // this.map.setContinuousUpdate(true);
             // this.map.setSmoothRotation(true);
         } else {

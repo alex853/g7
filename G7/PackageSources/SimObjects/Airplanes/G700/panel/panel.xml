@@ -1,0 +1,2855 @@
+<PlaneHTMLConfig>
+ <SoundSourceNode>AS1000_MFD</SoundSourceNode>
+	<AvionicsType>G3000</AvionicsType>
+	
+  <Autothrottle>True</Autothrottle>
+
+
+
+  <Sensors adc-count="2" ahrs-count="2">
+    <Adc index="1" airspeed-indicator="1">
+      <Electric>
+        <Simvar name="CIRCUIT ON:33" unit="Boolean"/>
+      </Electric>
+    </Adc>
+    <Adc index="2" airspeed-indicator="1">
+      <Electric>
+        <Simvar name="CIRCUIT ON:33" unit="Boolean"/>
+      </Electric>
+    </Adc>
+
+    <Ahrs index="1" attitude-indicator="1" direction-indicator="1">
+      <Electric>
+        <Simvar name="CIRCUIT ON:33" unit="Boolean"/>
+      </Electric>
+    </Ahrs>
+    <Ahrs index="2" attitude-indicator="1" direction-indicator="1">
+      <Electric>
+        <Simvar name="CIRCUIT ON:33" unit="Boolean"/>
+      </Electric>
+    </Ahrs>
+
+    <MarkerBeacon>
+      <Electric>
+        <Simvar name="CIRCUIT ON:26" unit="Boolean"/>
+      </Electric>
+    </MarkerBeacon>
+
+    <RadarAltimeter>
+      <Electric>
+        <Simvar name="CIRCUIT ON:49" unit="Boolean"/>
+      </Electric>
+    </RadarAltimeter>
+
+    <WeatherRadar horiz-scan-width="120" colors="extended">
+      <Electric>
+        <Simvar name="CIRCUIT ON:48" unit="Boolean"/>
+      </Electric>
+    </WeatherRadar>
+  </Sensors>
+  
+    <IauDefs count="2">
+    <Iau index="1" default-adc="1" default-ahrs="1" altimeter-source="1" baro-preselect="true">
+      <Gps>
+        <Electric>
+          <Simvar name="CIRCUIT ON:27" unit="Boolean"/>
+        </Electric>
+      </Gps>
+
+      <FmsPosition>
+        <Electric>
+          <Simvar name="CIRCUIT ON:27" unit="Boolean"/>
+        </Electric>
+      </FmsPosition>
+    </Iau>
+
+    <Iau index="2" default-adc="2" default-ahrs="2" altimeter-source="2" baro-preselect="true">
+      <Gps>
+        <Electric>
+          <Simvar name="CIRCUIT ON:29" unit="Boolean"/>
+        </Electric>
+      </Gps>
+
+      <FmsPosition>
+        <Electric>
+          <Simvar name="CIRCUIT ON:29" unit="Boolean"/>
+        </Electric>
+      </FmsPosition>
+    </Iau>
+  </IauDefs>
+
+  <Radios dme-count="2" adf-count="2" />
+  
+    <VSpeeds>
+    <Group type="Takeoff" max-ias="215">
+      <VSpeed name="1">120</VSpeed>
+      <VSpeed name="r">126</VSpeed>
+      <VSpeed name="2">131</VSpeed>
+      <VSpeed name="fto">171</VSpeed>
+    </Group>
+    <Group type="Landing">
+      <VSpeed name="app">115</VSpeed>
+      <VSpeed name="ref">121</VSpeed>
+    </Group>
+	<Group type="Configuration" max-altitude="18000">
+	  <VSpeed name="vle">250</VSpeed>
+      <VSpeed name="f6">210</VSpeed>
+      <VSpeed name="gr">200</VSpeed>
+      <VSpeed name="f16">200</VSpeed>
+      <VSpeed name="f30">180</VSpeed>
+    </Group>
+  </VSpeeds>
+  
+    <Traffic type="TCAS-II" ads-b="true">
+    <Electric>
+      <Simvar name="CIRCUIT ON:31" unit="Boolean"/>
+    </Electric>
+  </Traffic>
+  
+
+
+  <Horizon director-cue="both" advanced-svt="true" />
+  
+  
+  <AirspeedIndicator>
+    <Scale min="30" max="999" window="80" major-tick-interval="10" minor-tick-factor="1" />
+    <ColorRanges>
+      <ColorRange width="Full" color="Yellow">
+        <Minimum>
+          <Speed type="Aoa">0.93</Speed>
+        </Minimum>
+        <Maximum>
+          <Speed type="Aoa">0.95</Speed>
+        </Maximum>
+      </ColorRange>
+      <ColorRange width="Full" color="Red">
+        <Minimum>
+          <Speed type="Ias">40</Speed>
+        </Minimum>
+        <Maximum>
+          <Speed type="Aoa">0.93</Speed>
+        </Maximum>
+      </ColorRange>
+      <ColorRange width="Full" color="BarberPole">
+        <Minimum>
+          <Min>
+            <Speed type="Ias">
+              <LookupTable dimensions="1">[[290, 0], [450, 10000]]</LookupTable>
+            </Speed>
+            <Speed type="Mach">0.93</Speed>
+          </Min>
+        </Minimum>
+        <Maximum>
+          <Speed type="Ias">999</Speed>
+        </Maximum>
+      </ColorRange>
+    </ColorRanges>
+    <BottomDisplay mode="Mach" mach-threshold="0.4" />
+    <VSpeedBugs>
+		<Bug name="vle" label="VLE" />
+	  <Bug name="gr" label="     GR" />
+      <Bug name="f6" label="F6" />
+      <Bug name="f16" label="16" />
+      <Bug name="f30" label="30" />
+      <Bug name="2" label="    2" />
+      <Bug name="r" label="  R" />
+      <Bug name="1" label="1" />
+      <Bug name="fto" label="FTO" />
+      <Bug name="app" label="AP" />
+      <Bug name="ref" label="RF" />
+    </VSpeedBugs>
+    <TrendVector lookahead="10" />
+    <SpeedAlerts>
+      <Overspeed>
+        <Min>
+          <Speed type="Ias">
+            <LookupTable dimensions="1">[[290, 0], [450, 10000]]</LookupTable>
+          </Speed>
+          <Speed type="Mach">0.93</Speed>
+        </Min>
+      </Overspeed>
+      <Underspeed>
+        <Speed type="Aoa">0.9</Speed>
+      </Underspeed>
+    </SpeedAlerts>
+  </AirspeedIndicator>
+  
+
+
+
+	<Instrument>
+		<Name>AS1000_AttitudeSpeedBackup</Name>
+		<Electric>
+			<Simvar name="CIRCUIT ON:52" unit="Boolean"/>
+		</Electric>
+		<AltimeterIndex>0</AltimeterIndex>
+	</Instrument>
+	
+	<Instrument>
+		<Name>HourMeter</Name>
+		<Electric>
+			<Simvar name="CIRCUIT ON:54" unit="Boolean"/>
+		</Electric>
+	</Instrument>
+	
+  <Instrument>
+    <Name>WTG3000_PFD_1</Name>
+
+    <PfdLayout use-banners="false" softkeys="false" />
+
+    <Iau>1</Iau>
+
+    <Electric>
+      <Simvar name="CIRCUIT ON:39" unit="Boolean"/>
+    </Electric>
+
+    <Plugin>
+      coui://SimObjects/Airplanes/G700/panel/Instruments/G3000/Plugins/LongitudePfdPlugins.js
+    </Plugin>
+  </Instrument>
+
+  <Instrument>
+    <Name>WTG3000_PFD_2</Name>
+
+    <PfdLayout use-banners="false" softkeys="false" />
+
+    <Iau>2</Iau>
+
+    <Electric>
+      <Simvar name="CIRCUIT ON:40" unit="Boolean"/>
+    </Electric>
+
+    <Plugin>
+      coui://SimObjects/Airplanes/G700/panel/Instruments/G3000/Plugins/LongitudePfdPlugins.js
+    </Plugin>
+  </Instrument>
+  <Instrument>
+    <Name>WTG3000_MFD</Name>
+	
+	<!-- <Iau>1</Iau> -->
+
+	<Plugin>
+      coui://SimObjects/Airplanes/G700/panel/Instruments/G3000/Plugins/G650MfdPlugin.js
+    </Plugin>
+  </Instrument>
+	
+	  <Instrument>
+    <Name>WTG3000_GTC_1</Name>
+
+    <GtcConfig orientation="vertical" control-setup="pfd" pfd-control-index="1" pane-control-side="left" />
+
+  </Instrument>
+
+ <Instrument>
+    <!-- Pilot MFD GTC -->
+    <Name>WTG3000_GTC_2</Name>
+
+    <GtcConfig orientation="vertical" control-setup="mfd" pane-control-side="left" />
+
+    <Iau>1</Iau>
+
+    <Electric>
+      <Simvar name="CIRCUIT ON:50" unit="Boolean"/>
+    </Electric>
+    <Plugin>
+      coui://SimObjects/Airplanes/G700/panel/Instruments/G3000/Plugins/LongitudeGtcPlugins.js
+    </Plugin>
+  </Instrument>
+	
+	<!-- Engine Display -->
+	
+	<EngineDisplay>
+
+
+		<Function Name="ThrustReverser1_State">
+			<StateMachine>
+				<State id="NoReverse" value="0">
+					<Transition to="Reverse">
+						<Or>
+							<Equal>
+								<Simvar name="GENERAL ENG REVERSE THRUST ENGAGED:1" unit="bool"/>
+								<Constant>1</Constant>
+							</Equal>
+							<Lower>
+								<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+								<Constant>0</Constant>
+							</Lower>
+						</Or>
+					</Transition>
+				</State>
+				<State id="Reverse" value="1">
+					<Transition to="FullReverse">
+						<LowerEqual>
+							<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+							<Constant>-25</Constant>
+						</LowerEqual>
+					</Transition>
+					<Transition to="NoReverse">
+						<Or>
+							<Equal>
+								<Simvar name="GENERAL ENG REVERSE THRUST ENGAGED:1" unit="bool"/>
+								<Constant>0</Constant>
+							</Equal>
+							<Greater>
+								<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+								<Constant>0</Constant>
+							</Greater>
+						</Or>
+					</Transition>
+				</State>
+				<State id="FullReverse" value="2">
+					<Transition to="Reverse">
+						<Greater>
+							<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+							<Constant>-25</Constant>
+						</Greater>
+					</Transition>
+				</State>
+			</StateMachine>
+		</Function>
+		
+		<Function Name="ThrustReverser2_State">
+			<StateMachine>
+				<State id="NoReverse" value="0">
+					<Transition to="Reverse">
+						<Or>
+							<Equal>
+								<Simvar name="GENERAL ENG REVERSE THRUST ENGAGED:2" unit="bool"/>
+								<Constant>1</Constant>
+							</Equal>
+							<Lower>
+								<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:2" unit="percent"/>
+								<Constant>0</Constant>
+							</Lower>
+						</Or>
+					</Transition>
+				</State>
+				<State id="Reverse" value="1">
+					<Transition to="FullReverse">
+						<LowerEqual>
+							<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:2" unit="percent"/>
+							<Constant>-25</Constant>
+						</LowerEqual>
+					</Transition>
+					<Transition to="NoReverse">
+						<Or>
+							<Equal>
+								<Simvar name="GENERAL ENG REVERSE THRUST ENGAGED:2" unit="bool"/>
+								<Constant>0</Constant>
+							</Equal>
+							<Greater>
+								<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:2" unit="percent"/>
+								<Constant>0</Constant>
+							</Greater>
+						</Or>
+					</Transition>
+				</State>
+				<State id="FullReverse" value="2">
+					<Transition to="Reverse">
+						<Greater>
+							<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:2" unit="percent"/>
+							<Constant>-25</Constant>
+						</Greater>
+					</Transition>
+				</State>
+			</StateMachine>
+		</Function>
+		
+		<ColumnsGroup id="ThrustReverser"> <!-- Thrust Reverser -->
+			<Column>
+				<Text>
+					<Center fontsize="12.5">
+						<Content>
+							<If>
+								<Condition>
+									<Inequal>
+										<Function Name="ThrustReverser1_State"/>
+										<Constant>0</Constant>
+									</Inequal>
+								</Condition>
+								<Then>
+									<If>
+										<Condition>
+											<Equal>
+												<Function Name="ThrustReverser1_State"/>
+												<Constant>1</Constant>
+											</Equal>
+										</Condition>
+										<Then>T.R UNLOCK</Then>
+										<Else>T.R DEPLOY</Else>
+									</If>
+								</Then>
+								<Else/>
+							</If>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Equal>
+										<Function Name="ThrustReverser1_State"/>
+										<Constant>2</Constant>
+									</Equal>
+								</Condition>
+								<Then>green</Then>
+								<Else>white</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Center fontsize="12.5">
+						<Content>
+							<If>
+								<Condition>
+									<Inequal>
+										<Function Name="ThrustReverser2_State"/>
+										<Constant>0</Constant>
+									</Inequal>
+								</Condition>
+								<Then>
+									<If>
+										<Condition>
+											<Equal>
+												<Function Name="ThrustReverser2_State"/>
+												<Constant>1</Constant>
+											</Equal>
+										</Condition>
+										<Then>T.R UNLOCK</Then>
+										<Else>T.R DEPLOY</Else>
+									</If>
+								</Then>
+								<Else/>
+							</If>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Equal>
+										<Function Name="ThrustReverser2_State"/>
+										<Constant>2</Constant>
+									</Equal>
+								</Condition>
+								<Then>green</Then>
+								<Else>white</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+
+		<ColumnsGroup id="N1"> <!-- N1 -->
+			<Column>
+				<Gauge>
+					<Type>Circular</Type>
+					<ID>N1_1</ID>
+					<Unit></Unit>
+					<Minimum>0</Minimum>
+					<Maximum>100</Maximum>
+					<Style>
+						<BeginAngle>-45</BeginAngle>
+						<EndAngle>225</EndAngle>
+						<ValuePos>End</ValuePos>
+						<CursorType>Triangle</CursorType>
+					</Style>
+					<Value>
+						<Simvar name="TURB ENG N1:1" unit="percent"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>96.79</End>
+					</ColorZone>
+					<ColorLine>
+						<Color>red</Color>
+						<Position>96.79</Position>
+					</ColorLine>
+					<ColorZone>
+						<Color>red</Color>
+						<Begin>96.79</Begin>
+						<End>100</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+			</Column>
+			<Column width="20">
+				<Text>
+					<Center fontsize="30">N1 %</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Gauge>
+					<Type>Circular</Type>
+					<ID>N1_2</ID>
+					<Unit></Unit>
+					<Minimum>0</Minimum>
+					<Maximum>100</Maximum>
+					<Style>
+						<BeginAngle>-45</BeginAngle>
+						<EndAngle>225</EndAngle>
+						<ValuePos>End</ValuePos>
+						<CursorType>Triangle</CursorType>
+					</Style>
+					<Value>
+						<Simvar name="TURB ENG N1:2" unit="percent"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>96.79</End>
+					</ColorZone>
+					<ColorLine>
+						<Color>red</Color>
+						<Position>96.79</Position>
+					</ColorLine>
+					<ColorZone>
+						<Color>red</Color>
+						<Begin>96.79</Begin>
+						<End>100</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+			</Column>
+		</ColumnsGroup>
+		
+		<Function Name="ITTRed1">
+			<If>
+				<Condition>
+					<StateMachine>
+						<State id="Start" value="1">
+							<Transition to="Normal">
+								<Greater>
+									<Simvar name="TURB ENG N1:1" unit="percent"/>
+									<Constant>52</Constant>
+								</Greater>
+							</Transition>
+						</State>
+						<State id="Normal" value="0">
+							<Transition to="Start">
+								<Lower>
+									<Simvar name="TURB ENG N1:1" unit="percent"/>
+									<Constant>10</Constant>
+								</Lower>
+							</Transition>
+						</State>
+					</StateMachine>
+				</Condition>
+				<Then>
+					<If>
+						<Condition>
+							<Simvar name="SIM ON GROUND" unit="Bool"/>
+						</Condition>
+						<Then>
+							<If>
+								<Condition>
+									<LowerEqual>
+										<Simvar name="TURB ENG N2:1" unit="percent"/>
+										<Constant>40</Constant>
+									</LowerEqual>
+								</Condition>
+								<Then>650</Then>
+								<Else>950</Else>
+							</If>
+						</Then>
+						<Else>
+							<Condition>
+								<LowerEqual>
+									<Simvar name="TURB ENG N2:1" unit="percent"/>
+									<Constant>40</Constant>
+								</LowerEqual>
+							</Condition>
+							<Then>800</Then>
+							<Else>950</Else>
+						</Else>
+					</If>
+				</Then>
+				<Else>
+					<Constant>950</Constant>
+				</Else>
+			</If>
+		</Function>
+		
+		<Function Name="ITTRed2">
+			<If>
+				<Condition>
+					<StateMachine>
+						<State id="Start" value="1">
+							<Transition to="Normal">
+								<Greater>
+									<Simvar name="TURB ENG N1:2" unit="percent"/>
+									<Constant>52</Constant>
+								</Greater>
+							</Transition>
+						</State>
+						<State id="Normal" value="0">
+							<Transition to="Start">
+								<Lower>
+									<Simvar name="TURB ENG N1:2" unit="percent"/>
+									<Constant>10</Constant>
+								</Lower>
+							</Transition>
+						</State>
+					</StateMachine>
+				</Condition>
+				<Then>
+					<If>
+						<Condition>
+							<Simvar name="SIM ON GROUND" unit="Bool"/>
+						</Condition>
+						<Then>
+							<If>
+								<Condition>
+									<LowerEqual>
+										<Simvar name="TURB ENG N2:2" unit="percent"/>
+										<Constant>40</Constant>
+									</LowerEqual>
+								</Condition>
+								<Then>650</Then>
+								<Else>950</Else>
+							</If>
+						</Then>
+						<Else>
+							<Condition>
+								<LowerEqual>
+									<Simvar name="TURB ENG N2:2" unit="percent"/>
+									<Constant>40</Constant>
+								</LowerEqual>
+							</Condition>
+							<Then>800</Then>
+							<Else>950</Else>
+						</Else>
+					</If>
+				</Then>
+				<Else>
+					<Constant>950</Constant>
+				</Else>
+			</If>
+		</Function>
+		
+		<ColumnsGroup id="ITT"> <!-- ITT -->
+			<Column>
+				<Gauge>
+					<Type>Circular</Type>
+					<ID>ITT_1</ID>
+					<Unit></Unit>
+					<Minimum>0</Minimum>
+					<Maximum>1200</Maximum>
+					<Style>
+						<BeginAngle>-5</BeginAngle>
+						<EndAngle>225</EndAngle>
+						<ValuePos>End</ValuePos>
+						<CursorType>Triangle</CursorType>
+					</Style>
+					<Value>
+						<Simvar name="TURB ENG ITT:1" unit="celsius"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>96.79</End>
+					</ColorZone>
+					<ColorLine>
+						<Color>red</Color>
+						<Position>
+							<Function Name="ITTRed1"/>
+						</Position>
+					</ColorLine>
+					<ColorZone>
+						<Color>red</Color>
+						<Begin>
+							<Function Name="ITTRed1"/>
+						</Begin>
+						<End>1200</End>
+					</ColorZone>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>
+							<Function Name="ITTRed1"/>
+						</End>
+						<End>1200</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+			</Column>
+			<Column width="20">
+				<Text>
+					<Center fontsize="30">ITT°C</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Gauge>
+					<Type>Circular</Type>
+					<ID>ITT_2</ID>
+					<Unit></Unit>
+					<Minimum>0</Minimum>
+					<Maximum>1200</Maximum>
+					<Style>
+						<BeginAngle>-5</BeginAngle>
+						<EndAngle>225</EndAngle>
+						<ValuePos>End</ValuePos>
+						<CursorType>Triangle</CursorType>
+					</Style>
+					<Value>
+						<Simvar name="TURB ENG ITT:2" unit="celsius"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>96.79</End>
+					</ColorZone>
+					<ColorLine>
+						<Color>red</Color>
+						<Position>
+							<Function Name="ITTRed2"/>
+						</Position>
+					</ColorLine>
+					<ColorZone>
+						<Color>red</Color>
+						<Begin>
+							<Function Name="ITTRed2"/>
+						</Begin>
+						<End>1200</End>
+					</ColorZone>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>0</Begin>
+						<End>
+							<Function Name="ITTRed2"/>
+						</End>
+						<End>1200</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+			</Column>
+		</ColumnsGroup>
+		
+		<ColumnsGroup id="EngineTextInfos"> <!-- TextInfos -->
+			<Column>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="1">
+								<Simvar name="TURB ENG N2:1" unit="percent"/>
+							</ToFixed>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Lower>
+										<Simvar name="TURB ENG N2:1" unit="percent"/>
+										<Constant>98.22</Constant>
+									</Lower>
+								</Condition>
+								<Then>
+									<Constant>green</Constant>
+								</Then>
+								<Else>
+									<If>
+										<Condition>
+											<Lower>
+												<Simvar name="TURB ENG N2:1" unit="percent"/>
+												<Constant>99.9</Constant>
+											</Lower>
+										</Condition>
+										<Then>
+											<Constant>yellow</Constant>
+										</Then>
+										<Else>
+											<Constant>red</Constant>
+										</Else>
+									</If>
+								</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="RECIP ENG FUEL FLOW:1" unit="Pounds per hour"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ENG OIL PRESSURE:1" unit="psi"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+							</ToFixed>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Lower>
+										<Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+										<Constant>-40</Constant>
+									</Lower>
+								</Condition>
+								<Then>
+									<Constant>red</Constant>
+								</Then>
+								<Else>
+									<If>
+										<Condition>
+											<Lower>
+												<Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+												<Constant>15</Constant>
+											</Lower>
+										</Condition>
+										<Then>
+											<Constant>yellow</Constant>
+										</Then>
+										<Else>
+											<If>
+												<Condition>
+													<Lower>
+														<Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+														<Constant>160</Constant>
+													</Lower>
+												</Condition>
+												<Then>
+													<Constant>green</Constant>
+												</Then>
+												<Else>
+													<Constant>yellow</Constant>
+												</Else>
+											</If>
+										</Else>
+									</If>
+								</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Center fontsize="20">N2%</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">FUEL PPM</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">OIL PSI</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">OIL °C</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="1">
+								<Simvar name="TURB ENG N2:2" unit="percent"/>
+							</ToFixed>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Lower>
+										<Simvar name="TURB ENG N2:2" unit="percent"/>
+										<Constant>98.22</Constant>
+									</Lower>
+								</Condition>
+								<Then>
+									<Constant>green</Constant>
+								</Then>
+								<Else>
+									<If>
+										<Condition>
+											<Lower>
+												<Simvar name="TURB ENG N2:2" unit="percent"/>
+												<Constant>99.9</Constant>
+											</Lower>
+										</Condition>
+										<Then>
+											<Constant>yellow</Constant>
+										</Then>
+										<Else>
+											<Constant>red</Constant>
+										</Else>
+									</If>
+								</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="RECIP ENG FUEL FLOW:2" unit="Pounds per hour"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ENG OIL PRESSURE:2" unit="psi"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+							</ToFixed>
+						</Content>
+						<Color>
+							<If>
+								<Condition>
+									<Lower>
+										<Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+										<Constant>-40</Constant>
+									</Lower>
+								</Condition>
+								<Then>
+									<Constant>red</Constant>
+								</Then>
+								<Else>
+									<If>
+										<Condition>
+											<Lower>
+												<Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+												<Constant>15</Constant>
+											</Lower>
+										</Condition>
+										<Then>
+											<Constant>yellow</Constant>
+										</Then>
+										<Else>
+											<If>
+												<Condition>
+													<Lower>
+														<Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+														<Constant>160</Constant>
+													</Lower>
+												</Condition>
+												<Then>
+													<Constant>green</Constant>
+												</Then>
+												<Else>
+													<Constant>yellow</Constant>
+												</Else>
+											</If>
+										</Else>
+									</If>
+								</Else>
+							</If>
+						</Color>
+					</Center>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+		<Gauge>
+			<Type>LongitudeFuel</Type>
+			<Minimum>0</Minimum>
+			<Maximum>9999</Maximum>
+			<Value>
+				<Simvar name="FUEL LEFT QUANTITY" unit="gallon"/>
+			</Value>
+			<Value2>
+				<Simvar name="FUEL RIGHT QUANTITY" unit="gallon"/>
+			</Value2>
+		</Gauge>
+		
+		<ColumnsGroup>
+			<Column>
+				<Text>
+					<Center fontsize="20">0</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Center fontsize="20">FUEL °C</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Center fontsize="20">0</Center>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+		<Gauge>
+			<Type>FlapsSpeedbrakes</Type>
+			<Minimum>0</Minimum>
+			<Maximum>30</Maximum>
+			<Value>
+				<Simvar name="TRAILING EDGE FLAPS LEFT ANGLE" unit="degrees"/>
+			</Value>
+			<Value2>
+				<Multiply>
+					<Simvar name="SPOILERS LEFT POSITION" unit="percent"/>
+					<Constant>-0.9</Constant>
+				</Multiply>
+			</Value2>
+		</Gauge>
+		
+		<ColumnsGroup>
+			<Column width="30">
+				<Gauge>
+					<Type>Vertical</Type>
+					<Style>
+						<ValuePos>None</ValuePos>
+					</Style>
+					<ID>Turbo_ElevTrim</ID>
+					<Title>ELEV</Title>
+					<Unit></Unit>
+					<Minimum>-100</Minimum>
+					<Maximum>100</Maximum>
+					<Value>
+						<Substract>
+							<Constant>0</Constant>
+							<Simvar name="ELEVATOR TRIM PCT" unit="percent"/>
+						</Substract>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>
+							<Add>
+								<Substract>
+									<Constant>0</Constant>
+									<Gamevar name="AIRCRAFT ELEVATOR TRIM NEUTRAL" unit="percent"/>
+								</Substract>
+							<Constant>-15</Constant>
+							</Add>
+						</Begin>
+						<End>									
+							<Add>
+								<Substract>
+									<Constant>0</Constant>
+									<Gamevar name="AIRCRAFT ELEVATOR TRIM NEUTRAL" unit="percent"/>
+								</Substract>
+								<Constant>15</Constant>
+							</Add>
+						</End>
+					</ColorZone>
+					<BeginText>UP</BeginText>
+					<EndText>DN</EndText>
+				</Gauge>
+			</Column>
+			
+			<Column>
+				<Gauge>
+					<Type>Horizontal</Type>							
+					<Style>
+						<Width>50</Width>
+						<ReverseY>True</ReverseY>
+					</Style>
+					<ID>Turbo_AilTrim</ID>
+					<Title>AIL</Title>
+					<Unit></Unit>
+					<Minimum>-30</Minimum>
+					<Maximum>30</Maximum>
+					<Value>
+						<Simvar name="AILERON TRIM PCT" unit="percent"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>-10</Begin>
+						<End>10</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+				
+				<Gauge>
+					<Type>Horizontal</Type>
+					<Style>
+						<Width>50</Width>
+						<ReverseY>True</ReverseY>
+					</Style>
+					<ID>Turbo_RudderTrim</ID>
+					<Title>RUD</Title>
+					<Unit></Unit>
+					<Minimum>-50</Minimum>
+					<Maximum>50</Maximum>
+					<Value>
+						<Simvar name="RUDDER TRIM PCT" unit="percent"/>
+					</Value>
+					<ColorZone>
+						<Color>green</Color>
+						<Begin>-20</Begin>
+						<End>20</End>
+					</ColorZone>
+					<BeginText></BeginText>
+					<EndText></EndText>
+				</Gauge>
+			</Column>
+			<Column>
+          <Text>
+					<Center fontsize="20"></Center>
+				</Text>
+				<Text>
+					<Center fontsize="20">Gear</Center>
+				</Text>
+				<Text>
+					<Center fontsize="30">
+						<If>
+							<Condition>
+								<Equal>
+									<Simvar name="GEAR POSITION" unit="number"/>
+									<Constant>0</Constant>
+								</Equal>
+							</Condition>
+							<Then>UP</Then>
+							<Else>
+								<If>
+									<Condition>
+										<Equal>
+											<Simvar name="GEAR POSITION" unit="number"/>
+											<Constant>1</Constant>
+										</Equal>
+									</Condition>
+									<Then>DOWN</Then>
+									<Else></Else>
+								</If>
+							</Else>
+						</If>
+					</Center>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+		<ColumnsGroup>
+			<Column>
+				<Text>
+					<Left fontsize="15">CABIN ALT</Left>
+				</Text>
+				<Text>
+					<Center fontsize="15">
+						<Add>
+							<ToFixed precision="0">
+								<Simvar name="PRESSURIZATION CABIN ALTITUDE" unit="feet"/>
+							</ToFixed>
+							<Constant>FT</Constant>
+						</Add>
+					</Center>
+				</Text>
+				<Text>
+					<Center fontsize="15">
+						<Add>
+							<ToFixed precision="0">
+								<Simvar name="PRESSURIZATION CABIN ALTITUDE RATE" unit="feet per minute"/>
+							</ToFixed>
+							<Constant>FPM</Constant>
+						</Add>
+					</Center>
+				</Text>
+			</Column>
+			<Column>
+				<Text>
+					<Right fontsize="15">LDG ELEV</Right>
+				</Text>
+			</Column>
+			<Column width="40">
+				<Text>
+					<Left fontsize="12.5">RAT °C</Left>
+					<Right fontsize="12.5">
+						<ToFixed precision="0">
+							<Simvar name="TOTAL AIR TEMPERATURE" unit="celsius"/>
+						</ToFixed>
+					</Right>
+				</Text>
+				<Text>
+					<Left fontsize="12.5">OAT °C</Left>
+					<Right fontsize="12.5">
+						<ToFixed precision="0">
+							<Simvar name="AMBIENT TEMPERATURE" unit="celsius"/>
+						</ToFixed>
+					</Right>
+				</Text>
+				<Text>
+					<Left fontsize="12.5">ISA °C</Left>
+					<Right fontsize="12.5">
+						<ToFixed precision="0">
+							<Substract>
+								<Simvar name="AMBIENT TEMPERATURE" unit="celsius"/>
+								<Substract>
+									<Constant>15</Constant>
+									<Divide>
+										<Simvar name="PRESSURE ALTITUDE" unit="feet"/>
+										<Constant>500</Constant>
+									</Divide>
+								</Substract>
+							</Substract>
+						</ToFixed>
+					</Right>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+		<ColumnsGroup>
+			<Column id="Electric">
+				<Text>
+					<Left>
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ELECTRICAL BATTERY VOLTAGE:1" unit="volts"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Left>
+					<Center>BATT V</Center>
+					<Right>
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ELECTRICAL BATTERY VOLTAGE:2" unit="volts"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Right>
+				</Text>
+				<Text>
+					<Left>
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ELECTRICAL BATTERY LOAD:1" unit="amperes"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Left>
+					<Center>BATT A</Center>
+					<Right>
+						<Content>
+							<ToFixed precision="0">
+								<Simvar name="ELECTRICAL BATTERY LOAD:2" unit="amperes"/>
+							</ToFixed>
+						</Content>
+						<Color>green</Color>
+					</Right>
+				</Text>
+			</Column>
+			<Column width="40">
+				<Text>
+					<Left id="APU_rpm" fontsize="15">
+						<Add>
+							<Constant>APU </Constant>
+							<ToFixed precision="0">
+								<Simvar name="APU PCT RPM" unit="percent"/>
+							</ToFixed>
+							<Constant>%</Constant>
+						</Add>
+					</Left>
+				</Text>
+			</Column>
+		</ColumnsGroup>
+		
+	</EngineDisplay>
+	
+	<!-- Annuntiations -->
+	
+	<Annunciations>
+	
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL VALVE CLOSED</Text>
+		 <Condition>
+		 <Or>
+		  <And>
+		  <Not>
+			  <Simvar name="GENERAL ENG FUEL VALVE:1" unit="Bool"/>
+      </Not>
+      <Or>
+      <GreaterEqual>
+      <Simvar name="TURB ENG N2:1" unit="Percent"/>
+      <Constant>25</Constant>
+      </GreaterEqual>
+      <GreaterEqual>
+      <Simvar name="TURB ENG N2:2" unit="Percent"/>
+      <Constant>25</Constant>
+      </GreaterEqual>
+      </Or>
+      </And>
+      <And>
+			<Not>
+			  <Simvar name="GENERAL ENG FUEL VALVE:1" unit="Bool"/>
+      </Not>
+      <Lower>
+      <Simvar name="TURB ENG N2:1" unit="Percent"/>
+       <Contstant>25</Contstant> 
+      </Lower>
+      <Lower>
+      <Simvar name="TURB ENG N2:2" unit="Percent"/>
+       <Contstant>25</Contstant> 
+      </Lower>
+       <Or>
+       <Simvar name="GENERAL ENG STARTER ACTIVE:1" unit="Bool"/>
+       <Simvar name="GENERAL ENG STARTER ACTIVE:2" unit="Bool"/>
+       </Or>
+       </And>
+    </Or>
+     </Condition>
+	</Annunciation>
+
+		  <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>SPOILERS DISARMED</Text>
+		  <Condition>
+		  <And>
+			<Not>
+			  <Simvar name="SPOILERS ARMED" unit="Bool"/>
+      </Not>
+      <Greater>
+				<Simvar name="TURB ENG N1:1" unit="percent"/>
+				<Constant>25</Constant>
+			</Greater>
+			</And>
+		  </Condition>
+		 </Annunciation>
+
+		<!--
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>FUEL PRESS</Text>
+		  <Condition>
+			<LowerEqual>
+			  <Simvar name="GENERAL ENG FUEL PRESSURE:1" unit="psi"/>
+			  <Constant>10</Constant>
+			</LowerEqual>
+		  </Condition>
+		</Annunciation>
+		-->
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL PRESS ENG 1 LOW</Text>
+		  <Condition>
+		  <And>
+			<LowerEqual>
+			  <Simvar name="ENG OIL PRESSURE:1" unit="psi"/>
+			  <Constant>30</Constant>
+			</LowerEqual>
+		  <Greater>
+				<Simvar name="TURB ENG N1:1" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+			</And>
+		  </Condition>
+		</Annunciation>
+		
+				<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL PRESS ENG 2 LOW</Text>
+		  <Condition>
+		  <And>
+			<LowerEqual>
+			  <Simvar name="ENG OIL PRESSURE:2" unit="psi"/>
+			  <Constant>30</Constant>
+			</LowerEqual>
+			<Greater>
+				<Simvar name="TURB ENG N1:2" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+			</And>
+		  </Condition>
+		</Annunciation>
+		
+			<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL PRESS ENG 1 LOW</Text>
+		  <Condition>
+		  <And>
+			<LowerEqual>
+			  <Simvar name="ENG OIL QUANTITY:1" unit="pounds"/>
+			  <Constant>1</Constant>
+			</LowerEqual>
+		  <Simvar name="GENERAL ENG STARTER ACTIVE:1" unit="Bool"/>
+			</And>
+		  </Condition>
+		</Annunciation>
+		
+      <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL PRESS ENG 2 LOW</Text>
+		  <Condition>
+		  <And>
+			<LowerEqual>
+			  <Simvar name="ENG OIL QUANTITY:2" unit="pounds"/>
+			  <Constant>1</Constant>
+			</LowerEqual>
+			<Simvar name="GENERAL ENG STARTER ACTIVE:2" unit="Bool"/>
+			</And>
+		  </Condition>
+		</Annunciation>
+		
+		 <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL TEMP ENG 1 LOW</Text>
+		  <Condition>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>-40</Constant>
+			</Lower>
+		  </Condition>
+		</Annunciation>
+		
+    <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL TEMP ENG 2 LOW</Text>
+		  <Condition>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>-40</Constant>
+			</Lower>
+		  </Condition>
+		</Annunciation>
+
+    <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL TEMP ENG 1 LOW</Text>
+		  <Condition>
+		  <And>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>5</Constant>
+			  </Lower>
+			  <GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>-40</Constant>
+			</GreaterEqual>
+			<Greater>
+				<Simvar name="TURB ENG N1:1" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+		  </And>
+		  </Condition>
+		</Annunciation>
+		
+    <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OIL TEMP ENG 2 LOW</Text>
+		  <Condition>
+		  <And>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>5</Constant>
+			</Lower>
+			<GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>-40</Constant>
+			</GreaterEqual>
+		  <Greater>
+				<Simvar name="TURB ENG N1:2" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+		  </And>
+		  </Condition>
+		</Annunciation>
+
+   <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL TEMP ENG 1 LOW</Text>
+		  <Condition>
+		  <And>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>15</Constant>
+			</Lower>
+			<GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>5</Constant>
+			</GreaterEqual>
+			<Greater>
+				<Simvar name="TURB ENG N1:1" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+		  </And>
+		  </Condition>
+		</Annunciation>
+		
+    <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL TEMP ENG 2 LOW</Text>
+		  <Condition>
+		  <And>
+			<Lower>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>15</Constant>
+			</Lower>
+			<GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>5</Constant>
+			</GreaterEqual>
+		  <Greater>
+				<Simvar name="TURB ENG N1:2" unit="percent"/>
+				<Constant>28</Constant>
+			</Greater>
+		  </And>
+		  </Condition>
+		</Annunciation>
+
+    <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL TMP ENG 1 HIGH</Text>
+		  <Condition>
+			<GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:1" unit="celsius"/>
+			  <Constant>160</Constant>
+			</GreaterEqual>
+		  </Condition>
+		</Annunciation>
+		
+    <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL TMP ENG 2 HIGH</Text>
+		  <Condition>
+			<GreaterEqual>
+			  <Simvar name="ENG OIL TEMPERATURE:2" unit="celsius"/>
+			  <Constant>160</Constant>
+			</GreaterEqual>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ITT ENG 1</Text>
+		  <Condition>
+			<Or>
+        <Timer time="300">
+				<Greater>
+				  <Simvar name="TURB ENG ITT:1" unit="celsius"/>
+				  <Constant>950</Constant>
+				</Greater>
+			  </Timer>
+			  <Greater>
+				<Simvar name="TURB ENG ITT:1" unit="celsius"/>
+				<Constant>955</Constant>
+			  </Greater>
+			  </Or>
+		  </Condition>
+		</Annunciation>
+
+	<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ITT ENG 2</Text>
+		  <Condition>
+			<Or>
+        <Timer time="300">
+				<Greater>
+				  <Simvar name="TURB ENG ITT:2" unit="celsius"/>
+				  <Constant>950</Constant>
+				</Greater>
+			  </Timer>
+			  <Greater>
+				<Simvar name="TURB ENG ITT:2" unit="celsius"/>
+				<Constant>955</Constant>
+			  </Greater>
+			  </Or>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>FLAPS ASYM</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ELEC FEATH FAULT</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>BLEED TEMP</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>CABIN ALT</Text>
+		  <Condition>
+			<Greater>
+			  <Simvar name="PRESSURIZATION CABIN ALTITUDE" unit="feet"/>
+			  <Constant>8500</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>EDM</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>CABIN DIFF PRESS</Text>
+		  <Condition>
+			<Greater>
+			  <Simvar name="PRESSURIZATION PRESSURE DIFFERENTIAL" unit="psi"/>
+			  <Constant>10.2</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>DOOR</Text>
+		  <Condition>
+			<Greater>
+			  <Simvar name="EXIT OPEN:0" unit="percent"/>
+			  <Constant>0</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>USP ACTIVE</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>GEAR UNSAFE</Text>
+		  <Condition>
+			<And>
+				<Not>
+					<Simvar name="GEAR HANDLE POSITION" unit="Bool"/>
+				</Not>
+				<Simvar name="SIM ON GROUND" unit="Bool"/>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>PARKING BRAKE</Text>
+		  <Condition>
+		  <And>
+			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
+			<Simvar name="SIM ON GROUND" unit="Bool"/>
+			<Lower>
+						<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+						<Constant>80</Constant>
+      </Lower>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+    <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>PARKING BRAKE</Text>
+		  <Condition>
+		  <And>
+			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
+      <Simvar name="SIM ON GROUND" unit="Bool"/>
+			 <GreaterEqual>
+			<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+				<Constant>80</Constant>
+			 </GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+	    <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>PARKING BRAKE</Text>
+		  <Condition>
+		  <And>
+			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
+			 <Not>
+				<Simvar name="SIM ON GROUND" unit="Bool"/>
+			</Not>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>OXYGEN</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ABORT APR</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>AURAL WRN FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>AURAL WARN 1 CHNL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ENG 1 FIRE</Text>
+		  <Condition>
+			<Simvar name="ENG ON FIRE:1" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ENG 2 FIRE</Text>
+		  <Condition>
+			<Simvar name="ENG ON FIRE:2" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>O2 CYL CLOSED</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>PRESSU OFF</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL PRESS ENG 1 HIGH</Text>
+		  <Condition>
+			<And>
+			  <GreaterEqual>
+				<Simvar name="ENG OIL PRESSURE:1" unit="psi"/>
+				<Constant>80</Constant>
+			  </GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+		
+			<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>OIL PRESS ENG 2 HIGH</Text>
+		  <Condition>
+			<And>
+			  <GreaterEqual>
+				<Simvar name="ENG OIL PRESSURE:2" unit="psi"/>
+				<Constant>80</Constant>
+			  </GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+  	<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>BOOST PUMP ON L</Text>
+		  <Condition>
+		  <And>
+		  <Simvar name="GENERAL ENG FUEL PUMP ON:1" unit="Bool"/>
+		  <Simvar name="GENERAL ENG STARTER ACTIVE:1" unit="Bool"/>
+		  </And>
+			</Condition>
+		</Annunciation>
+	
+	   <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>BOOST PUMP ON L</Text>
+		  <Condition>
+		<And>
+		  <Simvar name="GENERAL ENG FUEL PUMP ON:1" unit="Bool"/>
+		  <Greater>
+				<Simvar name="TURB ENG N2:1" unit="percent"/>
+				<Constant>15</Constant>
+			</Greater>
+			<Not>
+			<Simvar name="GENERAL ENG STARTER ACTIVE:1" unit="Bool"/>
+			</Not>
+			</And>
+		  </Condition>
+		</Annunciation>
+	
+    <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>BOOST PUMP ON R</Text>
+		  <Condition>
+		  <And>
+		  <Simvar name="GENERAL ENG FUEL PUMP ON:2" unit="Bool"/>
+		  <Simvar name="GENERAL ENG STARTER ACTIVE:2" unit="Bool"/>
+		  <Not>
+		  <Simvar name="SIM ON GROUND" unit="Bool"/>
+		  </Not>
+			</And>
+			</Condition>
+		 </Annunciation>
+	
+	  <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>BOOST PUMP ON R</Text>
+		  <Condition>
+		<And>
+		  <Simvar name="GENERAL ENG FUEL PUMP ON:2" unit="Bool"/>
+		  <Greater>
+				<Simvar name="TURB ENG N2:2" unit="percent"/>
+				<Constant>15</Constant>
+			</Greater>
+			<Not>
+			<Simvar name="GENERAL ENG STARTER ACTIVE:2" unit="Bool"/>
+			</Not>
+			</And>
+		  </Condition>
+		</Annunciation>
+	
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW </Text>
+		 <Condition Suffix="L-R">
+		  <And>
+			<Lower>
+			  <Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+			  <Constant>75</Constant>
+			</Lower>
+			<Lower>
+			  <Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+			  <Constant>75</Constant>
+			</Lower>
+			</And>
+		  </Condition>
+		  <Condition Suffix="L">
+			<Lower>
+				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+				<Constant>75</Constant>
+			  </Lower>
+			</Condition>
+		  <Condition Suffix="R">
+			<Lower>
+			  <Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+			  <Constant>75</Constant>
+			</Lower>
+		  </Condition>
+		 </Annunciation>
+
+  <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>FUEL TRANSFER</Text>
+		  <Condition>
+		  <Simvar name="FUEL TRANSFER PUMP ON" unit="Bool"/>
+      </Condition>
+		</Annunciation>
+
+   <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>BOOST PUMP ON</Text>
+		  <Condition>
+		  <Simvar name="FUEL TRANSFER PUMP ON" unit="Bool"/>
+      </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL IMBALANCE</Text>
+		  <Condition>
+			<Inequal tolerance="75">
+				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+			</Inequal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>LOW LVL FAIL</Text>
+		  <Condition Suffix="L-R">
+			<!-- TODO -->
+		  </Condition>
+		  <Condition Suffix="L">
+			<!-- TODO -->
+		  </Condition>
+		  <Condition Suffix="R">
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>L BAT OFF</Text>
+		  <Condition>
+		  <Not>
+			<Simvar name="ELECTRICAL MASTER BATTERY:1" unit="Bool"/>
+		  </Not>
+		  </Condition>
+		</Annunciation>
+
+     <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>R BAT OFF</Text>
+		  <Condition>
+		  <Not>
+			<Simvar name="ELECTRICAL MASTER BATTERY:2" unit="Bool"/>
+		  </Not>
+		  </Condition>
+		</Annunciation>
+		<!--
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>BAT AMP</Text>
+		  <Condition>
+			<Greater>
+				<Simvar name="ELECTRICAL BATTERY BUS AMPS" unit="amperes"/>
+				<Constant>50</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+   -->
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GEN OFF L</Text>
+		  <Condition>
+			<And>
+			<Or>
+			<Greater>
+			<Simvar name="TURB ENG N2:1" unit="percent"/>
+      <Constant>0.05</Constant>
+      </Greater>
+      <Greater>
+			<Simvar name="TURB ENG N2:2" unit="percent"/>
+      <Constant>0.05</Constant>
+      </Greater>
+      </Or>
+      <Not>
+        <Simvar name="GENERAL ENG MASTER ALTERNATOR:1" unit="Bool"/>
+			</Not>
+      </And>
+		  </Condition>
+		</Annunciation>
+		
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GEN OFF R</Text>
+		  <Condition>
+			<And>
+			<Or>
+			<Greater>
+			<Simvar name="TURB ENG N2:1" unit="percent"/>
+      <Constant>0.05</Constant>
+      </Greater>
+      <Greater>
+			<Simvar name="TURB ENG N2:2" unit="percent"/>
+      <Constant>0.05</Constant>
+      </Greater>
+      </Or>
+      <Not>
+        <Simvar name="GENERAL ENG MASTER ALTERNATOR:2" unit="Bool"/>
+			</Not>
+      </And>
+		  </Condition>
+		</Annunciation>
+
+     <!--
+     <Annunciation>
+		  <Type>Warning</Type>
+		  <Text>GENS OFF</Text>
+		  <Condition>
+			<And>
+			<Or>
+			<Greater>
+			<Simvar name="TURB ENG N2:1" unit="percent"/>
+      <Constant>50</Constant>
+      </Greater>
+      <Greater>
+			<Simvar name="TURB ENG N2:2" unit="percent"/>
+      <Constant>50</Constant>
+      </Greater>
+      </Or>
+      <Not>
+        <Simvar name="GENERAL ENG MASTER ALTERNATOR:1" unit="Bool"/>
+			</Not>
+			<Not>
+        <Simvar name="GENERAL ENG MASTER ALTERNATOR:2" unit="Bool"/>
+			</Not>
+      <Not>
+      <GreaterEqual>
+			<Simvar name="APU PCT RPM" unit="percent"/>
+			<Constant>80</Constant>
+			</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+		-->
+		
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GEN OFF APU</Text>
+		  <Condition>
+		  <And>
+			<Not>
+				  <Simvar name="GENERAL ENG MASTER ALTERNATOR:3" unit="Bool"/>
+			</Not>
+			<GreaterEqual>
+			<Simvar name="APU PCT RPM" unit="percent"/>
+			<Constant>80</Constant>
+			</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>LOW VOLTAGE</Text>
+		  <Condition>
+			<Lower>
+				<Simvar name="ELECTRICAL MAIN BUS VOLTAGE" unit="volts"/>
+				<Constant>24.5</Constant>
+			</Lower>
+		  </Condition>
+		</Annunciation>
+
+		<!--
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>BLEED OFF</Text>
+		  <Condition>
+			<Not>
+			<Equal>
+				<Simvar name="BLEED AIR SOURCE CONTROL:2" unit="Enum"/>
+				<Constant>0</Constant>
+			</Equal>
+			</Not>
+		  </Condition>
+		</Annunciation>
+    -->
+    
+   <!-- 
+    <Annunciation>
+		  <Type>Caution</Type>
+		  <Text>BLEED OFF L</Text>
+		  <Condition>
+			<Not>
+				<Simvar name="TURB ENG BLEED AIR" unit="Bool"/>
+				</Not>
+		  </Condition>
+		</Annunciation>
+		-->
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>USE OXYGEN MASK</Text>
+		  <Condition>
+			<Greater>
+				<Simvar name="PRESSURIZATION CABIN ALTITUDE" unit="feet"/>
+				<Constant>10000</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>VACUUM LOW</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="PARTIAL PANEL VACUUM" unit="Enum"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>PROP DEICE FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>INERT SEP FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>PITOT HEAT OFF</Text>
+     <Condition>
+      <And>
+      <Not>
+        <Simvar name="PITOT HEAT" unit="Bool"/>
+      </Not>
+      <LowerEqual>
+      <Simvar name="AMBIENT TEMPERATURE" unit="celsius"/>
+      <Constant>5.0</Constant>
+      </LowerEqual>
+      </And>
+      </Condition>
+    </Annunciation>
+		
+		
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FRONT CARGO DOOR</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GPU DOOR</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+		
+<!--		
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>IGNITION</Text>
+		  <Condition>
+			<Simvar name="TURB ENG IS IGNITING:1" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+		-->
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>MAX DIFF MODE</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>CPCS BACK UP MODE</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>APR DWNGRADE</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>CARGO DOOR</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ESP DEGRADED - AOA</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ESP DEGRADED - IAS</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ESP FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GAS DEGRADED</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GAS EVENT</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>GWX FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>INERT SEP FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+			
+			<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ICING</Text>
+		  <Condition>
+		  <Or>
+		  <GreaterEqual>
+			<Simvar name="PITOT ICE PCT" unit="Percent"/>
+			<Constant>10</Constant>
+			</GreaterEqual>
+			<GreaterEqual>
+			<Simvar name="STRUCTURAL ICE PCT" unit="Percent"/>
+			<Constant>10</Constant>
+			</GreaterEqual>
+			</Or>
+		  </Condition>
+		</Annunciation>
+			
+			<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>A/I WING ON</Text>
+		  <Condition>
+		  <And>
+		  <Not>
+		  <And>
+		  <Simvar name="STRUCTURAL DEICE SWITCH" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:1" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:2" unit="Bool"/>
+			</And>
+			</Not>
+			<Simvar name="STRUCTURAL DEICE SWITCH" unit="Bool"/>
+			</And>
+			</Condition>
+		</Annunciation>
+		
+      <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>A/I ENG ON L</Text>
+		  <Condition>
+		  <And>
+		  <Not>
+		  <And>
+		  <Simvar name="STRUCTURAL DEICE SWITCH" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:1" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:2" unit="Bool"/>
+			</And>
+			</Not>
+				<Simvar name="ENG ANTI ICE:1" unit="Bool"/>
+				</And>
+      </Condition>
+		</Annunciation>
+
+    <Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>A/I ENG ON R</Text>
+		  <Condition>
+		  <And>
+		  <Not>
+		  <And>
+		  <Simvar name="STRUCTURAL DEICE SWITCH" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:1" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:2" unit="Bool"/>
+			</And>
+			</Not>
+				<Simvar name="ENG ANTI ICE:2" unit="Bool"/>
+				</And>
+      </Condition>
+		</Annunciation>
+  
+   		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>ICE PROTECT ALL ON</Text>
+		  <Condition>
+			<And>
+			<Simvar name="STRUCTURAL DEICE SWITCH" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:1" unit="Bool"/>
+			<Simvar name="ENG ANTI ICE:2" unit="Bool"/>
+			</And>
+		  </Condition>
+		</Annunciation>
+  
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ENG 1 N1</Text>
+		  <Condition>
+			<Greater>
+				<Simvar name="TURB ENG N1:1" unit="percent"/>
+				<Constant>97.10</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+	<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>ENG 2 N1</Text>
+		  <Condition>
+			<Greater>
+				<Simvar name="TURB ENG N1:2" unit="percent"/>
+				<Constant>97.10</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>PRESSU BACKUP</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+<!--		
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>PROP DEICE ON</Text>
+		  <Condition>
+			<And>
+				<Lower>
+					<Simvar name="PROP RPM:1" unit="rpm"/>
+					<Constant>1</Constant>
+				</Lower>
+				<Simvar name="PROP DEICE SWITCH:1" unit="Bool"/>
+			</And>
+		  </Condition>
+		</Annunciation>
+		-->
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>REAR CARGO DOOR</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>TCAS FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>TRAFFIC FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>XPDR1 ADS-B FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>XPDR1 FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>XPDR2 ADS-B FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>XPDR2 FAIL</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>EDM OVERRIDE</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>ESP OFF</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>INERT SEP ON</Text>
+		  <Condition>
+			<!-- TODO -->
+		  </Condition>
+		</Annunciation>
+
+<!--
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>MAX DIFF MODE</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="BLEED AIR SOURCE CONTROL" unit="Enum"/>
+				<Constant>3</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+		-->
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>ENG 1 STARTER</Text>
+		  <Condition>
+			<Simvar name="GENERAL ENG STARTER ACTIVE:1" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+		
+				<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>ENG 2 STARTER</Text>
+		  <Condition>
+			<Simvar name="GENERAL ENG STARTER ACTIVE:2" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+
+	</Annunciations>
+  
+	<!-- Voices Alerts -->
+  
+	<VoicesAlerts>
+	
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_500ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>510</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>500</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_400ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>410</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>400</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>		
+		
+<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_300ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>310</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>300</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>				
+		
+	<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_200ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>210</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>200</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>		
+		
+<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_100ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>110</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>100</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>				
+		
+<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_50ft</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>60</Constant>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+								<Constant>50</Constant>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Constant>1</Constant>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>						
+		
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_stall</SoundEvent>
+			<Condition>
+				<Simvar name="STALL WARNING" unit="Bool"/>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>Warning</Type>
+			<ShortText>PULL UP</ShortText>
+			<LongText>PULL UP</LongText>
+			<SoundEvent>aural_pull_up</SoundEvent>
+			<Condition>
+				<And>
+					<LinearMultiPoint>
+						<Table>
+							<ReferencePoints>1160,2320,4930,12000</ReferencePoints>
+							<Maximums>0,1070,2380,4285</Maximums>
+						</Table>
+						<Param>
+							<Multiply>
+								<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+								<Constant>-1</Constant>
+							</Multiply>
+						</Param>
+						<Param>
+							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+						</Param>
+					</LinearMultiPoint>
+					<Not>
+						<Simvar name="SIM ON GROUND" unit="bool"/>
+					</Not>
+				</And>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_overspeed</SoundEvent>
+			<Condition>
+				<Simvar name="OVERSPEED WARNING" unit="bool"/>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>Caution</Type>
+			<ShortText>TERRAIN</ShortText>
+			<LongText>SINK RATE</LongText>
+			<SoundEvent>aural_sink_rate</SoundEvent>
+			<Condition>
+				<And>
+					<LinearMultiPoint>
+						<Table>
+							<ReferencePoints>1160,2320,4930,12000</ReferencePoints>
+							<Minimums>0,1070,2380,4285</Minimums>
+							<Maximums>0,1460,2980,5360</Maximums>
+						</Table>
+						<Param>
+							<Multiply>
+								<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+								<Constant>-1</Constant>
+							</Multiply>
+						</Param>
+						<Param>
+							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+						</Param>
+					</LinearMultiPoint>
+					<Not>
+						<Simvar name="SIM ON GROUND" unit="bool"/>
+					</Not>
+				</And>
+			</Condition>
+		</Alert>
+	
+		<Alert>
+			<Type>Caution</Type>
+			<ShortText>TERRAIN</ShortText>
+			<LongText>DONT' SINK</LongText>
+			<SoundEvent>aural_dont_sink</SoundEvent>
+			<Condition>
+				<And>
+					<Lower>
+						<DistanceFromOrigin/>
+						<Constant>5</Constant>
+					</Lower>
+					<Lower>
+						<HeadingChangeFromDeparture/>
+						<Constant>110</Constant>
+					</Lower>
+					<Or>
+						<LinearMultiPoint>
+							<Table>
+								<ReferencePoints>0,500,7000</ReferencePoints>
+								<Maximums>50,700,700</Maximums>
+								<Minimums>50,50,50</Minimums>
+							</Table>
+							<Param>
+								<Multiply>
+									<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+									<Constant>-1</Constant>
+								</Multiply>
+							</Param>
+							<Param>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+							</Param>
+						</LinearMultiPoint>
+						<LinearMultiPoint>
+							<Table>
+								<ReferencePoints>10,70,150</ReferencePoints>
+								<Maximums>50,700,700</Maximums>
+								<Minimums>50,50,50</Minimums>
+							</Table>
+							<Param>
+								<Substract>
+									<MaxSinceStart>
+										<Simvar name="PLANE ALTITUDE" unit="feet"/>
+									</MaxSinceStart>
+									<Simvar name="PLANE ALTITUDE" unit="feet"/>
+								</Substract>
+							</Param>
+							<Param>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+							</Param>
+						</LinearMultiPoint>
+					</Or>
+				</And>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_landing_gear</SoundEvent>
+			<Condition>
+				<And>
+					<Simvar name="IS GEAR RETRACTABLE" unit="Boolean"/>
+					<Not>
+						<Simvar name="GEAR HANDLE POSITION" unit="Boolean"/>
+					</Not>
+					<Or>
+						<Greater>
+							<Simvar name="FLAPS HANDLE INDEX" unit="number"/>
+							<Constant>2</Constant>
+						</Greater>
+						<Equal>
+							<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="percent"/>
+							<Constant>70</Constant>
+						</Equal>
+					</Or>
+				</And>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>Test</Type>
+			<ShortText>TAWS TEST</ShortText>
+			<Condition>
+				<And>
+					<Lower>
+						<TimeSinceStart/>
+						<Constant>30000</Constant>
+					</Lower>
+					<InstrumentWasOff/>
+				</And>
+			</Condition>
+		</Alert>
+		
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_taws_system_test_ok</SoundEvent>
+			<Condition>
+				<And>
+					<Greater>
+						<TimeSinceStart/>
+						<Constant>30000</Constant>
+					</Greater>
+					<InstrumentWasOff/>
+				</And>
+			</Condition>
+			<Once>True</Once>
+		</Alert>
+	</VoicesAlerts>
+
+</PlaneHTMLConfig>

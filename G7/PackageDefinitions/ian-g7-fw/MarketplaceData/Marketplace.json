@@ -5,7 +5,7 @@
       "title": "G7-FW",
       "description": "Sample aircraft demonstrating a simple wasm gauge",
       "support-contact": "devsupport.flightsimulator.com",
-      "tags": "WASM",
+      "tags": "",
       "media-backgrounds": [
         "thumbnail3840x2160.jpg,thumbnail3840x2160.jpg"
       ],
