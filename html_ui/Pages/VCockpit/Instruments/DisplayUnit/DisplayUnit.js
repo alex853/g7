@@ -22,6 +22,9 @@ class DisplayUnit extends BaseInstrument {
         this.primaryEnginePanel = new PrimaryEnginePanel(this);
         this.secondaryEnginePanel = new SecondaryEnginePanel(this);
 
+        this.primaryEnginePanel.showPanel();
+        this.secondaryEnginePanel.showPanel();
+
         this.startUpdateStateCycle();
     }
 

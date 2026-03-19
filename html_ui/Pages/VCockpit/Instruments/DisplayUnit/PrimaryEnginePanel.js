@@ -35,6 +35,12 @@ class PrimaryEnginePanel {
         }
     }
 
+    showPanel() {
+        const destination = this.display.querySelector("#du24-top-one-sixth");
+        const panel = this.display.querySelector("#primary-engine-panel");
+        destination.appendChild(panel);
+    }
+
     updateState() {
         const state = this.state;
 
