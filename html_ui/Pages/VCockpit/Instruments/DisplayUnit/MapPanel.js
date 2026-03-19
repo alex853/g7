@@ -24,7 +24,8 @@ class MapPanel {
     }
 
     showPanel() {
-        const destination = this.display.querySelector("#du24-two-thirds");
+        const layout = this.display.layoutName;
+        const destination = this.display.querySelector(`#${layout}-two-thirds`);
         const panel = this.display.querySelector("#map-panel");
         destination.appendChild(panel);
     }

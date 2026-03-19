@@ -37,7 +37,8 @@ class SecondaryEnginePanel {
     }
 
     showPanel() {
-        const destination = this.display.querySelector("#du24-bottom-one-sixth");
+        const layout = this.display.layoutName;
+        const destination = this.display.querySelector(`#${layout}-bottom-one-sixth`);
         const panel = this.display.querySelector("#secondary-engine-panel");
         destination.appendChild(panel);
     }

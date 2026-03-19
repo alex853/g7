@@ -1,6 +1,12 @@
 class DisplayUnit extends BaseInstrument {
+    displayNumber;
+    layoutName;
+    panels;
+
     constructor() {
         super();
+        // todo ak read url and get display number from it
+        this.displayNumber = 2;
     }
 
     get templateID() {
@@ -18,13 +24,32 @@ class DisplayUnit extends BaseInstrument {
 
         this.initButtons();
 
-        this.mapPanel = new MapPanel(this);
-        this.primaryEnginePanel = new PrimaryEnginePanel(this);
-        this.secondaryEnginePanel = new SecondaryEnginePanel(this);
+        if (this.displayNumber === 2) {
+            this.layoutName = "du24";
+            this.panels = [
+                new MapPanel(this),
+                new PrimaryEnginePanel(this),
+                new SecondaryEnginePanel(this)
+            ];
+        } else if (this.displayNumber === 3) {
+            this.layoutName = "du13";
+            this.panels = [
+                new ChartsPanel(this),
+                new CASMessagesPanel(this),
+                new FlightPlanPanel(this)
+            ];
+        } else {
+            console.error("Unknown display number: ", this.displayNumber);
+            return;
+        }
 
-        this.mapPanel.showPanel();
-        this.primaryEnginePanel.showPanel();
-        this.secondaryEnginePanel.showPanel();
+        this.querySelector(`#${this.layoutName}`).classList.remove('hidden');
+
+        this.panels.forEach(panel => {
+            if (panel.showPanel) {
+                panel.showPanel();
+            }
+        });
 
         this.startUpdateStateCycle();
     }
@@ -44,9 +69,11 @@ class DisplayUnit extends BaseInstrument {
     Update() {
         super.Update();
 
-        this.mapPanel.onUpdate();
-        // this.primaryEnginePanel does not have onUpdate .onUpdate();
-        // this.secondaryEnginePanel does not have onUpdate .onUpdate();
+        this.panels.forEach(panel => {
+            if (panel.onUpdate) {
+                panel.onUpdate();
+            }
+        });
     }
 
     startUpdateStateCycle() {
@@ -57,15 +84,19 @@ class DisplayUnit extends BaseInstrument {
     }
 
     updateState() {
-        this.mapPanel.updateState();
-        this.primaryEnginePanel.updateState();
-        this.secondaryEnginePanel.updateState();
+        this.panels.forEach(panel => {
+            if (panel.updateState) {
+                panel.updateState();
+            }
+        })
     }
 
     updateUI() {
-        this.mapPanel.updateUI();
-        this.primaryEnginePanel.updateUI();
-        this.secondaryEnginePanel.updateUI();
+        this.panels.forEach(panel => {
+            if (panel.updateUI) {
+                panel.updateUI();
+            }
+        })
     }
 
     initButtons() {

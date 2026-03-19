@@ -1,47 +1,56 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe">
-        <div id="du24-two-thirds" class="layout-two-columns"></div>
-        <div class="layout-one-column">
-            <div id="du24-top-one-sixth" class="layout-one-sixth"></div>
-            <div id="du24-bottom-one-sixth" class="layout-one-sixth"></div>
+        <div id="du13" class="layout-root hidden">
+            <div class="layout-one-column">
+                <div id="du13-top-one-sixth" class="layout-one-sixth"></div>
+                <div id="du13-bottom-one-sixth" class="layout-one-sixth"></div>
+            </div>
+            <div id="du13-two-thirds" class="layout-two-columns"></div>
+        </div>
+        <div id="du24" class="layout-root hidden">
+            <div id="du24-two-thirds" class="layout-two-columns"></div>
+            <div class="layout-one-column">
+                <div id="du24-top-one-sixth" class="layout-one-sixth"></div>
+                <div id="du24-bottom-one-sixth" class="layout-one-sixth"></div>
+            </div>
         </div>
     </div>
-    <div id="parked-panels" style="display: none;">
-        <div id="primary-engine-panel" class="panel-frame width-height-100">
-            <div id="map-panel" class="width-height-100 dev-background1">
-                <div id="map-header" style1="opacity: 0.5;">
-                    <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
-                    <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
-                    <div class="panel-frame" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
-                    <div class="panel-frame" style="width: 11%;">Acft<br>Ctr</div>
-                    <div class="panel-frame fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
-                    <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Prev<br>INTRS</div>
-                    <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Next<br>INTRS</div>
-                    <div class="panel-frame fully-centered" style="width: 8%;">GLB</div>
-                    <div class="panel-frame vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
-                </div>
-                <div id="map-container">
-                    <map-instrument
-                            id="MapInstrument"
-                            bing-id="MFD"
-                            overdrawFactor="1.4"
-                            show-overlay="false"
-                            show-flightplan="true"
-                            config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
-                    </map-instrument>
-                    <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
-                        <span id="map-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
-                        <span id="map-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
-                        <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
-                        <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
-                    </div>
-                    <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
-                    <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
-                    <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
-                </div>
+    <div id="parked-panels" class="hidden">
+        <div id="map-panel" class="width-height-100 dev-background1">
+            <div id="map-header" style1="opacity: 0.5;">
+                <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame" style="width: 11%;">Acft<br>Ctr</div>
+                <div class="panel-frame fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
+                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Prev<br>INTRS</div>
+                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Next<br>INTRS</div>
+                <div class="panel-frame fully-centered" style="width: 8%;">GLB</div>
+                <div class="panel-frame vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
             </div>
+            <div id="map-container">
+                <map-instrument
+                        id="MapInstrument"
+                        bing-id="MFD"
+                        overdrawFactor="1.4"
+                        show-overlay="false"
+                        show-flightplan="true"
+                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
+                </map-instrument>
+                <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
+                    <span id="map-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                </div>
+                <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
+                <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
+                <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
+            </div>
+        </div>
 
+        <div id="primary-engine-panel" class="panel-frame width-height-100">
             <div class="absolute-positioning">
                 <!-- engine EPR -->
                 <div class="centered-absolute-label gauge-label" style="top: 10%; left: 50%;">EPR</div>
@@ -165,6 +174,18 @@
                 </svg>
             </div>
         </div>
+
+        <div id="cas-messages-panel" class="panel-frame width-height-100">
+            <div class="text-placeholder">CAS MESSAGES</div>
+        </div>
+
+        <div id="flight-plan-panel" class="panel-frame width-height-100">
+            <div class="text-placeholder">FLIGHT PLAN</div>
+        </div>
+
+        <div id="charts-panel" class="width-height-100">
+            <div class="text-placeholder">CHARTS</div>
+        </div>
     </div>
 </script>
 
@@ -177,5 +198,8 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/MapPanel.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/PrimaryEnginePanel.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/SecondaryEnginePanel.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/CASMessagesPanel.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/FlightPlanePanel.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/ChartsPanel.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/DisplayUnit.js"></script>
