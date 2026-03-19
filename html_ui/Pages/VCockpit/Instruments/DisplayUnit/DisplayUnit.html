@@ -1,160 +1,166 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe">
-        <div class="layout-two-columns dev-background1" id="map-panel">
-            <div id="map-header" style1="opacity: 0.5;">
-                <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Acft<br>Ctr</div>
-                <div class="panel-frame fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
-                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Prev<br>INTRS</div>
-                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Next<br>INTRS</div>
-                <div class="panel-frame fully-centered" style="width: 8%;">GLB</div>
-                <div class="panel-frame vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
-            </div>
-            <div id="map-container">
-                <map-instrument
-                        id="MapInstrument"
-                        bing-id="MFD"
-                        overdrawFactor="1.4"
-                        show-overlay="false"
-                        show-flightplan="true"
-                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
-                </map-instrument>
-                <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
-                    <span id="map-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+        <div class="layout-two-columns">
+            <div id="map-panel" class="width-height-100 dev-background1">
+                <div id="map-header" style1="opacity: 0.5;">
+                    <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
+                    <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
+                    <div class="panel-frame" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
+                    <div class="panel-frame" style="width: 11%;">Acft<br>Ctr</div>
+                    <div class="panel-frame fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
+                    <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Prev<br>INTRS</div>
+                    <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Next<br>INTRS</div>
+                    <div class="panel-frame fully-centered" style="width: 8%;">GLB</div>
+                    <div class="panel-frame vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
                 </div>
-                <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
-                <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
-                <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
+                <div id="map-container">
+                    <map-instrument
+                            id="MapInstrument"
+                            bing-id="MFD"
+                            overdrawFactor="1.4"
+                            show-overlay="false"
+                            show-flightplan="true"
+                            config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
+                    </map-instrument>
+                    <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
+                        <span id="map-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
+                        <span id="map-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
+                        <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
+                        <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    </div>
+                    <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
+                    <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
+                    <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
+                </div>
             </div>
         </div>
         <div class="layout-one-column">
-            <div class="layout-one-sixth panel-frame" id="primary-engine-panel">
-                <div class="absolute-positioning">
-                    <!-- engine EPR -->
-                    <div class="centered-absolute-label gauge-label" style="top: 10%; left: 50%;">EPR</div>
-                    <div id="primary-engine-left-epr-label" class="centered-absolute-label gauge-value" style="top:  9%; left: 25%;">0.99</div>
-                    <div id="primary-engine-right-epr-label" class="centered-absolute-label gauge-value" style="top:  9%; left: 86%;">1.00</div>
+            <div class="layout-one-sixth">
+                <div id="primary-engine-panel" class="panel-frame width-height-100">
+                    <div class="absolute-positioning">
+                        <!-- engine EPR -->
+                        <div class="centered-absolute-label gauge-label" style="top: 10%; left: 50%;">EPR</div>
+                        <div id="primary-engine-left-epr-label" class="centered-absolute-label gauge-value" style="top:  9%; left: 25%;">0.99</div>
+                        <div id="primary-engine-right-epr-label" class="centered-absolute-label gauge-value" style="top:  9%; left: 86%;">1.00</div>
 
-                    <!-- engine TGT -->
-                    <div class="centered-absolute-label gauge-label" style="top: 35%; left: 50%;">TGT</div>
-                    <div id="primary-engine-left-tgt-label" class="centered-absolute-label gauge-value" style="top: 34%; left: 26%;">&nbsp;&nbsp;25</div>
-                    <div id="primary-engine-right-tgt-label" class="centered-absolute-label gauge-value" style="top: 34%; left: 87%;">&nbsp;&nbsp;25</div>
+                        <!-- engine TGT -->
+                        <div class="centered-absolute-label gauge-label" style="top: 35%; left: 50%;">TGT</div>
+                        <div id="primary-engine-left-tgt-label" class="centered-absolute-label gauge-value" style="top: 34%; left: 26%;">&nbsp;&nbsp;25</div>
+                        <div id="primary-engine-right-tgt-label" class="centered-absolute-label gauge-value" style="top: 34%; left: 87%;">&nbsp;&nbsp;25</div>
 
-                    <div class="centered-absolute-label gauge-label" style="top: 42%; left: 50%; font-size: 1.5vh;">EGT</div>
-                    <div id="primary-engine-left-egt-label" class="centered-absolute-label gauge-label" style="top: 42%; left: 43%; font-size: 1.5vh;">0</div>
-                    <div id="primary-engine-right-egt-label" class="centered-absolute-label gauge-label" style="top: 42%; left: 57%; font-size: 1.5vh;">0</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 42%; left: 50%; font-size: 1.5vh;">EGT</div>
+                        <div id="primary-engine-left-egt-label" class="centered-absolute-label gauge-label" style="top: 42%; left: 43%; font-size: 1.5vh;">0</div>
+                        <div id="primary-engine-right-egt-label" class="centered-absolute-label gauge-label" style="top: 42%; left: 57%; font-size: 1.5vh;">0</div>
 
-                    <!-- engine LP -->
-                    <div class="centered-absolute-label gauge-label" style="top: 59%; left: 50%;">LP</div>
-                    <div id="primary-engine-left-n1-label" class="centered-absolute-label gauge-value" style="top: 59%; left: 26%;">&nbsp;&nbsp;0.0</div>
-                    <div id="primary-engine-right-n1-label" class="centered-absolute-label gauge-value" style="top: 59%; left: 87%;">&nbsp;&nbsp;0.0</div>
+                        <!-- engine LP -->
+                        <div class="centered-absolute-label gauge-label" style="top: 59%; left: 50%;">LP</div>
+                        <div id="primary-engine-left-n1-label" class="centered-absolute-label gauge-value" style="top: 59%; left: 26%;">&nbsp;&nbsp;0.0</div>
+                        <div id="primary-engine-right-n1-label" class="centered-absolute-label gauge-value" style="top: 59%; left: 87%;">&nbsp;&nbsp;0.0</div>
 
-                    <!-- engine HP -->
-                    <div class="centered-absolute-label gauge-label" style="top: 84%; left: 50%;">HP</div>
-                    <div id="primary-engine-left-n2-label" class="centered-absolute-label gauge-value" style="top: 84%; left: 25%;">&nbsp;&nbsp;0.0</div>
-                    <div id="primary-engine-right-n2-label" class="centered-absolute-label gauge-value" style="top: 84%; left: 75%;">&nbsp;&nbsp;0.0</div>
+                        <!-- engine HP -->
+                        <div class="centered-absolute-label gauge-label" style="top: 84%; left: 50%;">HP</div>
+                        <div id="primary-engine-left-n2-label" class="centered-absolute-label gauge-value" style="top: 84%; left: 25%;">&nbsp;&nbsp;0.0</div>
+                        <div id="primary-engine-right-n2-label" class="centered-absolute-label gauge-value" style="top: 84%; left: 75%;">&nbsp;&nbsp;0.0</div>
 
-                    <!-- engine FF -->
-                    <div class="centered-absolute-label gauge-label" style="top: 92%; left: 50%;">FF</div>
-                    <div id="primary-engine-left-fuel-flow-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 25%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="primary-engine-right-fuel-flow-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 75%;">&nbsp;&nbsp;&nbsp;0</div>
-                </div>
-                <div class="absolute-positioning">
-                    <svg id="primary-engine-panel-svg" viewBox="0 0 400 450" preserveAspectRatio="none" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">
-                        <line x1="74" y1="55" x2="74" y2="350" stroke="#99f" stroke-width="0.5"/> <!-- left centers -->
-                        <line x1="317" y1="55" x2="317" y2="350" stroke="#99f" stroke-width="0.5"/> <!-- right centers -->
+                        <!-- engine FF -->
+                        <div class="centered-absolute-label gauge-label" style="top: 92%; left: 50%;">FF</div>
+                        <div id="primary-engine-left-fuel-flow-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 25%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="primary-engine-right-fuel-flow-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 75%;">&nbsp;&nbsp;&nbsp;0</div>
+                    </div>
+                    <div class="absolute-positioning">
+                        <svg id="primary-engine-panel-svg" viewBox="0 0 400 450" preserveAspectRatio="none" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">
+                            <line x1="74" y1="55" x2="74" y2="350" stroke="#99f" stroke-width="0.5"/> <!-- left centers -->
+                            <line x1="317" y1="55" x2="317" y2="350" stroke="#99f" stroke-width="0.5"/> <!-- right centers -->
 
-                        <line x1="40" y1="80" x2="350" y2="80" stroke="#99f" stroke-width="0.5"/> <!-- EPR centers -->
-                        <line x1="40" y1="190" x2="350" y2="190" stroke="#99f" stroke-width="0.5"/> <!-- TGT centers -->
-                        <line x1="40" y1="302" x2="350" y2="302" stroke="#99f" stroke-width="0.5"/> <!-- LP centers -->
-                    </svg>
+                            <line x1="40" y1="80" x2="350" y2="80" stroke="#99f" stroke-width="0.5"/> <!-- EPR centers -->
+                            <line x1="40" y1="190" x2="350" y2="190" stroke="#99f" stroke-width="0.5"/> <!-- TGT centers -->
+                            <line x1="40" y1="302" x2="350" y2="302" stroke="#99f" stroke-width="0.5"/> <!-- LP centers -->
+                        </svg>
+                    </div>
                 </div>
             </div>
-            <div class="layout-one-sixth panel-frame" id="secondary-engine-panel">
-                <div class="absolute-positioning">
-                    <!-- fuel gauges -->
-                    <div class="centered-absolute-label gauge-label" style="top:  3%; left: 50%;">Fuel Qty (lb)</div>
-                    <div id="secondary-engine-left-fuel-label" class="centered-absolute-label gauge-value" style="top: 11%; left: 16%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-right-fuel-label" class="centered-absolute-label gauge-value" style="top: 11%; left: 84%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-total-fuel-label" class="centered-absolute-label gauge-value" style="top: 20%; left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
+            <div class="layout-one-sixth">
+                <div id="secondary-engine-panel" class="panel-frame width-height-100">
+                    <div class="absolute-positioning">
+                        <!-- fuel gauges -->
+                        <div class="centered-absolute-label gauge-label" style="top:  3%; left: 50%;">Fuel Qty (lb)</div>
+                        <div id="secondary-engine-left-fuel-label" class="centered-absolute-label gauge-value" style="top: 11%; left: 16%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-right-fuel-label" class="centered-absolute-label gauge-value" style="top: 11%; left: 84%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-total-fuel-label" class="centered-absolute-label gauge-value" style="top: 20%; left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;0</div>
 
-                    <!-- oil gauges -->
-                    <div id="secondary-engine-left-oil-pressure-label" class="centered-absolute-label gauge-value" style="top: 30%; left: 21%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 30%; left: 50%;">Oil Press</div>
-                    <div id="secondary-engine-right-oil-pressure-label" class="centered-absolute-label gauge-value" style="top: 30%; left: 80%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-left-oil-temperature-label" class="centered-absolute-label gauge-value" style="top: 37%; left: 21%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 37%; left: 50%;">Oil Temp</div>
-                    <div id="secondary-engine-right-oil-temperature-label" class="centered-absolute-label gauge-value" style="top: 37%; left: 80%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <!-- oil gauges -->
+                        <div id="secondary-engine-left-oil-pressure-label" class="centered-absolute-label gauge-value" style="top: 30%; left: 21%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 30%; left: 50%;">Oil Press</div>
+                        <div id="secondary-engine-right-oil-pressure-label" class="centered-absolute-label gauge-value" style="top: 30%; left: 80%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-left-oil-temperature-label" class="centered-absolute-label gauge-value" style="top: 37%; left: 21%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 37%; left: 50%;">Oil Temp</div>
+                        <div id="secondary-engine-right-oil-temperature-label" class="centered-absolute-label gauge-value" style="top: 37%; left: 80%;">&nbsp;&nbsp;&nbsp;0</div>
 
-                    <!-- vibration gauges -->
-                    <div id="secondary-engine-left-lp-evm-label" class="centered-absolute-label gauge-value" style="top: 46.5%; left: 20%;"><0.30</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 46.5%; left: 50%;">LP EVM</div>
-                    <div id="secondary-engine-right-lp-evm-label" class="centered-absolute-label gauge-value" style="top: 46.5%; left: 81%;"><0.30</div>
-                    <div id="secondary-engine-left-hp-evm-label" class="centered-absolute-label gauge-value" style="top: 53.5%; left: 20%;"><0.60</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 53.5%; left: 50%;">HP EVM</div>
-                    <div id="secondary-engine-right-hp-evm-label" class="centered-absolute-label gauge-value" style="top: 53.5%; left: 81%;"><0.60</div>
+                        <!-- vibration gauges -->
+                        <div id="secondary-engine-left-lp-evm-label" class="centered-absolute-label gauge-value" style="top: 46.5%; left: 20%;"><0.30</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 46.5%; left: 50%;">LP EVM</div>
+                        <div id="secondary-engine-right-lp-evm-label" class="centered-absolute-label gauge-value" style="top: 46.5%; left: 81%;"><0.30</div>
+                        <div id="secondary-engine-left-hp-evm-label" class="centered-absolute-label gauge-value" style="top: 53.5%; left: 20%;"><0.60</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 53.5%; left: 50%;">HP EVM</div>
+                        <div id="secondary-engine-right-hp-evm-label" class="centered-absolute-label gauge-value" style="top: 53.5%; left: 81%;"><0.60</div>
 
-                    <!-- hyd pressure gauges -->
-                    <div class="centered-absolute-label gauge-label" style="top: 62%; left: 50%;">Hyd Press</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 67%; left: 15%;">Left</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 67%; left: 38%;">Aux</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 67%; left: 62%;">PTU</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 67%; left: 86%;">Right</div>
-                    <div id="secondary-engine-left-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-aux-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 38%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-ptu-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 62%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div id="secondary-engine-right-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <!-- hyd pressure gauges -->
+                        <div class="centered-absolute-label gauge-label" style="top: 62%; left: 50%;">Hyd Press</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 67%; left: 15%;">Left</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 67%; left: 38%;">Aux</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 67%; left: 62%;">PTU</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 67%; left: 86%;">Right</div>
+                        <div id="secondary-engine-left-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-aux-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 38%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-ptu-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 62%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div id="secondary-engine-right-hyd-pressure-label" class="centered-absolute-label gauge-value" style="top: 73%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
 
-                    <!-- fuel tank temp gauges -->
-                    <div id="secondary-engine-left-fuel-temperature-label" class="centered-absolute-label gauge-value" style="top: 83%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 83%; left: 50%;">Fuel Tank Temp</div>
-                    <div id="secondary-engine-right-fuel-temperature-label" class="centered-absolute-label gauge-value" style="top: 83%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <!-- fuel tank temp gauges -->
+                        <div id="secondary-engine-left-fuel-temperature-label" class="centered-absolute-label gauge-value" style="top: 83%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 83%; left: 50%;">Fuel Tank Temp</div>
+                        <div id="secondary-engine-right-fuel-temperature-label" class="centered-absolute-label gauge-value" style="top: 83%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
 
-                    <!-- bleed air pressure gauges -->
-                    <div id="secondary-engine-left-bleed-air-pressure-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
-                    <div class="centered-absolute-label gauge-label" style="top: 92%; left: 50%;">Bleed Air Press</div>
-                    <div id="secondary-engine-right-bleed-air-pressure-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
-                </div>
-                <div class="absolute-positioning">
-                    <svg viewBox="0 0 400 450" preserveAspectRatio="none" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">
-                        <defs>
-                            <marker id="arrow"
-                                    markerWidth="10"
-                                    markerHeight="10"
-                                    refX="0"
-                                    refY="1.5"
-                                    orient="auto"
-                                    markerUnits="strokeWidth">
-                                <path d="M0,0 L2.5,1.5 L0,3 z" fill="#ccc"/>
-                            </marker>
-                        </defs>
+                        <!-- bleed air pressure gauges -->
+                        <div id="secondary-engine-left-bleed-air-pressure-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 15%;">&nbsp;&nbsp;&nbsp;0</div>
+                        <div class="centered-absolute-label gauge-label" style="top: 92%; left: 50%;">Bleed Air Press</div>
+                        <div id="secondary-engine-right-bleed-air-pressure-label" class="centered-absolute-label gauge-value" style="top: 92%; left: 86%;">&nbsp;&nbsp;&nbsp;0</div>
+                    </div>
+                    <div class="absolute-positioning">
+                        <svg viewBox="0 0 400 450" preserveAspectRatio="none" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">
+                            <defs>
+                                <marker id="arrow"
+                                        markerWidth="10"
+                                        markerHeight="10"
+                                        refX="0"
+                                        refY="1.5"
+                                        orient="auto"
+                                        markerUnits="strokeWidth">
+                                    <path d="M0,0 L2.5,1.5 L0,3 z" fill="#ccc"/>
+                                </marker>
+                            </defs>
 
-                        <!-- todo ak fuel balance diagram -->
-                        <!--                        <line x1="200" y1=" 47" x2="200" y2=" 82" stroke="#ccc" stroke-width="3"/>-->
-                        <!--                        <line x1="144" y1=" 67" x2="189" y2=" 67" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
-                        <!--                        <line x1="256" y1=" 57" x2="211" y2=" 57" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
+                            <!-- todo ak fuel balance diagram -->
+                            <!--                        <line x1="200" y1=" 47" x2="200" y2=" 82" stroke="#ccc" stroke-width="3"/>-->
+                            <!--                        <line x1="144" y1=" 67" x2="189" y2=" 67" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
+                            <!--                        <line x1="256" y1=" 57" x2="211" y2=" 57" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
 
-                        <!-- separator - after fuel gauges -->
-                        <line x1="8" y1="124" x2="392" y2="124" stroke="#aaa" stroke-width="2"/>
+                            <!-- separator - after fuel gauges -->
+                            <line x1="8" y1="124" x2="392" y2="124" stroke="#aaa" stroke-width="2"/>
 
-                        <!-- separator - after oil gauges -->
-                        <line x1="8" y1="200" x2="392" y2="200" stroke="#aaa" stroke-width="2"/>
+                            <!-- separator - after oil gauges -->
+                            <line x1="8" y1="200" x2="392" y2="200" stroke="#aaa" stroke-width="2"/>
 
-                        <!-- separator - after vibration gauges -->
-                        <line x1="8" y1="274" x2="392" y2="274" stroke="#aaa" stroke-width="2"/>
+                            <!-- separator - after vibration gauges -->
+                            <line x1="8" y1="274" x2="392" y2="274" stroke="#aaa" stroke-width="2"/>
 
-                        <!-- separator - after hyd pressure gauges -->
-                        <line x1="8" y1="362" x2="392" y2="362" stroke="#aaa" stroke-width="2"/>
+                            <!-- separator - after hyd pressure gauges -->
+                            <line x1="8" y1="362" x2="392" y2="362" stroke="#aaa" stroke-width="2"/>
 
-                        <!-- separator - fuel tank temp gauges -->
-                        <line x1="8" y1="407" x2="392" y2="407" stroke="#aaa" stroke-width="2"/>
-                    </svg>
+                            <!-- separator - fuel tank temp gauges -->
+                            <line x1="8" y1="407" x2="392" y2="407" stroke="#aaa" stroke-width="2"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
