@@ -1,4 +1,4 @@
-class CASMessagesPanel {
+class CasMessagesPanel {
     constructor(display) {
         this.display = display;
     }

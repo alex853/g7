@@ -1,12 +1,6 @@
 class DisplayUnit extends BaseInstrument {
-    displayNumber;
-    layoutName;
-    panels;
-
     constructor() {
         super();
-        // todo ak read url and get display number from it
-        this.displayNumber = 2;
     }
 
     get templateID() {
@@ -24,6 +18,17 @@ class DisplayUnit extends BaseInstrument {
 
         this.initButtons();
 
+        const url = this.getAttribute("url");
+        console.log("url: " + url);
+        if (url.includes("?DU2")) {
+            this.displayNumber = 2;
+        } else if (url.includes("?DU3")) {
+            this.displayNumber = 3;
+        } else {
+            this.displayNumber = 2; // default
+        }
+        console.log("DU number: " + this.displayNumber);
+
         if (this.displayNumber === 2) {
             this.layoutName = "du24";
             this.panels = [
@@ -35,7 +40,7 @@ class DisplayUnit extends BaseInstrument {
             this.layoutName = "du13";
             this.panels = [
                 new ChartsPanel(this),
-                new CASMessagesPanel(this),
+                new CasMessagesPanel(this),
                 new FlightPlanPanel(this)
             ];
         } else {
