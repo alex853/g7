@@ -23,6 +23,12 @@ class MapPanel {
         }
     }
 
+    showPanel() {
+        const destination = this.display.querySelector("#du24-two-thirds");
+        const panel = this.display.querySelector("#map-panel");
+        destination.appendChild(panel);
+    }
+
     onUpdate() {
         this.map.setCenteredOnPlane();
         this.map.update();

@@ -1,7 +1,14 @@
 <link rel="stylesheet" href="DisplayUnit.css"/>
 <script type="text/html" id="DisplayUnit">
     <div id="Mainframe">
-        <div id="du24-two-thirds" class="layout-two-columns">
+        <div id="du24-two-thirds" class="layout-two-columns"></div>
+        <div class="layout-one-column">
+            <div id="du24-top-one-sixth" class="layout-one-sixth"></div>
+            <div id="du24-bottom-one-sixth" class="layout-one-sixth"></div>
+        </div>
+    </div>
+    <div id="parked-panels" style="display: none;">
+        <div id="primary-engine-panel" class="panel-frame width-height-100">
             <div id="map-panel" class="width-height-100 dev-background1">
                 <div id="map-header" style1="opacity: 0.5;">
                     <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
@@ -34,14 +41,7 @@
                     <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
                 </div>
             </div>
-        </div>
-        <div class="layout-one-column">
-            <div id="du24-top-one-sixth" class="layout-one-sixth"></div>
-            <div id="du24-bottom-one-sixth" class="layout-one-sixth"></div>
-        </div>
-    </div>
-    <div id="parked-panels" style="display: none;">
-        <div id="primary-engine-panel" class="panel-frame width-height-100">
+
             <div class="absolute-positioning">
                 <!-- engine EPR -->
                 <div class="centered-absolute-label gauge-label" style="top: 10%; left: 50%;">EPR</div>
@@ -83,6 +83,7 @@
                 </svg>
             </div>
         </div>
+
         <div id="secondary-engine-panel" class="panel-frame width-height-100">
             <div class="absolute-positioning">
                 <!-- fuel gauges -->
