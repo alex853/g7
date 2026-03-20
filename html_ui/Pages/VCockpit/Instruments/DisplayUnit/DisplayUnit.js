@@ -123,7 +123,7 @@ class DisplayUnit extends BaseInstrument {
         const panelId = action.split(':')[0];
         const actionId = action.split(':')[1];
 
-        const panel = panelId === 'map' ? this.mapPanel : undefined;
+        const panel = this.panels.find(panel => panel.id === panelId);
         if (!panel) {
             return;
         }

@@ -1,5 +1,7 @@
 class MapPanel {
     constructor(display) {
+        this.id = "map";
+
         this.display = display;
 
         this.map = display.querySelector('#MapInstrument');
