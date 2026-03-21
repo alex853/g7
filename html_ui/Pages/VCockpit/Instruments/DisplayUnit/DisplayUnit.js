@@ -20,9 +20,12 @@ class DisplayUnit extends BaseInstrument {
 
         const url = this.getAttribute("url");
         console.log("url: " + url);
-        if (url.includes("?DU2")) {
+        if (!url) {
+            console.error("url is not defined");
+            this.displayNumber = 2; // default
+        } else if (url.includes("unit=DU2")) {
             this.displayNumber = 2;
-        } else if (url.includes("?DU3")) {
+        } else if (url.includes("unit=DU3")) {
             this.displayNumber = 3;
         } else {
             this.displayNumber = 2; // default

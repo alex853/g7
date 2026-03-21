@@ -241,6 +241,8 @@ map-instrument {
 
 
 .dev-background#map-panel {
+    /*background-image: url("dev-backgrounds/g500-du3-savannah-map.png");*/
+    /*background-image: url("dev-backgrounds/g650er-du3-fl430-map.png");*/
     background-image: url("dev-backgrounds/g800-du2-map.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -258,6 +260,28 @@ map-instrument {
 
 .dev-background#secondary-engine-panel {
     background-image: url("dev-backgrounds/g800-du2-secondary-engine.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0.5;
+}
+
+.dev-background#cas-messages-panel {
+    /*background-image: url("dev-backgrounds/g500-du3-savannah-cas.png");*/
+    /*background-image: url("dev-backgrounds/g650er-du3-cas.png");*/
+    /*background-image: url("dev-backgrounds/g650er-du3-fl430-cas.png");*/
+    /*background-image: url("dev-backgrounds/g650er-luton-landing-cas.png");*/
+    /*background-image: url("dev-backgrounds/g700-startup-cas.png");*/
+    background-image: url("dev-backgrounds/g800 du2 from youtube-cas.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0.5;
+}
+
+.dev-background#flight-plan-panel {
+    background-image: url("dev-backgrounds/g650er-du3-fl430-flight-plan.png");
+    /*background-image: url("dev-backgrounds/g650er-du3-flight-plan.png");*/
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;

@@ -21,6 +21,12 @@ class BaseInstrument extends HTMLElement {
     Update() {
         // noop
     }
+
+    getAttribute(name) {
+        if (name === "url") {
+            return window.location.href;
+        }
+    }
 }
 
 const StubSimVar = {
