@@ -24,7 +24,7 @@ class PrimaryEnginePanel {
                 fuelFlow: 0,
             },
             rightEngine: {
-                index: 1,
+                index: 2,
                 epr: 0,
                 tgt: 0,
                 egt: 0,

@@ -22,7 +22,7 @@ class SecondaryEnginePanel {
                 bleedAirPressure: 0
             },
             rightEngine: {
-                index: 1,
+                index: 2,
                 oilPressure: 0,
                 oilTemperature: 0,
                 engVibration: 0,
