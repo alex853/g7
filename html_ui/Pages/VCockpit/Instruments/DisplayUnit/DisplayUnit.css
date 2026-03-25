@@ -200,6 +200,32 @@ map-instrument {
     align-items: center;
 }
 
+
+#flight-plan-panel div.flight-plan-text {
+    font-family: "RobotoMono";
+    font-size: 2vh;
+    color: #ccc;
+}
+
+#flight-plan-panel div.flight-plan-waypoint-row {
+    height: 29px;
+
+    display: flex;
+    flex-direction: row;
+}
+
+#flight-plan-panel div.flight-plan-list-waypoint {
+    width: 25%;
+    outline: 1px solid #a77; /* dev */
+}
+
+#flight-plan-panel div.flight-plan-list-column {
+    width: 25%;
+    text-align: center;
+    outline: 1px solid #a77; /* dev */
+}
+
+
 .centered-absolute-label {
     position: absolute;
     transform: translate(-50%, 0%);
@@ -297,4 +323,8 @@ map-instrument {
             #440 15px
     );
     color: #777;
+}
+
+.dev-frame {
+    outline: 1px solid #a77;
 }

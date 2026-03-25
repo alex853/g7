@@ -71,6 +71,18 @@ class MapPanel {
                 rotationMode = EMapRotationMode.NorthUp;
             }
             this.map.setRotationMode(rotationMode);
+        } else if (action === 'test') {
+            [
+                "GET_FLIGHTPLAN",
+                "GET_FLIGHTPLAN_FULL",
+                "GET_APPROACH_FLIGHTPLAN",
+                "GET_FLIGHTPLAN_GEOMETRY"
+            ].forEach(cmd => {
+                Coherent.call(cmd).then(r => {
+                    console.log(cmd, r);
+                    console.log(JSON.stringify(r));
+                });
+            });
         }
     }
 }

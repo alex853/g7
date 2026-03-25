@@ -68,6 +68,8 @@ class SecondaryEnginePanel {
         state.rightEngine.bleedAirPressure = ULRBJ.estimateBleedAirPressure(state.rightEngine);
 
         ULRBJ.calcHydAuxAndPtuPressure(state);
+
+        SimVar.SetSimVarValue("L:ULRBJ_TEST", "number", Math.round(state.rightEngine.oilTemperature));
     }
 
     updateUI() {

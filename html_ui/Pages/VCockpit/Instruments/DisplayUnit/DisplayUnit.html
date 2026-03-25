@@ -17,7 +17,7 @@
         </div>
     </div>
     <div id="parked-panels" class="hidden">
-        <div id="map-panel" class="width-height-100 dev-background">
+        <div id="map-panel" class="width-height-100 dev-background1">
             <div id="map-header" style1="opacity: 0.5;">
                 <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
                 <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
@@ -47,6 +47,7 @@
                 <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
                 <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>
                 <div class="control-button onclick" data-action="map:rotation" style="position: absolute; right: 1vh; bottom: 40vh; font-size: 2vh;">N/H</div>
+                <div class="control-button onclick" data-action="map:test" style="position: absolute; right: 1vh; bottom: 35vh; font-size: 2vh;">Tst</div>
             </div>
         </div>
 
@@ -179,8 +180,96 @@
             <div class="text-placeholder">CAS MESSAGES</div>
         </div>
 
-        <div id="flight-plan-panel" class="panel-frame width-height-100 dev-background">
-            <div class="text-placeholder">FLIGHT PLAN</div>
+        <div id="flight-plan-panel" class="panel-frame width-height-100 dev-background1">
+            <div style="display: none">
+                <map-instrument
+                        id="flight-plan-panel-fictitious-map"
+                        bing-id="FlightPlanPanelMap"
+                        show-overlay="false"
+                        show-flightplan="true"
+                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
+                </map-instrument>
+            </div>
+
+            <div class="gauge-label dev-frame" style="height: 10%;">header <span id="custom-simvar-test">---</span></div>
+            <div class="dev-frame" style="height: 77%; display: flex; flex-direction: row;">
+                <div class="dev-frame" style="width: 92%;">
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint1-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint1-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint1-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint1-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint2-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint2-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint2-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint2-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint3-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint3-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint3-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint3-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint4-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint4-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint4-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint4-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint5-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint5-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint5-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint5-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint6-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint6-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint6-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint6-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint7-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint7-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint7-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint7-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint8-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint8-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint8-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint8-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint9-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint9-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint9-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint9-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint10-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint10-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint10-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint10-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint11-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint11-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint11-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint11-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                    <div class="flight-plan-waypoint-row">
+                        <div id="flight-plan-waypoint12-name" class="flight-plan-list-waypoint flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint12-column1" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint12-column2" class="flight-plan-list-column flight-plan-text">---</div>
+                        <div id="flight-plan-waypoint12-column3" class="flight-plan-list-column flight-plan-text">---</div>
+                    </div>
+                </div>
+                <div class="gauge-label dev-frame" style="width: 8%;">s<br>c<br>r<br>o<br>l<br>l<br>e<br>r</div>
+            </div>
+            <div class="gauge-label dev-frame" style="height: 13%;">footer</div>
         </div>
 
         <div id="charts-panel" class="width-height-100">
