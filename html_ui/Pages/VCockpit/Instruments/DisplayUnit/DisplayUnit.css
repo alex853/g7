@@ -201,30 +201,70 @@ map-instrument {
 }
 
 
-#flight-plan-panel div.flight-plan-text {
+#flight-plan-panel div.text {
     font-family: "RobotoMono";
     font-size: 2vh;
     color: #ccc;
 }
 
-#flight-plan-panel div.flight-plan-waypoint-row {
+#flight-plan-panel div.waypoint-row {
     height: 29px;
 
     display: flex;
     flex-direction: row;
 }
 
-#flight-plan-panel div.flight-plan-list-waypoint {
-    width: 25%;
-    outline: 1px solid #a77; /* dev */
+#flight-plan-panel div.waypoint-name {
+    width: 80px;
+    margin-left: 7px;
+    border-left: 1px solid #9F9698;
+    border-right: 1px solid #9F9698;
+    border-top: 1px solid #9F9698;
+    border-bottom: 1px solid #9F9698;
+    box-sizing: border-box;
+    background: #000;
 }
 
-#flight-plan-panel div.flight-plan-list-column {
-    width: 25%;
+#flight-plan-panel div.waypoint-column1 {
+    width: 92px;
     text-align: center;
-    outline: 1px solid #a77; /* dev */
+    border-left: 1px solid #9F9698;
+    border-top: 1px solid #9F9698;
+    border-bottom: 1px solid #9F9698;
+    box-sizing: border-box;
+    background: #000;
 }
 
+#flight-plan-panel div.waypoint-column2 {
+    width: 92px;
+    text-align: center;
+    border-top: 1px solid #9F9698;
+    border-bottom: 1px solid #9F9698;
+    box-sizing: border-box;
+    background: #000;
+}
+
+#flight-plan-panel div.waypoint-column3 {
+    width: 92px;
+    text-align: center;
+    border-right: 1px solid #9F9698;
+    border-top: 1px solid #9F9698;
+    border-bottom: 1px solid #9F9698;
+    box-sizing: border-box;
+    background: #000;
+}
+
+#flight-plan-panel div.magenta-text {
+    color: #B86C9C;
+}
+
+#flight-plan-panel div.green-text {
+    color: #79A16B;
+}
+
+#flight-plan-panel div.blue-text {
+    color: #6FADA6;
+}
 
 .centered-absolute-label {
     position: absolute;
