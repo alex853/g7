@@ -191,9 +191,19 @@
                 </map-instrument>
             </div>
 
-            <div class="gauge-label dev-frame" style="height: 45px;">header <span id="custom-simvar-test">---</span></div>
-            <div class="dev-frame" style="height: 348px; display: flex; flex-direction: row;">
-                <div class="dev-frame" style="width: 365px;">
+            <div style="height: 45px; display: flex; flex-direction: row;">
+                <div class="text white-text" style="width: 88px; position: relative;">
+                    <span id="flight-plan-panel-header-source" style="position: absolute; right: 6px; bottom: 6px; width: 70px; height: 30px; text-align: center; display: flex; justify-content: center; align-items: center; background-color: #000;">GARMIN</span>
+                </div>
+                <div class="text white-text" style="width: 276px; position: relative;">
+                    <span style="position: absolute; left: 8px; right: 8px; bottom: 8px; height: 22px; outline: 5px solid #aaa; background-color: #000;">Time&nbsp;&nbsp;—&nbsp;VN Alt&nbsp;&nbsp;—&nbsp;Fuel</span>
+                </div>
+                <div class="text white-text" style="width: 33px; text-align: center;">
+                    <span class="panel-frame">&nbsp;▾&nbsp;</span>
+                </div>
+            </div>
+            <div style="height: 348px; display: flex; flex-direction: row;">
+                <div style="width: 365px;">
                     <div class="waypoint-row">
                         <div id="flight-plan-waypoint1-name" class="waypoint-name text magenta-text">---</div>
                         <div id="flight-plan-waypoint1-column1" class="waypoint-column1 text magenta-text">---</div>
@@ -267,9 +277,26 @@
                         <div id="flight-plan-waypoint12-column3" class="waypoint-column3 text green-text">---</div>
                     </div>
                 </div>
-                <div class="gauge-label dev-frame" style="width: 35px;">s<br>c<br>r<br>o<br>l<br>l<br>e<br>r</div>
+                <div style="width: 33px; text-align: center; position: relative;">
+                    <div style="position: absolute; left: 10px; top: 4px; width: 10px; height: 340px; background-color: #000; border: 1px solid #aaa; display: flex; flex-direction: column;">
+                        <div style="width: 10px; height: 80px; background-color: #aaa;"></div>
+                    </div>
+                </div>
             </div>
-            <div class="gauge-label dev-frame" style="height: 57px;">footer</div>
+            <div id="flight-plan-panel-footer" style="height: 57px;">
+                <div style="height: 26px; display: flex; flex-direction: row;">
+                    <div class="text white-text" style="width: 82px; text-align: center;">Dest</div>
+                    <div class="text white-text" style="width: 95px; text-align: center;">DTG</div>
+                    <div class="text white-text" style="width: 95px; text-align: center;">ETA</div>
+                    <div class="text white-text" style="width: 115px; text-align: center;">Fuel Rem</div>
+                </div>
+                <div style="height: 29px; display: flex; flex-direction: row;">
+                    <div id="flight-plan-panel-footer-dest" class="text green-text" style="width: 82px; text-align: center;">EGGW</div>
+                    <div id="flight-plan-panel-footer-dtg" class="text green-text" style="width: 95px; text-align: center;">1852</div>
+                    <div id="flight-plan-panel-footer-eta" class="text green-text" style="width: 95px; text-align: center;">1234Z</div>
+                    <div id="flight-plan-panel-footer-fuel-rem" class="text green-text" style="width: 95px; text-align: center;">5.2</div>
+                </div>
+            </div>
         </div>
 
         <div id="charts-panel" class="width-height-100">

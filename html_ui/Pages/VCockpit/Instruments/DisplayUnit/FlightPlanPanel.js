@@ -61,7 +61,7 @@ class FlightPlanPanel {
             }
         }
 
-        this.display.querySelector(`#custom-simvar-test`).innerHTML = SimVar.GetSimVarValue("L:ULRBJ_TEST", "number");
+        // this.display.querySelector(`#custom-simvar-test`).innerHTML = SimVar.GetSimVarValue("L:ULRBJ_TEST", "number");
     }
 
     emptyFlightplan() {
