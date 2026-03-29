@@ -15,6 +15,9 @@ class CasMessagesPanel {
     }
 
     updateUI() {
+        const fuelTankTemp = ULRBJ.getFuelTankTempCas();
 
+        // todo ak0 implement it!
+        this.display.querySelector('#cas-messages-test').innerHTML = fuelTankTemp;
     }
 }

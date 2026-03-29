@@ -43,6 +43,8 @@ class PrimaryEnginePanel {
     }
 
     updateState() {
+        ULRBJ.updateState();
+
         const state = this.state;
 
         state.leftEngine.epr = SimVar.GetSimVarValue("TURB ENG PRESSURE RATIO:1", "ratio");

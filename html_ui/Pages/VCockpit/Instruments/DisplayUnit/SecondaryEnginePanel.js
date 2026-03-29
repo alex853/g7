@@ -47,9 +47,9 @@ class SecondaryEnginePanel {
         const state = this.state;
 
         state.leftTank.quantity = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
-        state.leftTank.temp = ULRBJ.estimateFuelTemp(state.leftTank);
+        state.leftTank.temp = ULRBJ.getFuelTankTemp(1);
         state.rightTank.quantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
-        state.rightTank.temp = ULRBJ.estimateFuelTemp(state.rightTank);
+        state.rightTank.temp = ULRBJ.getFuelTankTemp(2);
 
         state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf");
         state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");

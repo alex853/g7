@@ -1,4 +1,90 @@
 ULRBJ = {
+    firstRun: true,
+    now: 0,
+    lastTime: 0,
+
+    CAS_LEVEL_0_NOTHING: 0,
+    CAS_LEVEL_1_WHITE: 1,
+    CAS_LEVEL_2_CYAN: 2,
+    CAS_LEVEL_3_AMBER: 3,
+    CAS_LEVEL_4_RED: 4,
+
+    updateState() {
+        this.now = SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds");
+
+        this.updateFuelSystemState();
+
+        this.firstRun = false;
+        this.lastTime = this.now;
+    },
+
+    updateFuelSystemState() {
+        const dt = Math.max(ULRBJ.now - ULRBJ.lastTime, 10);
+        const tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
+
+        let minFuelTankTemp = Number.MAX_VALUE;
+        let maxFuelTankTemp = Number.MIN_VALUE;
+
+        calcFuelTankTemp(1);
+        calcFuelTankTemp(2);
+        checkFuelTankTempCasMessage();
+
+        // todo ak3 sun heating, direction of flight and shadow from fuselage
+        // todo ak3 fuel return simulation
+        function calcFuelTankTemp(tank) {
+            const currTemp = ULRBJ.getFuelTankTemp(tank);
+
+            let newTemp;
+            if (!ULRBJ.firstRun) {
+                const tankMassKg = ULRBJ.getFuelTankMassKg(tank);
+                const c = 2100; // heat capacity Jet-A, J/(kg·°C)
+                // this 500 is roughly calibrated to make 5 tons of fuel temp dropping by 10 degrees in 15 minutes
+                const heatTransferCoeff = 50; // rough heat transfer coefficient J/(s·°C)
+
+                const k = heatTransferCoeff / (Math.max(tankMassKg, 100) * c);
+
+                newTemp = currTemp + (tat - currTemp) * k * dt;
+            } else {
+                newTemp = tat;
+            }
+
+            SimVar.SetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius", newTemp);
+
+            minFuelTankTemp = Math.min(minFuelTankTemp, newTemp);
+            maxFuelTankTemp = Math.max(maxFuelTankTemp, newTemp);
+        }
+
+        function checkFuelTankTempCasMessage() {
+            // todo ak0 -37 and +54 are not so simple, implement it
+            let status = ULRBJ.CAS_LEVEL_0_NOTHING;
+            if (minFuelTankTemp < -37 || maxFuelTankTemp > 54) {
+                status = ULRBJ.CAS_LEVEL_3_AMBER;
+            } else if (minFuelTankTemp < -34.5) {
+                status = ULRBJ.CAS_LEVEL_2_CYAN;
+            }
+
+            SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", status);
+        }
+    },
+
+    getFuelTankTemp(tank) {
+        return SimVar.GetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius");
+    },
+
+    getFuelTankTempCas() {
+        return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number");
+    },
+
+    getFuelTankMassKg(tank) {
+        return SimVar.GetSimVarValue(tank === 1
+                    ? "FUEL TANK LEFT MAIN QUANTITY"
+                    : "FUEL TANK RIGHT MAIN QUANTITY",
+                "gallons")
+            * Tools.GALLONS_TO_LITERS * Tools.JET_A_DENSITY;
+    },
+
+    // =================================================================================================================
+
     // todo ak store timestamp and use it for calculations
     // todo ak build a bit more complex model
     // todo ak tgt can not be lower than egt
@@ -18,19 +104,6 @@ ULRBJ = {
         const targetTgt = isRunning ? targetTgtIfRunning : oat;
 
         return engineState.tgt + (targetTgt - engineState.tgt) * 0.04;
-    },
-
-    // todo ak store timestamp and use it for calculations
-    // todo ak build a bit more complex model - sun heating? direction of flight and shadow from fuselage?
-    // todo ak fuel return simulation?
-    estimateFuelTemp: function (tankState) {
-        const tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
-
-        if (isNaN(tankState.temp)) {
-            return tat;
-        }
-
-        return tankState.temp + (tat - tankState.temp) * 0.0001;
     },
 
     // todo ak vibration spike at 40-50%

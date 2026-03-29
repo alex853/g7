@@ -33,10 +33,13 @@ const StubSimVar = {
     store: {},
 
     GetSimVarValue: function(name, unit) {
-        //return this.store[name] || 0;
+        if (name === "ABSOLUTE TIME") {
+            return Date.now() / 1000;
+        }
+
         const rawValue = localStorage.getItem(name);
-        if (unit === "Bool") {
-            if (rawValue === undefined) {
+        if (unit.toLowerCase() === "bool") {
+            if (rawValue === undefined || rawValue === null) {
                 return 0;
             } else if (rawValue === 0 || rawValue === '0') {
                 return 0;
@@ -44,6 +47,13 @@ const StubSimVar = {
                 return 1;
             } else {
                 return 0;
+            }
+        } else if (unit.toLowerCase() === "number"
+            || unit.toLowerCase() === "celsius") {
+            if (rawValue === undefined || rawValue === null) {
+                return 0;
+            } else {
+                return Number(rawValue);
             }
         }
         return rawValue || 0;
@@ -103,7 +113,7 @@ const FSRemoteControlSimVar = {
     },
 
     SetSimVarValue: function(name, unit, value) {
-        // todo ak not implemented
+        // todo ak3 not implemented
 /*        if (name === "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE") {
             name = "CABIN SEATBELTS ALERT SWITCH";
             value = !this.GetSimVarValue(name);

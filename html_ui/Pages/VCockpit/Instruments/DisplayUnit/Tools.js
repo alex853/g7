@@ -1,5 +1,7 @@
 Tools = {
     GALLONS_TO_LB: 6.7,
+    GALLONS_TO_LITERS: 3.78541,
+    JET_A_DENSITY: 0.8,
     PSF_TO_PSI: 1/144,
 
     alignWithNbsp: function (str, len) {
