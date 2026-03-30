@@ -217,3 +217,7 @@ const StubMap = {
         this.rotationMode = rotationMode;
     },
 }
+
+const Coherent = {
+    call: function () { return { then: function () { }}; },
+}

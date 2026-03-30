@@ -203,6 +203,45 @@ map-instrument {
 }
 
 
+#cas-messages-panel div.inverted-frame {
+    position: relative;
+
+    background: #000;
+
+    box-shadow:
+            inset 1px 1px 0 #4a4944,
+            inset -2px -2px 0 #7a7973;
+
+    padding: 4px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#cas-messages-panel span.message {
+    font-family: "RobotoMono";
+    font-size: 23px;
+    line-height: 25px;
+    color: #ccc;
+}
+
+#cas-messages-panel span.white {
+    color: #FFFFFF;
+}
+
+#cas-messages-panel span.cyan {
+    color: #7CFEE2;
+}
+
+#cas-messages-panel span.amber {
+    color: #FCE337;
+}
+
+#cas-messages-panel span.red {
+    color: #FF6101;
+}
+
+
 #flight-plan-panel div.text {
     font-family: "RobotoMono";
     font-size: 18px;
@@ -316,6 +355,10 @@ map-instrument {
     color: #333;
 }
 
+
+.dev-opacity {
+    opacity: 0.5;
+}
 
 .dev-background#map-panel {
     /*background-image: url("dev-backgrounds/g500-du3-savannah-map.png");*/
