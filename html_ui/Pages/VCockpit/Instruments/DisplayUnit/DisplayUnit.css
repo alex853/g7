@@ -18,7 +18,7 @@ html {
 
 html body {
     -webkit-user-select: none;
-    font-size: 10vh;
+    font-size: 50px;
     color: red;
     height: 100%;
     width: 100%;
@@ -43,8 +43,10 @@ html body {
 .layout-root {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    width: 1200px;
+    height: 900px;
 
     background: black;
 }
@@ -107,7 +109,7 @@ html body {
 
 #map-header div {
     font-family: "RobotoMono";
-    font-size: 2.4vh;
+    font-size: 22px;
     color: #ccc;
 
     padding: 7px;
@@ -143,12 +145,12 @@ html body {
     right: 12px;
     top: 0px;
     font-family: "Consolas", "Courier New", monospace;
-    font-size: 3.5vh;
+    font-size: 30px;
     color: #ccc;
 }
 
 #map-header div.bigger-text {
-    font-size: 2.6vh;
+    font-size: 23px;
     padding-top: 3px;
 }
 
@@ -177,7 +179,7 @@ map-instrument {
 
 #map-container div span.inset-text {
     font-family: "RobotoMono";
-    font-size: 2.5vh;
+    font-size: 22px;
     font-weight: bold;
     color: #ccc;
 
@@ -186,11 +188,11 @@ map-instrument {
 
 #map-container div.control-button {
     font-family: "RobotoMono";
-    font-size: 2.5vh;
+    font-size: 22px;
     color: #ccc;
 
-    width: 4vh;
-    height: 4vh;
+    width: 36px;
+    height: 36px;
 
     background: #000;
 
@@ -203,7 +205,7 @@ map-instrument {
 
 #flight-plan-panel div.text {
     font-family: "RobotoMono";
-    font-size: 2vh;
+    font-size: 18px;
     color: #ccc;
 }
 
@@ -272,7 +274,7 @@ map-instrument {
 
 #flight-plan-panel #flight-plan-panel-footer div.text {
     font-family: "RobotoMono";
-    font-size: 2.4vh;
+    font-size: 21px;
 }
 
 .centered-absolute-label {
@@ -282,13 +284,13 @@ map-instrument {
 
 .gauge-label {
     font-family: "RobotoMono";
-    font-size: 2.4vh;
+    font-size: 22px;
     color: #ccc;
 }
 
 .gauge-value {
     font-family: "RobotoMono";
-    font-size: 2.2vh;
+    font-size: 20px;
     color: #ccc;
 
     background: #000;
@@ -310,7 +312,7 @@ map-instrument {
     text-align: center;
 
     font-family: "RobotoMono";
-    font-size: 2.5vh;
+    font-size: 25px;
     color: #333;
 }
 
@@ -347,7 +349,8 @@ map-instrument {
     /*background-image: url("dev-backgrounds/g650er-du3-fl430-cas.png");*/
     /*background-image: url("dev-backgrounds/g650er-luton-landing-cas.png");*/
     /*background-image: url("dev-backgrounds/g700-startup-cas.png");*/
-    background-image: url("dev-backgrounds/g800 du2 from youtube-cas.png");
+    /*background-image: url("dev-backgrounds/g800 du2 from youtube-cas.png");*/
+    background-image: url("dev-backgrounds/g650er-du3-black-sea-spoofing-cas.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
@@ -355,8 +358,9 @@ map-instrument {
 }
 
 .dev-background#flight-plan-panel {
-    background-image: url("dev-backgrounds/g650er-du3-fl430-flight-plan.png");
+    /*background-image: url("dev-backgrounds/g650er-du3-fl430-flight-plan.png");*/
     /*background-image: url("dev-backgrounds/g650er-du3-flight-plan.png");*/
+    background-image: url("dev-backgrounds/g650er-du3-black-sea-spoofing-flight-plan.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
