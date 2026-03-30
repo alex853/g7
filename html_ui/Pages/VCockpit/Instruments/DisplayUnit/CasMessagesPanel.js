@@ -1,8 +1,7 @@
 class CasMessagesPanel {
-    styles= ["", "white", "cyan", "amber", "red"];
-
     constructor(display) {
         this.display = display;
+        this.styles = ["", "white", "cyan", "amber", "red"];
     }
 
     showPanel() {
