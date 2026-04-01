@@ -11,5 +11,29 @@ Tools = {
             actual++;
         }
         return str;
+    },
+
+    STRING_TO_CODE_CHARSET: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    STRING_TO_CODE_BASE: 36,
+
+    stringToCode: function (str) {
+        str = str.toUpperCase();
+        let num = 0;
+        for (let i = 0; i < Math.min(str.length, 5); i++) {
+            const idx = this.STRING_TO_CODE_CHARSET.indexOf(str[i]);
+            if (idx === -1) throw new Error(`Invalid character: ${str[i]}`);
+            num = num * this.STRING_TO_CODE_BASE + idx;
+        }
+        return num;
+    },
+
+    codeToString: function (num) {
+        let str = "";
+        while (num > 0) {
+            const rem = num % this.STRING_TO_CODE_BASE;
+            str = this.STRING_TO_CODE_CHARSET[rem] + str;
+            num = Math.floor(num / this.STRING_TO_CODE_BASE);
+        }
+        return str;
     }
 }

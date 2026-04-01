@@ -27,20 +27,22 @@ class FlightPlanPanel {
     }
 
     loadFlightPlan() {
-        Coherent.call("GET_FLIGHTPLAN").then(r => {
-            console.log("GET_FLIGHTPLAN", r);
+/*        Coherent.call("RECOMPUTE_ACTIVE_WAYPOINT_INDEX", 1).then(t => {
+            Coherent.call("GET_FLIGHTPLAN").then(r => {
+                console.log("GET_FLIGHTPLAN", r);
 
-            const fp = this.emptyFlightplan();
-            fp.waypoints = r.waypoints.map(w => {
-                return {
-                    ident: w.ident,
-                    eta: w.estimatedTimeOfArrival
-                };
-            })
-            this.flightplan = fp;
+                const fp = this.emptyFlightplan();
+                fp.waypoints = r.waypoints.map(w => {
+                    return {
+                        ident: w.ident,
+                        eta: w.estimatedTimeOfArrival
+                    };
+                })
+                this.flightplan = fp;
 
-            console.log("our flightplan", this.flightplan);
-        });
+                console.log("our flightplan", this.flightplan);
+            });
+        });*/
     }
 
     updateUI() {
@@ -61,6 +63,9 @@ class FlightPlanPanel {
             }
         }
 
+        const destCode = SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number");
+        const destIdent = Tools.codeToString(destCode);
+        diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-dest"), destIdent);
         // this.display.querySelector(`#custom-simvar-test`).innerHTML = SimVar.GetSimVarValue("L:ULRBJ_TEST", "number");
     }
 

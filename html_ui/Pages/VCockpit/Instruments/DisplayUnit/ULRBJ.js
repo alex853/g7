@@ -9,10 +9,14 @@ ULRBJ = {
     CAS_LEVEL_3_AMBER: 3,
     CAS_LEVEL_4_RED: 4,
 
+    flightplanCounter: 0,
+    flightplan: {},
+
     updateState() {
         this.now = SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds");
 
         this.updateFuelSystemState();
+        this.updateFlightPlanState();
 
         this.firstRun = false;
         this.lastTime = this.now;
@@ -81,6 +85,53 @@ ULRBJ = {
                     : "FUEL TANK RIGHT MAIN QUANTITY",
                 "gallons")
             * Tools.GALLONS_TO_LITERS * Tools.JET_A_DENSITY;
+    },
+
+    updateFlightPlanState() {
+        if (this.flightplan > 0) {
+            this.flightplan--;
+            return;
+        }
+
+        Coherent.call("GET_FLIGHTPLAN").then(r => {
+            // console.log("GET_FLIGHTPLAN", r);
+
+            const fp = {
+                waypoints: []
+            };
+            fp.waypoints = r.waypoints.map(w => {
+                return {
+                    ident: w.ident,
+                    eta: w.estimatedTimeOfArrival
+                };
+            })
+            fp.activeWaypointIndex = r.activeWaypointIndex;
+
+            this.flightplan = fp;
+            this.flightplanCounter = 10;
+
+            let prevIdent = "";
+            let nextIdent = "";
+            let destIdent = "";
+
+            if (fp.waypoints.length > 0) {
+                if (fp.activeWaypointIndex < fp.waypoints.length) {
+                    nextIdent = fp.waypoints[fp.activeWaypointIndex].ident;
+                }
+
+                if (0 <= fp.activeWaypointIndex-1) {
+                    prevIdent = fp.waypoints[fp.activeWaypointIndex-1].ident;
+                }
+
+                destIdent = fp.waypoints[fp.waypoints.length-1].ident;
+            }
+
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number", Tools.stringToCode(prevIdent));
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number", Tools.stringToCode(nextIdent));
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number", Tools.stringToCode(destIdent));
+
+            // console.log("our flightplan", this.flightplan);
+        });
     },
 
     // =================================================================================================================
