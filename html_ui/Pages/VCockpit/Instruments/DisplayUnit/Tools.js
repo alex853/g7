@@ -13,10 +13,22 @@ Tools = {
         return str;
     },
 
+    toFixed0: function (num) {
+        return Math.round(num).toString();
+    },
+
+    toFixed1: function (num) {
+        return (Math.round(num*10)/10).toString();
+    },
+
+    toFixed2: function (num) {
+        return (Math.round(num*100)/100).toString();
+    },
+
     STRING_TO_CODE_CHARSET: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     STRING_TO_CODE_BASE: 36,
 
-    stringToCode: function (str) {
+    waypointNameToCode: function (str) {
         str = str.toUpperCase();
         let num = 0;
         for (let i = 0; i < Math.min(str.length, 5); i++) {
@@ -27,7 +39,7 @@ Tools = {
         return num;
     },
 
-    codeToString: function (num) {
+    waypointCodeToString: function (num) {
         let str = "";
         while (num > 0) {
             const rem = num % this.STRING_TO_CODE_BASE;

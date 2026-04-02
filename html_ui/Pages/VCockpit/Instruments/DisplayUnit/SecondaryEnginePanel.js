@@ -75,34 +75,34 @@ class SecondaryEnginePanel {
     updateUI() {
         const state = this.state;
 
-        this.display.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp((state.leftTank.quantity * Tools.GALLONS_TO_LB).toFixed(0), 5);
-        this.display.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp((state.rightTank.quantity * Tools.GALLONS_TO_LB).toFixed(0), 5);
-        this.display.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(((state.leftTank.quantity + state.rightTank.quantity) * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.display.querySelector('#secondary-engine-left-fuel-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftTank.quantity * Tools.GALLONS_TO_LB), 5);
+        this.display.querySelector('#secondary-engine-right-fuel-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightTank.quantity * Tools.GALLONS_TO_LB), 5);
+        this.display.querySelector('#secondary-engine-total-fuel-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0((state.leftTank.quantity + state.rightTank.quantity) * Tools.GALLONS_TO_LB), 5);
 
-        this.display.querySelector('#secondary-engine-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.display.querySelector('#secondary-engine-left-oil-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.oilPressure * Tools.PSF_TO_PSI), 4);
+        this.display.querySelector('#secondary-engine-right-oil-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.oilPressure * Tools.PSF_TO_PSI), 4);
 
-        this.display.querySelector('#secondary-engine-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.oilTemperature).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.oilTemperature).toFixed(0), 4);
+        this.display.querySelector('#secondary-engine-left-oil-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.oilTemperature), 4);
+        this.display.querySelector('#secondary-engine-right-oil-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.oilTemperature), 4);
 
         this.display.querySelector('#secondary-engine-left-lp-evm-label').innerHTML = state.leftEngine.lpEvm < 0.3 ? '<0.30'
-            : Tools.alignWithNbsp((state.leftEngine.lpEvm).toFixed(2), 5);
+            : Tools.alignWithNbsp(Tools.toFixed2(state.leftEngine.lpEvm), 5);
         this.display.querySelector('#secondary-engine-right-lp-evm-label').innerHTML = state.rightEngine.lpEvm < 0.3 ? '<0.30'
-            : Tools.alignWithNbsp((state.rightEngine.lpEvm).toFixed(2), 5);
+            : Tools.alignWithNbsp(Tools.toFixed2(state.rightEngine.lpEvm), 5);
         this.display.querySelector('#secondary-engine-left-hp-evm-label').innerHTML = state.leftEngine.hpEvm < 0.6 ? '<0.60'
-            : Tools.alignWithNbsp((state.leftEngine.hpEvm).toFixed(2), 5);
+            : Tools.alignWithNbsp(Tools.toFixed2(state.leftEngine.hpEvm), 5);
         this.display.querySelector('#secondary-engine-right-hp-evm-label').innerHTML = state.rightEngine.hpEvm < 0.6 ? '<0.60'
-            : Tools.alignWithNbsp((state.rightEngine.hpEvm).toFixed(2), 5);
+            : Tools.alignWithNbsp(Tools.toFixed2(state.rightEngine.hpEvm), 5);
 
-        this.display.querySelector('#secondary-engine-left-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-aux-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.hydAuxPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-ptu-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.hydPtuPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-right-hyd-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.hydPressure * Tools.PSF_TO_PSI).toFixed(0), 4);
+        this.display.querySelector('#secondary-engine-left-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.hydPressure * Tools.PSF_TO_PSI), 4);
+        this.display.querySelector('#secondary-engine-aux-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.hydAuxPressure * Tools.PSF_TO_PSI), 4);
+        this.display.querySelector('#secondary-engine-ptu-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.hydPtuPressure * Tools.PSF_TO_PSI), 4);
+        this.display.querySelector('#secondary-engine-right-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.hydPressure * Tools.PSF_TO_PSI), 4);
 
-        this.display.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.leftTank.temp).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-right-fuel-temperature-label').innerHTML = Tools.alignWithNbsp((state.rightTank.temp).toFixed(0), 4);
+        this.display.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftTank.temp), 4);
+        this.display.querySelector('#secondary-engine-right-fuel-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightTank.temp), 4);
 
-        this.display.querySelector('#secondary-engine-left-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.bleedAirPressure).toFixed(0), 4);
-        this.display.querySelector('#secondary-engine-right-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.bleedAirPressure).toFixed(0), 4);
+        this.display.querySelector('#secondary-engine-left-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.bleedAirPressure), 4);
+        this.display.querySelector('#secondary-engine-right-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.bleedAirPressure), 4);
     }
 }

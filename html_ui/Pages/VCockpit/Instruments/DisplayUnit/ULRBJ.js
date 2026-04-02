@@ -126,9 +126,9 @@ ULRBJ = {
                 destIdent = fp.waypoints[fp.waypoints.length-1].ident;
             }
 
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number", Tools.stringToCode(prevIdent));
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number", Tools.stringToCode(nextIdent));
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number", Tools.stringToCode(destIdent));
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number", Tools.waypointNameToCode(prevIdent));
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number", Tools.waypointNameToCode(nextIdent));
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number", Tools.waypointNameToCode(destIdent));
 
             // console.log("our flightplan", this.flightplan);
         });

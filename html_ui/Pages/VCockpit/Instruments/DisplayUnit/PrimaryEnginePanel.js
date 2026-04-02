@@ -65,28 +65,28 @@ class PrimaryEnginePanel {
     updateUI() {
         const state = this.state;
 
-        this.display.querySelector('#primary-engine-left-epr-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.epr).toFixed(2), 4);
-        this.display.querySelector('#primary-engine-right-epr-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.epr).toFixed(2), 4);
+        this.display.querySelector('#primary-engine-left-epr-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed2(state.leftEngine.epr), 4);
+        this.display.querySelector('#primary-engine-right-epr-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed2(state.rightEngine.epr), 4);
         this.leftEngineEprGauge.setValue(state.leftEngine.epr);
         this.rightEngineEprGauge.setValue(state.rightEngine.epr);
 
-        this.display.querySelector('#primary-engine-left-tgt-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.tgt).toFixed(0), 4);
-        this.display.querySelector('#primary-engine-right-tgt-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.tgt).toFixed(0), 4);
+        this.display.querySelector('#primary-engine-left-tgt-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.tgt), 4);
+        this.display.querySelector('#primary-engine-right-tgt-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.tgt), 4);
         this.leftEngineTgtGauge.setValue(state.leftEngine.tgt);
         this.rightEngineTgtGauge.setValue(state.rightEngine.tgt);
 
-        this.display.querySelector('#primary-engine-left-egt-label').innerHTML = (state.leftEngine.egt).toFixed(0);
-        this.display.querySelector('#primary-engine-right-egt-label').innerHTML = (state.rightEngine.egt).toFixed(0);
+        this.display.querySelector('#primary-engine-left-egt-label').innerHTML = Tools.toFixed0(state.leftEngine.egt);
+        this.display.querySelector('#primary-engine-right-egt-label').innerHTML = Tools.toFixed0(state.rightEngine.egt);
 
-        this.display.querySelector('#primary-engine-left-n1-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n1).toFixed(1), 5);
-        this.display.querySelector('#primary-engine-right-n1-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n1).toFixed(1), 5);
+        this.display.querySelector('#primary-engine-left-n1-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed1(state.leftEngine.n1), 5);
+        this.display.querySelector('#primary-engine-right-n1-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed1(state.rightEngine.n1), 5);
         this.leftEngineLpGauge.setValue(state.leftEngine.n1);
         this.rightEngineLpGauge.setValue(state.rightEngine.n1);
 
-        this.display.querySelector('#primary-engine-left-n2-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.n2).toFixed(1), 5);
-        this.display.querySelector('#primary-engine-right-n2-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.n2).toFixed(1), 5);
+        this.display.querySelector('#primary-engine-left-n2-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed1(state.leftEngine.n2), 5);
+        this.display.querySelector('#primary-engine-right-n2-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed1(state.rightEngine.n2), 5);
 
-        this.display.querySelector('#primary-engine-left-fuel-flow-label').innerHTML = Tools.alignWithNbsp((state.leftEngine.fuelFlow * Tools.GALLONS_TO_LB).toFixed(0), 5);
-        this.display.querySelector('#primary-engine-right-fuel-flow-label').innerHTML = Tools.alignWithNbsp((state.rightEngine.fuelFlow * Tools.GALLONS_TO_LB).toFixed(0), 5);
+        this.display.querySelector('#primary-engine-left-fuel-flow-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.fuelFlow * Tools.GALLONS_TO_LB), 5);
+        this.display.querySelector('#primary-engine-right-fuel-flow-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.fuelFlow * Tools.GALLONS_TO_LB), 5);
     }
 }

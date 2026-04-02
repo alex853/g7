@@ -107,7 +107,7 @@ html body {
     flex-direction: row;
 }
 
-#map-header div {
+#map-header div.header-header-section {
     font-family: "RobotoMono";
     font-size: 22px;
     color: #ccc;
@@ -153,6 +153,26 @@ html body {
     font-size: 23px;
     padding-top: 3px;
 }
+
+#map-header div.waypoint-two-lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+#map-header div.waypoint-name {
+    font-size: 23px;
+}
+
+#map-header div.waypoint-name {
+    font-size: 23px;
+    text-align: center;
+    width: 76px;
+    background: #000;
+}
+
 
 #map-container {
     height: 93.5%;

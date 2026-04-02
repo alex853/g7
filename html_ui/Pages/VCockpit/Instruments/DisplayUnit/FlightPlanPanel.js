@@ -64,7 +64,7 @@ class FlightPlanPanel {
         }
 
         const destCode = SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number");
-        const destIdent = Tools.codeToString(destCode);
+        const destIdent = Tools.waypointCodeToString(destCode);
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-dest"), destIdent);
         // this.display.querySelector(`#custom-simvar-test`).innerHTML = SimVar.GetSimVarValue("L:ULRBJ_TEST", "number");
     }

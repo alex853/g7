@@ -219,5 +219,23 @@ const StubMap = {
 }
 
 const Coherent = {
-    call: function () { return { then: function () { }}; },
+    call: function (method, callback) {
+        if (method === "GET_FLIGHTPLAN") {
+            return fetch("3.json").then(res => res.json());
+        }
+
+        return Promise.resolve(null);
+    }
+}
+
+function diffAndSetText(element, text) {
+    if (element.textContent !== text) {
+        element.textContent = text;
+    }
+}
+
+function diffAndSetHTML(element, html) {
+    if (element.innerHTML !== html) {
+        element.innerHTML = html;
+    }
 }

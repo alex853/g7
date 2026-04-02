@@ -19,15 +19,21 @@
     <div id="parked-panels" class="hidden">
         <div id="map-panel" class="width-height-100 dev-background1">
             <div id="map-header" style1="opacity: 0.5;">
-                <div class="panel-frame" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
-                <div class="panel-frame" style="width: 11%;">Acft<br>Ctr</div>
-                <div class="panel-frame fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
-                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Prev<br><span id="map-header-prev-waypoint">INTRS</span></div>
-                <div class="panel-frame fully-centered bigger-text" style="width: 12%;">Next<br><span id="map-header-next-waypoint">INTRS</span></div>
-                <div class="panel-frame fully-centered" style="width: 8%;">GLB</div>
-                <div class="panel-frame vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame header-header-section" style="width: 11%;">Map<br>Layers<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame header-header-section" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame header-header-section" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
+                <div class="panel-frame header-header-section" style="width: 11%;">Acft<br>Ctr</div>
+                <div class="panel-frame header-header-section fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
+                <div class="panel-frame header-header-section waypoint-two-lines" style="width: 12%;">
+                    <div class="waypoint-label">Prev</div>
+                    <div id="map-header-prev-waypoint" class="waypoint-name">INTRS</div>
+                </div>
+                <div class="panel-frame header-header-section waypoint-two-lines" style="width: 12%;">
+                    <div class="waypoint-label">Next</div>
+                    <div id="map-header-next-waypoint" class="waypoint-name">INTRS</div>
+                </div>
+                <div class="panel-frame header-header-section fully-centered" style="width: 8%;">GLB</div>
+                <div class="panel-frame header-header-section vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
             </div>
             <div id="map-container">
                 <map-instrument

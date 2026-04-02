@@ -21,7 +21,10 @@ class MapPanel {
             tat: 0,
             sat: 0,
             tas: 0,
-            gs: 0
+            gs: 0,
+
+            prevWaypoint: "",
+            nextWaypoint: "",
         }
     }
 
@@ -45,20 +48,21 @@ class MapPanel {
         state.tas = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         state.gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
 
-        state.prevWaypoint = Tools.codeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number"));
-        state.nextWaypoint = Tools.codeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number"));
+        state.prevWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number"));
+        state.nextWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number"));
     }
 
     updateUI() {
         const state = this.state;
 
-        this.display.querySelector('#map-tat-label').innerHTML = "TAT" + Tools.alignWithNbsp((state.tat).toFixed(0), 4);
-        this.display.querySelector('#map-sat-label').innerHTML = "SAT" + Tools.alignWithNbsp((state.sat).toFixed(0), 4);
-        this.display.querySelector('#map-tas-label').innerHTML = "TAS" + Tools.alignWithNbsp((state.tas).toFixed(0), 4);
-        this.display.querySelector('#map-gs-label').innerHTML = "GS" + Tools.alignWithNbsp((state.gs).toFixed(0), 5);
+        diffAndSetHTML(this.display.querySelector('#map-tat-label'), "TAT" + Tools.alignWithNbsp(Tools.toFixed0(state.tat), 4));
+        diffAndSetHTML(this.display.querySelector('#map-sat-label'), "SAT" + Tools.alignWithNbsp(Tools.toFixed0(state.sat), 4));
+        diffAndSetHTML(this.display.querySelector('#map-tas-label'), "TAS" + Tools.alignWithNbsp(Tools.toFixed0(state.tas), 4));
+        diffAndSetHTML(this.display.querySelector('#map-gs-label'), "GS" + Tools.alignWithNbsp(Tools.toFixed0(state.gs), 5));
 
         const rotationMode = this.map.getRotationMode();
-        this.display.querySelector('#map-header-rotation-label').innerHTML = rotationMode === EMapRotationMode.NorthUp ? "North" : "Hdg";
+        const rotationText = rotationMode === EMapRotationMode.NorthUp ? "North" : "Hdg";
+        diffAndSetText(this.display.querySelector('#map-header-rotation-label'), rotationText);
 
         diffAndSetText(this.display.querySelector('#map-header-prev-waypoint'), state.prevWaypoint);
         diffAndSetText(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
