@@ -10,7 +10,6 @@ ULRBJ = {
     CAS_LEVEL_4_RED: 4,
 
     flightplanCounter: 0,
-    flightplan: {},
 
     updateState() {
         this.now = SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds");
@@ -93,57 +92,19 @@ ULRBJ = {
     },
 
     updateFlightPlanState() {
-        if (this.flightplan > 0) {
-            this.flightplan--;
+        if (this.flightplanCounter > 0) {
+            this.flightplanCounter--;
             return;
         }
 
         Coherent.call("GET_FLIGHTPLAN").then(r => {
-            // console.log("GET_FLIGHTPLAN", r);
-
-            const currentFuelGallons = ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
-            const avgFuelFlowGph = 500;
-
-            const fp = {
-                waypoints: []
-            };
-            fp.waypoints = r.waypoints.map(w => {
-                return {
-                    icao: extractIcao(w.icao),
-                    eta: w.estimatedTimeOfArrival,
-                    fuel: Math.max(currentFuelGallons - w.cumulativeEstimatedTimeEnRoute * avgFuelFlowGph / 3600, 0)
-                };
-            })
-            fp.activeWaypointIndex = r.activeWaypointIndex;
-
-            this.flightplan = fp;
-            this.flightplanCounter = 10;
-
-            for (let i = 0; i <= 12; i++) { // prev = 0, next = 1, ...
-                const iStr = i.toString().padStart(2, "0");
-
-                const waypointIndex = fp.activeWaypointIndex + (i - 1);
-                const wpExists = 0 <= waypointIndex && waypointIndex < fp.waypoints.length;
-                const wp = wpExists ? fp.waypoints[waypointIndex] : undefined;
-
-                SimVar.SetSimVarValue(`L:ULRBJ_FLIGHTPLAN_WP${iStr}_CODE`, "number", wp ? Tools.waypointNameToCode(wp.icao) : 0);
-                SimVar.SetSimVarValue(`L:ULRBJ_FLIGHTPLAN_WP${iStr}_ETA`, "number", wp ? wp.eta : 0);
-                SimVar.SetSimVarValue(`L:ULRBJ_FLIGHTPLAN_WP${iStr}_FUEL`, "number", wp ? wp.fuel : 0);
+            const fp = FlightPlanHelper.parseSnapshot(r);
+            if (fp.activeWaypointIndex !== r.activeWaypointIndex && fp.activeWaypointIndex !== 0) {
+                console.log("ULRBJ/Flightplan: setting active waypoint index to " + fp.activeWaypointIndex + " (was " + r.activeWaypointIndex + ")");
+                Coherent.call("SET_ACTIVE_WAYPOINT_INDEX", fp.activeWaypointIndex);
             }
-
-            const destIcao = fp.waypoints.length > 0 ? fp.waypoints[fp.waypoints.length - 1].icao : "";
-            const destEta = fp.waypoints.length > 0 ? fp.waypoints[fp.waypoints.length - 1].eta : -1;
-            const destFuel = fp.waypoints.length > 0 ? fp.waypoints[fp.waypoints.length - 1].fuel : 0;
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_CODE", "number", Tools.waypointNameToCode(destIcao));
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_ETA", "number", destEta);
-            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_DEST_FUEL", "number", destFuel);
-
-            // console.log("our flightplan", this.flightplan);
+            this.flightplanCounter = 10;
         });
-
-        function extractIcao(str) {
-            return str.trim().split(/\s+/).pop().trim();
-        }
     },
 
     // =================================================================================================================
@@ -225,5 +186,129 @@ ULRBJ = {
         } else {
             state.hydPtuPressure = 0;
         }
+    }
+}
+
+FlightPlanHelper = {
+    parseSnapshot(r) {
+        const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+        const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
+        const trackDeg = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
+
+        const fp = {
+            waypoints: []
+        };
+        fp.waypoints = r.waypoints.map(w => {
+            return {
+                icao: this.extractIcao(w.icao),
+                eta: w.estimatedTimeOfArrival,
+                cete: w.cumulativeEstimatedTimeEnRoute,
+            };
+        })
+
+        fp.activeWaypointIndex = this.findActiveWaypointIndex(r, planeLat, planeLon, trackDeg);
+
+        return fp;
+    },
+
+    extractIcao(str) {
+        return str.trim().split(/\s+/).pop().trim();
+    },
+
+    findActiveWaypointIndex(r, planeLat, planeLon, trackDeg) {
+        for (let i = 0; i < r.waypoints.length; i++) {
+            const wp = r.waypoints[i];
+            const passed = this.hasPassedWaypoint(planeLat, planeLon, wp.lla.lat, wp.lla.long, trackDeg);
+            if (!passed) {
+                return i;
+            }
+        }
+        return 0;
+    },
+
+    hasPassedWaypoint(planeLat, planeLon, wpLat, wpLon, trackDeg) {
+        const bearingToWp = this.bearingDeg(planeLat, planeLon, wpLat, wpLon);
+
+        let angle = Math.abs(bearingToWp - trackDeg);
+        if (angle > 180) angle = 360 - angle;
+
+        return angle > 90;
+    },
+
+    toRad(deg) {
+        return deg * Math.PI / 180;
+    },
+
+    toDeg(rad) {
+        return rad * 180 / Math.PI;
+    },
+
+    bearingDeg(lat1, lon1, lat2, lon2) {
+        const dLon = this.toRad(lon2 - lon1);
+
+        const y = Math.sin(dLon) * Math.cos(this.toRad(lat2));
+        const x =
+            Math.cos(this.toRad(lat1)) * Math.sin(this.toRad(lat2)) -
+            Math.sin(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * Math.cos(dLon);
+
+        return (this.toDeg(Math.atan2(y, x)) + 360) % 360;
+    },
+
+    distanceNM(lat1, lon1, lat2, lon2) {
+        const R = 3440.065;
+
+        const toRad = deg => deg * Math.PI / 180;
+
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+
+        const a =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) *
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    },
+
+    emptyFlightplan() {
+        return {
+            waypoints: [],
+            activeWaypointIndex: 0
+        };
+    },
+
+    toActivePlan(fp) {
+        const currentFuelGallons = ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
+        const avgFuelFlowGph = 500;
+
+        const result = {
+            waypoints: []
+        }
+
+        if (fp.activeWaypointIndex < 0 || fp.activeWaypointIndex >= fp.waypoints.length) {
+            return result;
+        }
+
+        for (let i = fp.activeWaypointIndex-1; i < fp.waypoints.length; i++) {
+            if (i < 0) {
+                continue;
+            }
+
+            const wp = fp.waypoints[i];
+            result.waypoints.push({
+                icao: wp.icao,
+                eta: wp.eta,
+                fuel: Math.max(currentFuelGallons - wp.cete * avgFuelFlowGph / 3600, 0)
+            });
+        }
+
+        if (result.waypoints.length > 0) {
+            result.dest = result.waypoints[result.waypoints.length - 1];
+        }
+
+        return result;
     }
 }

@@ -17,6 +17,8 @@ class MapPanel {
         // this.map.setZoom(10);
         // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
 
+        this.flightplanCounter = 0;
+
         this.state = {
             tat: 0,
             sat: 0,
@@ -48,8 +50,18 @@ class MapPanel {
         state.tas = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         state.gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
 
-        state.prevWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_WP00_CODE", "number"), '&nbsp;');
-        state.nextWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_WP01_CODE", "number"), '&nbsp;');
+        if (this.flightplanCounter === 0) {
+            Coherent.call("GET_FLIGHTPLAN").then(r => {
+                const fp = FlightPlanHelper.parseSnapshot(r);
+                const activePlan = FlightPlanHelper.toActivePlan(fp);
+                state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : "&nbsp;";
+                state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : "&nbsp;";
+            });
+
+            this.flightplanCounter = 10;
+        } else {
+            this.flightplanCounter--;
+        }
     }
 
     updateUI() {
@@ -82,7 +94,18 @@ class MapPanel {
             }
             this.map.setRotationMode(rotationMode);
         } else if (action === 'test') {
-            [
+/*            let counter = 0;
+            for (let i = 0; i < 10000000; i++) {
+                SimVar.SetSimVarValue('L:ULRBJ_TEST_TEST', 'number', i);
+                const read = SimVar.GetSimVarValue('L:ULRBJ_TEST_TEST', 'number');
+                if (i !== read) {
+                    counter++;
+                }
+            }
+            console.log('counter = ' + counter);*/
+
+
+/*            [
                 "GET_FLIGHTPLAN",
                 // "GET_FLIGHTPLAN_FULL",
                 // "GET_APPROACH_FLIGHTPLAN",
@@ -94,7 +117,7 @@ class MapPanel {
                     console.log(cmd, r);
                     console.log(JSON.stringify(r));
                 });
-            });
+            });*/
         }
     }
 }
