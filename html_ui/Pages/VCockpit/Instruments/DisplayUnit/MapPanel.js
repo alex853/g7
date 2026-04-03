@@ -48,8 +48,8 @@ class MapPanel {
         state.tas = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         state.gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
 
-        state.prevWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_PREV_CODE", "number"));
-        state.nextWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_NEXT_CODE", "number"));
+        state.prevWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_WP00_CODE", "number"), '&nbsp;');
+        state.nextWaypoint = Tools.waypointCodeToString(SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_WP01_CODE", "number"), '&nbsp;');
     }
 
     updateUI() {
@@ -64,8 +64,8 @@ class MapPanel {
         const rotationText = rotationMode === EMapRotationMode.NorthUp ? "North" : "Hdg";
         diffAndSetText(this.display.querySelector('#map-header-rotation-label'), rotationText);
 
-        diffAndSetText(this.display.querySelector('#map-header-prev-waypoint'), state.prevWaypoint);
-        diffAndSetText(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
+        diffAndSetHTML(this.display.querySelector('#map-header-prev-waypoint'), state.prevWaypoint);
+        diffAndSetHTML(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
     }
 
     onAction(action) {

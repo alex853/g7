@@ -23,7 +23,7 @@
                 <div class="panel-frame header-header-section" style="width: 11%;">Map<br>View<span class="dropdown-arrow">▾</span></div>
                 <div class="panel-frame header-header-section" style="width: 11%;">Wx<span class="dropdown-arrow">▾</span></div>
                 <div class="panel-frame header-header-section" style="width: 11%;">Acft<br>Ctr</div>
-                <div class="panel-frame header-header-section fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame">North</span></div>
+                <div class="panel-frame header-header-section fully-centered" style="width: 12%;"><span id="map-header-rotation-label" class="black-rect-white-frame" style="width: 80%;">North</span></div>
                 <div class="panel-frame header-header-section waypoint-two-lines" style="width: 12%;">
                     <div class="waypoint-label">Prev</div>
                     <div id="map-header-prev-waypoint" class="waypoint-name">INTRS</div>
@@ -213,16 +213,6 @@
         </div>
 
         <div id="flight-plan-panel" class="panel-frame width-height-100 dev-background1">
-            <div style="display: none">
-                <map-instrument
-                        id="flight-plan-panel-fictitious-map"
-                        bing-id="FlightPlanPanelMap"
-                        show-overlay="false"
-                        show-flightplan="true"
-                        config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
-                </map-instrument>
-            </div>
-
             <div style="height: 45px; display: flex; flex-direction: row;">
                 <div class="text white-text" style="width: 88px; position: relative;">
                     <span id="flight-plan-panel-header-source" style="position: absolute; right: 6px; bottom: 6px; width: 70px; height: 30px; text-align: center; display: flex; justify-content: center; align-items: center; background-color: #000;">GARMIN</span>
@@ -323,10 +313,10 @@
                     <div class="text white-text" style="width: 115px; text-align: center;">Fuel Rem</div>
                 </div>
                 <div style="height: 29px; display: flex; flex-direction: row;">
-                    <div id="flight-plan-panel-footer-dest" class="text green-text" style="width: 82px; text-align: center;">ABCD</div>
-                    <div id="flight-plan-panel-footer-dtg" class="text green-text" style="width: 95px; text-align: center;">1852</div>
-                    <div id="flight-plan-panel-footer-eta" class="text green-text" style="width: 95px; text-align: center;">1234Z</div>
-                    <div id="flight-plan-panel-footer-fuel-rem" class="text green-text" style="width: 95px; text-align: center;">5.2</div>
+                    <div id="flight-plan-panel-footer-dest" class="text green-text" style="width: 82px; text-align: center;">---</div>
+                    <div id="flight-plan-panel-footer-dtg" class="text green-text" style="width: 95px; text-align: center;">---</div>
+                    <div id="flight-plan-panel-footer-eta" class="text green-text" style="width: 95px; text-align: center;">---</div>
+                    <div id="flight-plan-panel-footer-fuel" class="text green-text" style="width: 95px; text-align: center;">---</div>
                 </div>
             </div>
         </div>

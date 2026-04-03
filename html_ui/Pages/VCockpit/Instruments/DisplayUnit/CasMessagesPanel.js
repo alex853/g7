@@ -12,14 +12,25 @@ class CasMessagesPanel {
     }
 
     updateState() {
-
+        // todo ak2 const messageCodes = ULRBJ.CAS.getMessageCodes();
+        // todo ak2 it reads and parses into suitable data
+        // todo ak2 updateUI iterates and updates dom elements
     }
 
     updateUI() {
-        const messages = [
-        ];
+        const messages = [];
 
-        const fuelTankTemp = ULRBJ.getFuelTankTempCas();
+        // todo ak1: (A) Fuel Imbalance
+        // todo ak1: (A) L-R Fuel Level Low
+        // todo ak1: (A) Fuel Tank Temperature
+        // todo ak1: (C) Fuel Crossflow Valve Open
+        // todo ak1: (C) Fuel Imbalance
+        // todo ak1: (C) Fuel Intertank Valve Open
+        // todo ak1: (C) Fuel Tank Temperature
+        // todo ak1: (W) Fuel Crossflow Valve Open
+        // todo ak1: (W) Fuel Intertank Valve Open
+
+        const fuelTankTemp = ULRBJ.FuelSystem.getFuelTankTempCas();
         if (fuelTankTemp === ULRBJ.CAS_LEVEL_2_CYAN || fuelTankTemp === ULRBJ.CAS_LEVEL_3_AMBER) {
             messages.push({ level: fuelTankTemp, message: "Fuel Tank Temperature" });
         }

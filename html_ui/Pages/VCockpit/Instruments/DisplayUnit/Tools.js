@@ -18,11 +18,11 @@ Tools = {
     },
 
     toFixed1: function (num) {
-        return (Math.round(num*10)/10).toString();
+        return (Math.round(num*10)/10).toFixed(1);
     },
 
     toFixed2: function (num) {
-        return (Math.round(num*100)/100).toString();
+        return (Math.round(num*100)/100).toFixed(2);
     },
 
     STRING_TO_CODE_CHARSET: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -30,16 +30,27 @@ Tools = {
 
     waypointNameToCode: function (str) {
         str = str.toUpperCase();
+        if (str === "") {
+            return 0;
+        }
+
         let num = 0;
         for (let i = 0; i < Math.min(str.length, 5); i++) {
             const idx = this.STRING_TO_CODE_CHARSET.indexOf(str[i]);
             if (idx === -1) throw new Error(`Invalid character: ${str[i]}`);
             num = num * this.STRING_TO_CODE_BASE + idx;
         }
-        return num;
+
+        return num+1;
     },
 
-    waypointCodeToString: function (num) {
+    waypointCodeToString: function (num, noValueString) {
+        if (num === 0) {
+            return (noValueString ? noValueString : "");
+        }
+
+        num = num-1;
+
         let str = "";
         while (num > 0) {
             const rem = num % this.STRING_TO_CODE_BASE;

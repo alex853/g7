@@ -49,7 +49,8 @@ const StubSimVar = {
                 return 0;
             }
         } else if (unit.toLowerCase() === "number"
-            || unit.toLowerCase() === "celsius") {
+            || unit.toLowerCase() === "celsius"
+            || unit.toLowerCase() === "gallons") {
             if (rawValue === undefined || rawValue === null) {
                 return 0;
             } else {
