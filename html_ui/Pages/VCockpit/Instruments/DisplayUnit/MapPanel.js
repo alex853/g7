@@ -17,6 +17,8 @@ class MapPanel {
         // this.map.setZoom(10);
         // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
 
+        this.needToLoadSettings = true;
+
         this.flightplanCounter = 0;
 
         this.state = {
@@ -38,8 +40,30 @@ class MapPanel {
     }
 
     onUpdate() {
-        this.map.setCenteredOnPlane();
+        this.updateMapCenter();
+
         this.map.update();
+    }
+
+    updateMapCenter() {
+        const rotationMode = this.map.getRotationMode();
+        if (rotationMode === EMapRotationMode.NorthUp) {
+            this.map.setCenteredOnPlane();
+        } else {
+            const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+            const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
+
+            const yOffset = 0.1;
+
+            const displayRange = this.map.getDisplayRange();
+            const yOffsetNm = displayRange * yOffset;
+
+            const p = Tools.offsetLatLon(planeLat, planeLon, planeHeadingDeg, yOffsetNm);
+
+            const center = new LatLongAlt(p.lat, p.lon);
+            this.map.setCenter(center);
+        }
     }
 
     updateState() {
@@ -65,6 +89,11 @@ class MapPanel {
     }
 
     updateUI() {
+        if (this.needToLoadSettings) {
+            this.loadMapSettings();
+            this.needToLoadSettings = false;
+        }
+
         const state = this.state;
 
         diffAndSetHTML(this.display.querySelector('#map-tat-label'), "TAT" + Tools.alignWithNbsp(Tools.toFixed0(state.tat), 4));
@@ -80,20 +109,48 @@ class MapPanel {
         diffAndSetHTML(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
     }
 
+
+    loadMapSettings() {
+        const rotationMode = GetStoredData("DU2.Map.Rotation");
+        if (rotationMode === "HDGUp") {
+            this.map.setRotationMode(EMapRotationMode.HDGUp);
+        } else {
+            this.map.setRotationMode(EMapRotationMode.NorthUp);
+        }
+
+        const zoom = GetStoredData("DU2.Map.Zoom");
+        if (zoom !== undefined) {
+            const zoomNumber = Number(zoom);
+            if (!isNaN(zoomNumber)) {
+                this.map.setZoom(zoomNumber);
+            }
+        }
+
+        this.updateMapCenter();
+    }
+
     onAction(action) {
         if (action === "zoom-plus") {
             this.map.zoomOut();
+            SetStoredData("DU2.Map.Zoom", this.map.getZoom().toString());
+            this.updateMapCenter();
         } else if (action === 'zoom-minus') {
             this.map.zoomIn();
+            SetStoredData("DU2.Map.Zoom", this.map.getZoom().toString());
+            this.updateMapCenter();
         } else if (action === 'rotation') {
             let rotationMode = this.map.getRotationMode();
             if (rotationMode === EMapRotationMode.NorthUp) {
                 rotationMode = EMapRotationMode.HDGUp;
+                SetStoredData("DU2.Map.Rotation", "HDGUp");
             } else {
                 rotationMode = EMapRotationMode.NorthUp;
+                SetStoredData("DU2.Map.Rotation", "NorthUp");
             }
             this.map.setRotationMode(rotationMode);
+            this.updateMapCenter();
         } else if (action === 'test') {
+            // this.yOffset = this.yOffset - 0.01;
 /*            let counter = 0;
             for (let i = 0; i < 10000000; i++) {
                 SimVar.SetSimVarValue('L:ULRBJ_TEST_TEST', 'number', i);

@@ -1,4 +1,4 @@
-class TestButton extends BaseInstrument { // todo ak rename to OverheadDisplay
+class TestButton extends BaseInstrument {
     constructor() {
         super();
     }

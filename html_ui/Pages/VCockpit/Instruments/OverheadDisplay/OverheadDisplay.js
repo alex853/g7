@@ -221,8 +221,8 @@ Pages = [
             this.state.leftEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
             this.state.rightEngineRunning = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
 
-            // todo ak intertank
-            // todo ak crossflow
+            // todo ak3 intertank
+            // todo ak3 crossflow
         },
         updateUI: function (display) {
             const gallonsToLb = 6.7;
@@ -310,8 +310,8 @@ Pages = [
             "l-main-pump": function (page) { Tools.toggleEvent(page, "leftMainPump", "K:ELECT_FUEL_PUMP1_SET"); },
             "r-main-pump": function (page) { Tools.toggleEvent(page, "rightMainPump", "K:ELECT_FUEL_PUMP2_SET"); },
             "r-alt-pump": function (page) { Tools.toggleEvent(page, "rightAltPump", "K:ELECT_FUEL_PUMP2_SET"); },
-            "intertank": function (page) { page.state.intertank = Tools.negateBool(page.state.intertank); }, // todo ak intertank
-            "crossflow": function (page) { page.state.crossflow = Tools.negateBool(page.state.crossflow); }, // todo ak crossflow
+            "intertank": function (page) { page.state.intertank = Tools.negateBool(page.state.intertank); }, // todo ak3 intertank
+            "crossflow": function (page) { page.state.crossflow = Tools.negateBool(page.state.crossflow); }, // todo ak3 crossflow
             "bla-bla": function (page) { /* bla-bla */ },
         }
     },

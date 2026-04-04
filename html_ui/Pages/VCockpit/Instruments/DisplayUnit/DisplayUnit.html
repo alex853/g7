@@ -35,7 +35,7 @@
                 <div class="panel-frame header-header-section fully-centered" style="width: 8%;">GLB</div>
                 <div class="panel-frame header-header-section vertically-centered bigger-text" style="width: 12%;"><span class="black-rect">Map</span><span class="dropdown-arrow">▾</span></div>
             </div>
-            <div id="map-container">
+            <div id="map-container" style1="opacity: 0.5;">
                 <map-instrument
                         id="MapInstrument"
                         bing-id="MFD"
@@ -159,7 +159,7 @@
                         </marker>
                     </defs>
 
-                    <!-- todo ak fuel balance diagram -->
+                    <!-- todo ak3 fuel balance diagram -->
                     <!--                        <line x1="200" y1=" 47" x2="200" y2=" 82" stroke="#ccc" stroke-width="3"/>-->
                     <!--                        <line x1="144" y1=" 67" x2="189" y2=" 67" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
                     <!--                        <line x1="256" y1=" 57" x2="211" y2=" 57" stroke="#ccc" stroke-width="4" marker-end="url(#arrow)"/>-->
@@ -328,6 +328,8 @@
 </script>
 
 <script type="text/html" import-template="/Pages/VCockpit/Instruments/Shared/Map/MapInstrument.html"></script>
+
+<script type="text/html" import-script="/JS/dataStorage.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/Tools.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/DisplayUnit/EngineGauge.js"></script>

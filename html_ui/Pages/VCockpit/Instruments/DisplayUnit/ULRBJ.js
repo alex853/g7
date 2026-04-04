@@ -59,7 +59,7 @@ ULRBJ = {
             }
 
             function checkFuelTankTempCasMessage() {
-                // todo ak0 -37 and +54 are not so simple, implement it
+                // todo ak3 -37 and +54 are not so simple, implement it
                 let status = ULRBJ.CAS_LEVEL_0_NOTHING;
                 if (minFuelTankTemp < -37 || maxFuelTankTemp > 54) {
                     status = ULRBJ.CAS_LEVEL_3_AMBER;
@@ -109,9 +109,9 @@ ULRBJ = {
 
     // =================================================================================================================
 
-    // todo ak store timestamp and use it for calculations
-    // todo ak build a bit more complex model
-    // todo ak tgt can not be lower than egt
+    // todo ak3 store timestamp and use it for calculations
+    // todo ak3 build a bit more complex model
+    // todo ak3 tgt can not be lower than egt
     estimateTgt: function (engineState) {
         const isRunning = SimVar.GetSimVarValue(`ENG COMBUSTION:${engineState.index}`, "bool");
 
@@ -130,7 +130,7 @@ ULRBJ = {
         return engineState.tgt + (targetTgt - engineState.tgt) * 0.04;
     },
 
-    // todo ak vibration spike at 40-50%
+    // todo ak3 vibration spike at 40-50%
     estimateLpEvm: function (engineState) {
         const engVibration = engineState.engVibration;
         const n1 = SimVar.GetSimVarValue(`TURB ENG CORRECTED N1:${engineState.index}`, "percent");
@@ -138,7 +138,7 @@ ULRBJ = {
         return engVibration * (0.6 + n1 / 400) + noise;
     },
 
-    // todo ak vibration spike at 40-50%
+    // todo ak3 vibration spike at 40-50%
     estimateHpEvm: function (engineState) {
         const engVibration = engineState.engVibration;
         const n2 = SimVar.GetSimVarValue(`TURB ENG CORRECTED N2:${engineState.index}`, "percent");
@@ -254,7 +254,7 @@ FlightPlanHelper = {
         return (this.toDeg(Math.atan2(y, x)) + 360) % 360;
     },
 
-    distanceNM(lat1, lon1, lat2, lon2) {
+    distanceNM(lat1, lon1, lat2, lon2) { // todo ak1 move to Tools
         const R = 3440.065;
 
         const toRad = deg => deg * Math.PI / 180;
