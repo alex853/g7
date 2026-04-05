@@ -1,0 +1,5 @@
+[Log] ULRBJ/Flightplan: setting active waypoint index to 15 (was 16) (ulrbj.js, line 103)
+[Log] ULRBJ/Flightplan: setting active waypoint index to 6 (was 15) (ulrbj.js, line 103)
+[Log] ULRBJ/Flightplan: setting active waypoint index to 4 (was 6) (ulrbj.js, line 103)
+[Log] ULRBJ/Flightplan: setting active waypoint index to 3 (was 4) (ulrbj.js, line 103)
+[Log] ULRBJ/Flightplan: setting active waypoint index to 2 (was 3) (ulrbj.js, line 103)

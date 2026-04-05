@@ -29,6 +29,7 @@ class MapPanel {
 
             prevWaypoint: "",
             nextWaypoint: "",
+            nextWaypointDist: 0
         }
     }
 
@@ -80,6 +81,7 @@ class MapPanel {
                 const activePlan = FlightPlanHelper.toActivePlan(fp);
                 state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : "&nbsp;";
                 state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : "&nbsp;";
+                state.nextWaypointDist = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].distToPlane : 0;
             });
 
             this.flightplanCounter = 10;
@@ -107,8 +109,10 @@ class MapPanel {
 
         diffAndSetHTML(this.display.querySelector('#map-header-prev-waypoint'), state.prevWaypoint);
         diffAndSetHTML(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
-    }
 
+        diffAndSetHTML(this.display.querySelector('#map-next-inset-dist-label'), Tools.toFixed0(state.nextWaypointDist) + "&nbsp;nm");
+        diffAndSetHTML(this.display.querySelector('#map-next-inset-name-label'), state.nextWaypoint);
+    }
 
     loadMapSettings() {
         const rotationMode = GetStoredData("DU2.Map.Rotation");
@@ -162,19 +166,19 @@ class MapPanel {
             console.log('counter = ' + counter);*/
 
 
-/*            [
+            [
                 "GET_FLIGHTPLAN",
                 // "GET_FLIGHTPLAN_FULL",
                 // "GET_APPROACH_FLIGHTPLAN",
                 // "GET_FLIGHTPLAN_GEOMETRY",
-                "GET_ACTIVE_WAYPOINT_INDEX",
+                // "GET_ACTIVE_WAYPOINT_INDEX",
                 // "GET_CURRENT_FLIGHTPLAN_INDEX"
             ].forEach(cmd => {
                 Coherent.call(cmd).then(r => {
                     console.log(cmd, r);
                     console.log(JSON.stringify(r));
                 });
-            });*/
+            });
         }
     }
 }

@@ -229,6 +229,14 @@ const Coherent = {
     }
 }
 
+class FlightPlanManager {
+    constructor() {
+        console.info("FlightPlanManager.constructor")
+    }
+
+    registerListener() {}
+}
+
 function diffAndSetText(element, text) {
     if (element.textContent !== text) {
         element.textContent = text;
@@ -240,3 +248,7 @@ function diffAndSetHTML(element, html) {
         element.innerHTML = html;
     }
 }
+
+function GetStoredData(key) {}
+
+function SetStoredData(key, value) {}

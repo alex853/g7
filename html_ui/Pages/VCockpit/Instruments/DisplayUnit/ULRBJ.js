@@ -200,9 +200,10 @@ FlightPlanHelper = {
         };
         fp.waypoints = r.waypoints.map(w => {
             return {
-                icao: this.extractIcao(w.icao),
+                icao: this.extractIcao(w),
                 eta: w.estimatedTimeOfArrival,
                 cete: w.cumulativeEstimatedTimeEnRoute,
+                distToPlane: Tools.distanceNM(planeLat, planeLon, w.lla.lat, w.lla.long)
             };
         })
 
@@ -211,8 +212,15 @@ FlightPlanHelper = {
         return fp;
     },
 
-    extractIcao(str) {
-        return str.trim().split(/\s+/).pop().trim();
+    extractIcao(w) {
+        const icao = w.icao.trim();
+        const ident = w.ident.trim();
+
+        if (icao.length == 0) {
+            return ident;
+        } else {
+            return icao.split(/\s+/).pop().trim();
+        }
     },
 
     findActiveWaypointIndex(r, planeLat, planeLon, trackDeg) {
@@ -254,25 +262,6 @@ FlightPlanHelper = {
         return (this.toDeg(Math.atan2(y, x)) + 360) % 360;
     },
 
-    distanceNM(lat1, lon1, lat2, lon2) { // todo ak1 move to Tools
-        const R = 3440.065;
-
-        const toRad = deg => deg * Math.PI / 180;
-
-        const dLat = toRad(lat2 - lat1);
-        const dLon = toRad(lon2 - lon1);
-
-        const a =
-            Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) *
-            Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) ** 2;
-
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
-    },
-
     emptyFlightplan() {
         return {
             waypoints: [],
@@ -301,7 +290,8 @@ FlightPlanHelper = {
             result.waypoints.push({
                 icao: wp.icao,
                 eta: wp.eta,
-                fuel: Math.max(currentFuelGallons - wp.cete * avgFuelFlowGph / 3600, 0)
+                fuel: Math.max(currentFuelGallons - wp.cete * avgFuelFlowGph / 3600, 0),
+                distToPlane: wp.distToPlane
             });
         }
 
