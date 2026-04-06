@@ -79,9 +79,9 @@ class MapPanel {
             Coherent.call("GET_FLIGHTPLAN").then(r => {
                 const fp = FlightPlanHelper.parseSnapshot(r);
                 const activePlan = FlightPlanHelper.toActivePlan(fp);
-                state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : "&nbsp;";
-                state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : "&nbsp;";
-                state.nextWaypointDist = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].distToPlane : 0;
+                state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : null;
+                state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : null;
+                state.nextWaypointDist = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].legDistance : 0;
             });
 
             this.flightplanCounter = 10;
@@ -111,7 +111,7 @@ class MapPanel {
         diffAndSetHTML(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
 
         diffAndSetHTML(this.display.querySelector('#map-next-inset-dist-label'), Tools.toFixed0(state.nextWaypointDist) + "&nbsp;nm");
-        diffAndSetHTML(this.display.querySelector('#map-next-inset-name-label'), state.nextWaypoint);
+        diffAndSetHTML(this.display.querySelector('#map-next-inset-name-label'), state.nextWaypoint || "&nbsp;");
     }
 
     loadMapSettings() {

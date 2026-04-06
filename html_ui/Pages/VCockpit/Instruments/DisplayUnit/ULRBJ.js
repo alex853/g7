@@ -195,16 +195,22 @@ FlightPlanHelper = {
         const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
         const trackDeg = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
 
+        let prevCoords = { lat: planeLat, long: planeLon };
+
         const fp = {
             waypoints: []
         };
         fp.waypoints = r.waypoints.map(w => {
-            return {
+            const legDistance = Tools.distanceNM(prevCoords.lat, prevCoords.long, w.lla.lat, w.lla.long);
+            const wp = {
                 icao: this.extractIcao(w),
-                eta: w.estimatedTimeOfArrival,
-                cete: w.cumulativeEstimatedTimeEnRoute,
-                distToPlane: Tools.distanceNM(planeLat, planeLon, w.lla.lat, w.lla.long)
+                // eta: w.estimatedTimeOfArrival,
+                // cete: w.cumulativeEstimatedTimeEnRoute,
+                dist: legDistance,
+
             };
+            prevCoords = { lat: w.lla.lat, long: w.lla.long };
+            return wp;
         })
 
         fp.activeWaypointIndex = this.findActiveWaypointIndex(r, planeLat, planeLon, trackDeg);
@@ -216,7 +222,7 @@ FlightPlanHelper = {
         const icao = w.icao.trim();
         const ident = w.ident.trim();
 
-        if (icao.length == 0) {
+        if (icao.length === 0) {
             return ident;
         } else {
             return icao.split(/\s+/).pop().trim();
@@ -272,6 +278,7 @@ FlightPlanHelper = {
     toActivePlan(fp) {
         const currentFuelGallons = ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
         const avgFuelFlowGph = 500;
+        const maxFlightLevel = 51000; // todo ak3 read it from TSC flight plan page
 
         const result = {
             waypoints: []
@@ -281,22 +288,84 @@ FlightPlanHelper = {
             return result;
         }
 
+        const now = SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds");
+        let cumDistance = 0;
+
         for (let i = fp.activeWaypointIndex-1; i < fp.waypoints.length; i++) {
             if (i < 0) {
                 continue;
             }
 
             const wp = fp.waypoints[i];
+
+            const legDistance = wp.dist;
+            cumDistance = cumDistance + legDistance;
+
             result.waypoints.push({
                 icao: wp.icao,
-                eta: wp.eta,
-                fuel: Math.max(currentFuelGallons - wp.cete * avgFuelFlowGph / 3600, 0),
-                distToPlane: wp.distToPlane
+                legDistance: legDistance,
+                cumDistance: cumDistance
             });
         }
 
-        if (result.waypoints.length > 0) {
-            result.dest = result.waypoints[result.waypoints.length - 1];
+        if (result.waypoints.length === 0) {
+            return result;
+        }
+
+        result.dest = result.waypoints[result.waypoints.length - 1];
+
+        result.dest.isAirport = true; // todo ak2 implement it
+
+        if (result.dest.isAirport) {
+            result.dest.altitude = 500; // todo ak2 load it somehow from somewhere
+        } else {
+            result.dest.altitude = maxFlightLevel;
+        }
+
+        const planeAltitude = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+
+        if (result.dest.isAirport) {
+            let descendNextWp = result.dest;
+            for (let i = result.waypoints.length - 2; i >= 0; i--) {
+                const legDistance = descendNextWp.legDistance;
+                const legDescent = legDistance * 3 * 100; // 6000 is 1NM in feet, 3 is a planned descent profile
+                const prevWpAltitudeRaw = descendNextWp.altitude + legDescent;
+                const prevWpAltitude = Math.min(prevWpAltitudeRaw, maxFlightLevel);
+
+                const prevWp = result.waypoints[i];
+                prevWp.altitude = prevWpAltitude;
+
+                descendNextWp = prevWp;
+            }
+        }
+
+        let climbAltitude = planeAltitude;
+        for (let i = 0; i < result.waypoints.length; i++) {
+            const wp = result.waypoints[i];
+            const legDistance = wp.legDistance;
+            const legProfile = (climbAltitude < 40000 ? 5 : 2);
+            const legClimb = legDistance * legProfile * 100;
+            const legAltitude = climbAltitude + legClimb;
+            if (legAltitude >= wp.altitude && !isNaN(wp.altitude)) {
+                break;
+            }
+
+            wp.altitude = legAltitude;
+            climbAltitude = legAltitude;
+        }
+
+        let cumTime = 0;
+        for (let i = 0; i < result.waypoints.length; i++) {
+            const wp = result.waypoints[i];
+            const legAltitude = wp.altitude;
+            const legTrackSpeedKts = (legAltitude < 3000 ? 200 : (legAltitude > 30000 ? 500 : ((legAltitude - 3000) / (30000 - 3000) * (500 - 200) + 200)));
+            const legDistance = wp.legDistance;
+            const legTime = legDistance / legTrackSpeedKts * 3600;
+
+            cumTime = cumTime + legTime;
+
+            wp.eta = cumTime + now;
+            wp.fuelRemaining = Math.max(currentFuelGallons - cumTime * avgFuelFlowGph / 3600, 0);
         }
 
         return result;

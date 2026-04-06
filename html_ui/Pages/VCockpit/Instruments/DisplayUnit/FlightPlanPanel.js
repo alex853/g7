@@ -39,13 +39,14 @@ class FlightPlanPanel {
 
             diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-name`), wp ? wp.icao : "");
             diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-column1`), wp ? this.formatZuluTime(wp.eta) : ""); //
-            diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-column2`), wp ? "---" : "");
-            diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-column3`), wp ? Tools.toFixed1(wp.fuel * Tools.GALLONS_TO_LB / 1000) : "");
+            diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-column2`), wp ? this.formatFlightLevel(wp.altitude) : "");
+            diffAndSetText(this.display.querySelector(`#flight-plan-waypoint${i}-column3`), wp ? Tools.toFixed1(wp.fuelRemaining * Tools.GALLONS_TO_LB / 1000) : "");
         }
 
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-dest"), fp.dest ? fp.dest.icao : "");
+        diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-dtg"), fp.dest ? Tools.toFixed0(fp.dest.cumDistance) : "");
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-eta"), fp.dest ? this.formatZuluTime(fp.dest.eta) : "");
-        diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-fuel"), fp.dest ? Tools.toFixed1(fp.dest.fuel * Tools.GALLONS_TO_LB / 1000) : "");
+        diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-fuel"), fp.dest ? Tools.toFixed1(fp.dest.fuelRemaining * Tools.GALLONS_TO_LB / 1000) : "");
     }
 
     formatZuluTime(time) {
@@ -55,5 +56,13 @@ class FlightPlanPanel {
         const minutes = Math.floor((totalSeconds % 3600) / 60);
 
         return `${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}Z`;
+    }
+
+    formatFlightLevel(altitude) {
+        if (altitude < 7000) {
+            return Tools.toFixed0(altitude);
+        } else {
+            return "FL" + Tools.toFixed0(altitude / 100).padStart(3, "0");
+        }
     }
 }

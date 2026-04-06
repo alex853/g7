@@ -33,7 +33,7 @@ const StubSimVar = {
     store: {},
 
     GetSimVarValue: function(name, unit) {
-        if (name === "ABSOLUTE TIME") {
+        if (name === "E:ABSOLUTE TIME") {
             return Date.now() / 1000;
         }
 
@@ -50,7 +50,8 @@ const StubSimVar = {
             }
         } else if (unit.toLowerCase() === "number"
             || unit.toLowerCase() === "celsius"
-            || unit.toLowerCase() === "gallons") {
+            || unit.toLowerCase() === "gallons"
+            || unit.toLowerCase() === "feet") {
             if (rawValue === undefined || rawValue === null) {
                 return 0;
             } else {
@@ -221,8 +222,10 @@ const StubMap = {
 
 const Coherent = {
     call: function (method, callback) {
+        const fpFilename = "3.json";
+        // const fpFilename = "eglf-lfpo-1.json";
         if (method === "GET_FLIGHTPLAN") {
-            return fetch("3.json").then(res => res.json());
+            return fetch(fpFilename).then(res => res.json());
         }
 
         return Promise.resolve(null);
