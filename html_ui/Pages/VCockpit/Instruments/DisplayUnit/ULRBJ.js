@@ -92,17 +92,31 @@ ULRBJ = {
     },
 
     updateFlightPlanState() {
+        if (ULRBJ.firstRun) {
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_ACTIVE_WAYPOINT_INDEX", "number", 0);
+            console.log("ULRBJ/Flightplan/WAYPOINT: resetting to 0"); // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
+        }
+
+        const FLIGHTPLAN_REQUEST_IS_RUNNING = 11;
+
+        if (this.flightplanCounter === FLIGHTPLAN_REQUEST_IS_RUNNING) {
+            return;
+        }
+
         if (this.flightplanCounter > 0) {
             this.flightplanCounter--;
             return;
         }
 
+        this.flightplanCounter = FLIGHTPLAN_REQUEST_IS_RUNNING;
         Coherent.call("GET_FLIGHTPLAN").then(r => {
             const fp = FlightPlanHelper.parseSnapshot(r);
+
             if (fp.activeWaypointIndex !== r.activeWaypointIndex && fp.activeWaypointIndex !== 0) {
                 console.log("ULRBJ/Flightplan: setting active waypoint index to " + fp.activeWaypointIndex + " (was " + r.activeWaypointIndex + ")");
                 Coherent.call("SET_ACTIVE_WAYPOINT_INDEX", fp.activeWaypointIndex);
             }
+
             this.flightplanCounter = 10;
         });
     },
@@ -195,25 +209,28 @@ FlightPlanHelper = {
         const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
         const trackDeg = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
 
-        let prevCoords = { lat: planeLat, long: planeLon };
+        const currWaypointIndex = SimVar.GetSimVarValue("L:ULRBJ_FLIGHTPLAN_ACTIVE_WAYPOINT_INDEX", "number");
 
         const fp = {
             waypoints: []
         };
         fp.waypoints = r.waypoints.map(w => {
-            const legDistance = Tools.distanceNM(prevCoords.lat, prevCoords.long, w.lla.lat, w.lla.long);
             const wp = {
                 icao: this.extractIcao(w),
-                // eta: w.estimatedTimeOfArrival,
-                // cete: w.cumulativeEstimatedTimeEnRoute,
-                dist: legDistance,
+                lat: w.lla.lat,
+                long: w.lla.long,
+                dist: w.distance,
 
             };
             prevCoords = { lat: w.lla.lat, long: w.lla.long };
             return wp;
         })
 
-        fp.activeWaypointIndex = this.findActiveWaypointIndex(r, planeLat, planeLon, trackDeg);
+        fp.activeWaypointIndex = this.findActiveWaypointIndex(r, planeLat, planeLon, trackDeg, currWaypointIndex);
+        if (fp.activeWaypointIndex > currWaypointIndex) { // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
+            SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_ACTIVE_WAYPOINT_INDEX", "number", fp.activeWaypointIndex);
+            console.log("ULRBJ/Flightplan/WAYPOINT: changing to " + fp.activeWaypointIndex);
+        }
 
         return fp;
     },
@@ -229,15 +246,15 @@ FlightPlanHelper = {
         }
     },
 
-    findActiveWaypointIndex(r, planeLat, planeLon, trackDeg) {
-        for (let i = 0; i < r.waypoints.length; i++) {
+    findActiveWaypointIndex(r, planeLat, planeLon, trackDeg, currWaypointIndex) {
+        for (let i = currWaypointIndex; i < r.waypoints.length; i++) {
             const wp = r.waypoints[i];
             const passed = this.hasPassedWaypoint(planeLat, planeLon, wp.lla.lat, wp.lla.long, trackDeg);
             if (!passed) {
                 return i;
             }
         }
-        return 0;
+        return currWaypointIndex;
     },
 
     hasPassedWaypoint(planeLat, planeLon, wpLat, wpLon, trackDeg) {
@@ -276,8 +293,11 @@ FlightPlanHelper = {
     },
 
     toActivePlan(fp) {
+        const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+        const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
+
         const currentFuelGallons = ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
-        const avgFuelFlowGph = 500;
+        const avgFuelFlowGph = 470; // was 500, decreased a bit after LFPB-LEBL flight
         const maxFlightLevel = 51000; // todo ak3 read it from TSC flight plan page
 
         const result = {
@@ -298,7 +318,9 @@ FlightPlanHelper = {
 
             const wp = fp.waypoints[i];
 
-            const legDistance = wp.dist;
+            const legDistance = (i === fp.activeWaypointIndex)
+                ? Tools.distanceNM(planeLat, planeLon, wp.lat, wp.long)
+                : wp.dist;
             cumDistance = cumDistance + legDistance;
 
             result.waypoints.push({

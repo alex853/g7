@@ -75,19 +75,26 @@ class MapPanel {
         state.tas = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         state.gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
 
-        if (this.flightplanCounter === 0) {
-            Coherent.call("GET_FLIGHTPLAN").then(r => {
-                const fp = FlightPlanHelper.parseSnapshot(r);
-                const activePlan = FlightPlanHelper.toActivePlan(fp);
-                state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : null;
-                state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : null;
-                state.nextWaypointDist = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].legDistance : 0;
-            });
+        const FLIGHTPLAN_REQUEST_IS_RUNNING = 11;
+
+        if (this.flightplanCounter === FLIGHTPLAN_REQUEST_IS_RUNNING) {
+            return;
+        }
+
+        if (this.flightplanCounter > 0) {
+            this.flightplanCounter--;
+            return;
+        }
+
+        Coherent.call("GET_FLIGHTPLAN").then(r => {
+            const fp = FlightPlanHelper.parseSnapshot(r);
+            const activePlan = FlightPlanHelper.toActivePlan(fp);
+            state.prevWaypoint = activePlan.waypoints.length > 0 ? activePlan.waypoints[0].icao : null;
+            state.nextWaypoint = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].icao : null;
+            state.nextWaypointDist = activePlan.waypoints.length > 1 ? activePlan.waypoints[1].legDistance : 0;
 
             this.flightplanCounter = 10;
-        } else {
-            this.flightplanCounter--;
-        }
+        });
     }
 
     updateUI() {

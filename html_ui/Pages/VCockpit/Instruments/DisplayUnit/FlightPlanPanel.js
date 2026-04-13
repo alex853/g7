@@ -17,18 +17,22 @@ class FlightPlanPanel {
     }
 
     updateState() {
-        if (this.flightplanCounter === 0) {
-            this.loadFlightPlan();
-            this.flightplanCounter = 10;
-        } else {
+        const FLIGHTPLAN_REQUEST_IS_RUNNING = 11;
+
+        if (this.flightplanCounter === FLIGHTPLAN_REQUEST_IS_RUNNING) {
+            return;
+        }
+
+        if (this.flightplanCounter > 0) {
             this.flightplanCounter--;
         }
-    }
 
-    loadFlightPlan() {
+        this.flightplanCounter = FLIGHTPLAN_REQUEST_IS_RUNNING
         Coherent.call("GET_FLIGHTPLAN").then(r => {
             const fp = FlightPlanHelper.parseSnapshot(r);
             this.flightplan = FlightPlanHelper.toActivePlan(fp);
+
+            this.flightplanCounter = 10;
         });
     }
 
