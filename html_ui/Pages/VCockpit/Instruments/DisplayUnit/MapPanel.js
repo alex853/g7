@@ -4,6 +4,11 @@ class MapPanel {
 
         this.display = display;
 
+        this.baseRanges = [this.feetToNm(1500), this.feetToNm(2000), this.feetToNm(3000), this.feetToNm(4500),
+            1, 2, 3, 4, 5, 7, 10, 15,
+            25, 50, 75, 100,
+            150, 250, 500];
+
         this.map = display.querySelector('#MapInstrument');
         if (this.map.init) {
             this.map.init(this);
@@ -16,6 +21,9 @@ class MapPanel {
         // this.map.setCenteredOnPlane();
         // this.map.setZoom(10);
         // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
+
+        this.canvas = this.display.querySelector('#map-overlay');
+        this.ctx = this.canvas.getContext("2d");
 
         this.needToLoadSettings = true;
 
@@ -38,18 +46,32 @@ class MapPanel {
         const destination = this.display.querySelector(`#${layout}-two-thirds`);
         const panel = this.display.querySelector("#map-panel");
         destination.appendChild(panel);
+
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+
+        const ringCoeff = 841.5 / (2*217) * 2;
+        this.ranges = this.baseRanges.map(r => r * ringCoeff);
+        this.map.zoomRanges = this.ranges;
     }
 
     onUpdate() {
         this.updateMapCenter();
 
         this.map.update();
+
+        this.drawRings();
     }
 
     updateMapCenter() {
         const rotationMode = this.map.getRotationMode();
         if (rotationMode === EMapRotationMode.NorthUp) {
-            this.map.setCenteredOnPlane();
+            // this.map.setCenteredOnPlane();
+            const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+            const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
+
+            const center = new LatLongAlt(planeLat, planeLon);
+            this.map.setCenter(center);
         } else {
             const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
             const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
@@ -64,6 +86,27 @@ class MapPanel {
 
             const center = new LatLongAlt(p.lat, p.lon);
             this.map.setCenter(center);
+        }
+    }
+
+    drawRings() {
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height / 2;
+
+        const pixelsPerNm = 215;
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.strokeStyle = "#eee";
+        this.ctx.lineWidth = 3;
+
+        // const rings = [5, 10, 20, 40];
+        const rings = [1];
+
+        for (const r of rings) {
+            this.ctx.beginPath();
+            this.ctx.arc(centerX, centerY, r * pixelsPerNm, 0, Math.PI * 2);
+            this.ctx.stroke();
         }
     }
 
@@ -187,5 +230,9 @@ class MapPanel {
                 });
             });
         }
+    }
+
+    feetToNm(feet) {
+        return feet / 6076.12;
     }
 }
