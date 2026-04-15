@@ -45,16 +45,19 @@
                         config-path="/Pages/VCockpit/Instruments/DisplayUnit/">
                 </map-instrument>
                 <canvas id="map-overlay"></canvas>
-                <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
-                    <span id="map-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
-                    <span id="map-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                <div id="map-panel-hdg-up-div" class="inset-frame" style="position: absolute; left: 372px; top: 19px; padding: 5px; text-align: right;">
+                    <span id="map-panel-hdg-up-label" class="inset-text">000</span><br>
                 </div>
                 <div class="inset-frame" style="position: absolute; right: 12px; top: 6px; min-width: 80px; padding: 5px; text-align: right;">
-                    <span id="map-next-inset-source-label" class="inset-text">FMS</span><br>
-                    <span id="map-next-inset-dist-label" class="inset-text">---</span><br>
-                    <span id="map-next-inset-name-label" class="inset-text">---</span>
+                    <span id="map-panel-next-source-label" class="inset-text">FMS</span><br>
+                    <span id="map-panel-next-dist-label" class="inset-text">---</span><br>
+                    <span id="map-panel-next-name-label" class="inset-text">---</span>
+                </div>
+                <div class="inset-frame" style="position: absolute; right: 1vh; bottom: 1vh; padding: 5px;">
+                    <span id="map-panel-tat-label" class="inset-text">TAT&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-panel-sat-label" class="inset-text">SAT&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-panel-tas-label" class="inset-text">TAS&nbsp;&nbsp;&nbsp;0</span><br>
+                    <span id="map-panel-gs-label" class="inset-text">GS&nbsp;&nbsp;&nbsp;&nbsp;0</span>
                 </div>
                 <div class="control-button onclick" data-action="map:zoom-plus" style="position: absolute; right: 1vh; bottom: 50vh;">+</div>
                 <div class="control-button onclick" data-action="map:zoom-minus" style="position: absolute; right: 1vh; bottom: 45vh;">-</div>

@@ -51,7 +51,8 @@ const StubSimVar = {
         } else if (unit.toLowerCase() === "number"
             || unit.toLowerCase() === "celsius"
             || unit.toLowerCase() === "gallons"
-            || unit.toLowerCase() === "feet") {
+            || unit.toLowerCase() === "feet"
+            || unit.toLowerCase() === "degrees") {
             if (rawValue === undefined || rawValue === null) {
                 return 0;
             } else {
@@ -218,6 +219,12 @@ const StubMap = {
     setRotationMode: function (rotationMode) {
         this.rotationMode = rotationMode;
     },
+    setCenter: function (lla) {
+
+    },
+    getDisplayRange: function() {
+        return 1;
+    }
 }
 
 const Coherent = {
@@ -238,6 +245,14 @@ class FlightPlanManager {
     }
 
     registerListener() {}
+}
+
+class LatLongAlt {
+    constructor(lat, lon, alt) {
+        this.lat = lat;
+        this.lon = lon;
+        this.alt = alt;
+    }
 }
 
 function diffAndSetText(element, text) {

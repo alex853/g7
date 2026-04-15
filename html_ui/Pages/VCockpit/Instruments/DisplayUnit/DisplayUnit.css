@@ -390,9 +390,9 @@ map-instrument {
 }
 
 .dev-background#map-panel {
-    /*background-image: url("dev-backgrounds/g500-du3-savannah-map.png");*/
+    background-image: url("dev-backgrounds/g500-du3-savannah-map.png");
     /*background-image: url("dev-backgrounds/g650er-du3-fl430-map.png");*/
-    background-image: url("dev-backgrounds/g800-du2-map.png");
+    /*background-image: url("dev-backgrounds/g800-du2-map.png");*/
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;

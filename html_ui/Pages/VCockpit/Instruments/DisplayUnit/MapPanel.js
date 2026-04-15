@@ -4,6 +4,9 @@ class MapPanel {
 
         this.display = display;
 
+        this.baseRingRadiusPx = 217;
+        this.yOffsetInHdgMode = 0.1;
+
         this.baseRanges = [this.feetToNm(1500), this.feetToNm(2000), this.feetToNm(3000), this.feetToNm(4500),
             1, 2, 3, 4, 5, 7, 10, 15,
             25, 50, 75, 100,
@@ -18,9 +21,6 @@ class MapPanel {
         } else {
             this.map = StubMap; // to allow the gauge working outside the sim
         }
-        // this.map.setCenteredOnPlane();
-        // this.map.setZoom(10);
-        // this.map.setRotationMode(EMapRotationMode.TRACK_UP);
 
         this.canvas = this.display.querySelector('#map-overlay');
         this.ctx = this.canvas.getContext("2d");
@@ -50,7 +50,7 @@ class MapPanel {
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
 
-        const ringCoeff = 841.5 / (2*217) * 2;
+        const ringCoeff = this.canvas.height / (2*this.baseRingRadiusPx) * 2;
         this.ranges = this.baseRanges.map(r => r * ringCoeff);
         this.map.zoomRanges = this.ranges;
     }
@@ -75,12 +75,10 @@ class MapPanel {
         } else {
             const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
             const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
-            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
-
-            const yOffset = 0.1;
+            const planeHeadingDeg = this.state.hdg;
 
             const displayRange = this.map.getDisplayRange();
-            const yOffsetNm = displayRange * yOffset;
+            const yOffsetNm = displayRange * this.yOffsetInHdgMode;
 
             const p = Tools.offsetLatLon(planeLat, planeLon, planeHeadingDeg, yOffsetNm);
 
@@ -90,24 +88,95 @@ class MapPanel {
     }
 
     drawRings() {
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
-
-        const pixelsPerNm = 215;
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.strokeStyle = "#eee";
         this.ctx.lineWidth = 3;
 
-        // const rings = [5, 10, 20, 40];
-        const rings = [1];
+        const rotationMode = this.map.getRotationMode();
+        if (rotationMode === EMapRotationMode.NorthUp) {
+            const centerX = this.canvas.width / 2;
+            const centerY = this.canvas.height / 2;
 
-        for (const r of rings) {
             this.ctx.beginPath();
-            this.ctx.arc(centerX, centerY, r * pixelsPerNm, 0, Math.PI * 2);
+            this.ctx.arc(centerX, centerY, this.baseRingRadiusPx, 0, Math.PI * 2);
             this.ctx.stroke();
+        } else {
+            const centerX = this.canvas.width / 2;
+            const centerY = this.canvas.height / 2 + this.canvas.height * this.yOffsetInHdgMode;
+
+            this.ctx.beginPath();
+            this.ctx.arc(centerX, centerY, this.baseRingRadiusPx, 0, Math.PI * 2);
+            this.ctx.stroke();
+
+            this.ctx.beginPath();
+            this.ctx.arc(centerX, centerY, this.baseRingRadiusPx * 2, Math.PI * 1.1, Math.PI * 1.9);
+            this.ctx.stroke();
+
+            const triangleSize = 16;
+            this.ctx.beginPath();
+            this.ctx.moveTo(centerX, centerY - this.baseRingRadiusPx * 2);
+            this.ctx.lineTo(centerX - triangleSize/2, centerY - this.baseRingRadiusPx * 2 - triangleSize);   // левая
+            this.ctx.lineTo(centerX + triangleSize/2, centerY - this.baseRingRadiusPx * 2 - triangleSize);   // левая
+            this.ctx.closePath();
+            this.ctx.fillStyle = "#eee";
+            this.ctx.fill();
+
+            const planeHeadingDeg = this.state.hdg;
+            const roundedHeadingDeg = Math.round(planeHeadingDeg / 10) * 10;
+            const fromHeadingDeg = roundedHeadingDeg - 90;
+            const toHeadingDeg = roundedHeadingDeg + 90;
+            for (let hdg = fromHeadingDeg; hdg <= toHeadingDeg; hdg += 5) {
+                const longLine = hdg % 10 === 0;
+
+                const relativeHdg = hdg - planeHeadingDeg;
+                const angleRad = (relativeHdg - 90) * Math.PI / 180;
+
+                const radiusOuter = this.baseRingRadiusPx * 2;
+                const radiusInner = radiusOuter - (longLine ? 30 : 15);
+
+                const x1 = centerX + radiusOuter * Math.cos(angleRad);
+                const y1 = centerY + radiusOuter * Math.sin(angleRad);
+
+                const x2 = centerX + radiusInner * Math.cos(angleRad);
+                const y2 = centerY + radiusInner * Math.sin(angleRad);
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x1, y1);
+                this.ctx.lineTo(x2, y2);
+                this.ctx.stroke();
+
+                const label = this.getHeadingLabel(hdg);
+                if (label) {
+                    const radiusText = this.baseRingRadiusPx * 2 - 52;
+
+                    const x = centerX + radiusText * Math.cos(angleRad);
+                    const y = centerY + radiusText * Math.sin(angleRad);
+
+                    this.ctx.font = "25px RobotoMono";
+                    this.ctx.fillStyle = "#eee";
+                    this.ctx.textAlign = "center";
+                    this.ctx.textBaseline = "middle";
+
+                    this.ctx.fillText(label, x, y);
+                }
+            }
         }
+    }
+
+    getHeadingLabel(hdg) {
+        const norm = ((hdg % 360) + 360) % 360;
+
+        if (norm === 0) return "N";
+        if (norm === 90) return "E";
+        if (norm === 180) return "S";
+        if (norm === 270) return "W";
+
+        if (norm % 30 === 0) {
+            return (norm / 10).toString(); // 30° → "3"
+        }
+
+        return null;
     }
 
     updateState() {
@@ -117,6 +186,7 @@ class MapPanel {
         state.sat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         state.tas = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         state.gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
+        state.hdg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
 
         const FLIGHTPLAN_REQUEST_IS_RUNNING = 11;
 
@@ -148,10 +218,10 @@ class MapPanel {
 
         const state = this.state;
 
-        diffAndSetHTML(this.display.querySelector('#map-tat-label'), "TAT" + Tools.alignWithNbsp(Tools.toFixed0(state.tat), 4));
-        diffAndSetHTML(this.display.querySelector('#map-sat-label'), "SAT" + Tools.alignWithNbsp(Tools.toFixed0(state.sat), 4));
-        diffAndSetHTML(this.display.querySelector('#map-tas-label'), "TAS" + Tools.alignWithNbsp(Tools.toFixed0(state.tas), 4));
-        diffAndSetHTML(this.display.querySelector('#map-gs-label'), "GS" + Tools.alignWithNbsp(Tools.toFixed0(state.gs), 5));
+        diffAndSetHTML(this.display.querySelector('#map-panel-tat-label'), "TAT" + Tools.alignWithNbsp(Tools.toFixed0(state.tat), 4));
+        diffAndSetHTML(this.display.querySelector('#map-panel-sat-label'), "SAT" + Tools.alignWithNbsp(Tools.toFixed0(state.sat), 4));
+        diffAndSetHTML(this.display.querySelector('#map-panel-tas-label'), "TAS" + Tools.alignWithNbsp(Tools.toFixed0(state.tas), 4));
+        diffAndSetHTML(this.display.querySelector('#map-panel-gs-label'), "GS" + Tools.alignWithNbsp(Tools.toFixed0(state.gs), 5));
 
         const rotationMode = this.map.getRotationMode();
         const rotationText = rotationMode === EMapRotationMode.NorthUp ? "North" : "Hdg";
@@ -160,17 +230,16 @@ class MapPanel {
         diffAndSetHTML(this.display.querySelector('#map-header-prev-waypoint'), state.prevWaypoint);
         diffAndSetHTML(this.display.querySelector('#map-header-next-waypoint'), state.nextWaypoint);
 
-        diffAndSetHTML(this.display.querySelector('#map-next-inset-dist-label'), Tools.toFixed0(state.nextWaypointDist) + "&nbsp;nm");
-        diffAndSetHTML(this.display.querySelector('#map-next-inset-name-label'), state.nextWaypoint || "&nbsp;");
+        diffAndSetHTML(this.display.querySelector('#map-panel-next-dist-label'), Tools.toFixed0(state.nextWaypointDist) + "&nbsp;nm");
+        diffAndSetHTML(this.display.querySelector('#map-panel-next-name-label'), state.nextWaypoint || "&nbsp;");
+
+        diffAndSetText(this.display.querySelector('#map-panel-hdg-up-label'), this.formatHdg(state.hdg));
     }
 
     loadMapSettings() {
-        const rotationMode = GetStoredData("DU2.Map.Rotation");
-        if (rotationMode === "HDGUp") {
-            this.map.setRotationMode(EMapRotationMode.HDGUp);
-        } else {
-            this.map.setRotationMode(EMapRotationMode.NorthUp);
-        }
+        const rotationModeStr = GetStoredData("DU2.Map.Rotation");
+        const rotationMode = rotationModeStr === "HDGUp" ? EMapRotationMode.HDGUp : EMapRotationMode.NorthUp;
+        this.reconfigureForRotationMode(rotationMode);
 
         const zoom = GetStoredData("DU2.Map.Zoom");
         if (zoom !== undefined) {
@@ -181,6 +250,16 @@ class MapPanel {
         }
 
         this.updateMapCenter();
+    }
+
+    reconfigureForRotationMode(rotationMode) {
+        this.map.setRotationMode(rotationMode);
+
+        if (rotationMode === EMapRotationMode.NorthUp) {
+            this.display.querySelector(`#map-panel-hdg-up-div`).classList.add('hidden');
+        } else {
+            this.display.querySelector(`#map-panel-hdg-up-div`).classList.remove('hidden');
+        }
     }
 
     onAction(action) {
@@ -201,7 +280,7 @@ class MapPanel {
                 rotationMode = EMapRotationMode.NorthUp;
                 SetStoredData("DU2.Map.Rotation", "NorthUp");
             }
-            this.map.setRotationMode(rotationMode);
+            this.reconfigureForRotationMode(rotationMode);
             this.updateMapCenter();
         } else if (action === 'test') {
             // this.yOffset = this.yOffset - 0.01;
@@ -230,6 +309,11 @@ class MapPanel {
                 });
             });
         }
+    }
+
+    formatHdg(hdg) {
+        const s = Tools.toFixed0(hdg).padStart(3, "0");
+        return s === "000" ? "360" : s;
     }
 
     feetToNm(feet) {
