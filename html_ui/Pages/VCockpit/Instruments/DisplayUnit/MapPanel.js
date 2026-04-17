@@ -1,5 +1,7 @@
 class MapPanel {
     constructor(display) {
+        console.log("MapPanel init")
+
         this.id = "map";
 
         this.display = display;
@@ -25,7 +27,8 @@ class MapPanel {
         this.canvas = this.display.querySelector('#map-overlay');
         this.ctx = this.canvas.getContext("2d");
 
-        this.needToLoadSettings = true;
+        // this.needToLoadSettings = true;
+        this.counterToInitMap = 300;
 
         this.flightplanCounter = 0;
 
@@ -34,6 +37,7 @@ class MapPanel {
             sat: 0,
             tas: 0,
             gs: 0,
+            hdg: 0,
 
             prevWaypoint: "",
             nextWaypoint: "",
@@ -42,20 +46,39 @@ class MapPanel {
     }
 
     showPanel() {
+        console.log("MapPanel showPanel")
+
         const layout = this.display.layoutName;
         const destination = this.display.querySelector(`#${layout}-two-thirds`);
         const panel = this.display.querySelector("#map-panel");
         destination.appendChild(panel);
 
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
+        const canvas = this.canvas;
+        function resize() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
 
-        const ringCoeff = this.canvas.height / (2*this.baseRingRadiusPx) * 2;
-        this.ranges = this.baseRanges.map(r => r * ringCoeff);
-        this.map.zoomRanges = this.ranges;
+        // resize();
+        // this.display.addEventListener("resize", resize);
     }
 
     onUpdate() {
+        // this.updateCycleStarted = true;
+
+        // console.log("map.isInit " + this.map.isInit() + " map.bingMap.isReady " + this.map.bingMap.isReady());
+
+        // if (this.counterToInitMap > 0) {
+        //     return;
+        // }
+
+        if (this.canvas.width !== this.canvas.clientWidth) {
+            this.canvas.width = this.canvas.clientWidth;
+        }
+        if (this.canvas.height !== this.canvas.clientHeight) {
+            this.canvas.height = this.canvas.clientHeight;
+        }
+
         this.updateMapCenter();
 
         this.map.update();
@@ -64,18 +87,20 @@ class MapPanel {
     }
 
     updateMapCenter() {
+        const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+        const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
+
+        if (!planeLat || !planeLon) {
+            return;
+        }
+
         const rotationMode = this.map.getRotationMode();
         if (rotationMode === EMapRotationMode.NorthUp) {
             // this.map.setCenteredOnPlane();
-            const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
-            const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
-
             const center = new LatLongAlt(planeLat, planeLon);
             this.map.setCenter(center);
         } else {
-            const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
-            const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
-            const planeHeadingDeg = this.state.hdg;
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
 
             const displayRange = this.map.getDisplayRange();
             const yOffsetNm = displayRange * this.yOffsetInHdgMode;
@@ -122,7 +147,7 @@ class MapPanel {
             this.ctx.fillStyle = "#eee";
             this.ctx.fill();
 
-            const planeHeadingDeg = this.state.hdg;
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
             const roundedHeadingDeg = Math.round(planeHeadingDeg / 10) * 10;
             const fromHeadingDeg = roundedHeadingDeg - 90;
             const toHeadingDeg = roundedHeadingDeg + 90;
@@ -211,10 +236,28 @@ class MapPanel {
     }
 
     updateUI() {
-        if (this.needToLoadSettings) {
-            this.loadMapSettings();
-            this.needToLoadSettings = false;
+        if (this.counterToInitMap > 0) {
+            if (this.counterToInitMap === 1) {
+                if (this.map && this.map.roadNetwork && this.map.roadNetwork._visibleCanvas && this.map.roadNetwork._visibleCanvas.canvas) {
+                    this.counterToInitMap--;
+
+                    console.warn("MapPanel LETS START");
+
+                    this.updateMapCenter();
+
+                    // this.loadMapSettings();
+
+                    // const ringCoeff = this.canvas.height / (2*this.baseRingRadiusPx) * 2;
+                    // this.ranges = this.baseRanges.map(r => r * ringCoeff);
+                    // this.map.zoomRanges = this.ranges;
+                }
+            } else {
+                this.counterToInitMap--;
+            }
         }
+        // if (this.needToLoadSettings && this.updateCycleStarted) {
+        //     this.needToLoadSettings = false;
+        // }
 
         const state = this.state;
 
@@ -237,6 +280,8 @@ class MapPanel {
     }
 
     loadMapSettings() {
+        console.log("MapPanel loadMapSettings")
+
         const rotationModeStr = GetStoredData("DU2.Map.Rotation");
         const rotationMode = rotationModeStr === "HDGUp" ? EMapRotationMode.HDGUp : EMapRotationMode.NorthUp;
         this.reconfigureForRotationMode(rotationMode);
@@ -253,6 +298,8 @@ class MapPanel {
     }
 
     reconfigureForRotationMode(rotationMode) {
+        console.log("MapPanel reconfigureForRotationMode")
+
         this.map.setRotationMode(rotationMode);
 
         if (rotationMode === EMapRotationMode.NorthUp) {

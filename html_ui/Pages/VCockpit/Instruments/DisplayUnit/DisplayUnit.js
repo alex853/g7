@@ -79,7 +79,11 @@ class DisplayUnit extends BaseInstrument {
 
         this.panels.forEach(panel => {
             if (panel.onUpdate) {
-                panel.onUpdate();
+                try {
+                    panel.onUpdate();
+                } catch (Error) {
+                    console.error("error in DisplayUnit.Update");
+                }
             }
         });
     }
