@@ -207,12 +207,17 @@ EMapRotationMode = {
 }
 
 const StubMap = {
+    zoom: 4,
     rotationMode: EMapRotationMode.NorthUp,
 
     setCenteredOnPlane: function () {},
     update: function () {},
-    zoomOut: function () {},
-    zoomIn: function () {},
+    setZoom: function (zoom) {
+        this.zoom = zoom;
+    },
+    getZoom: function () {
+        return this.zoom;
+    },
     getRotationMode: function () {
         return this.rotationMode;
     },
@@ -267,6 +272,10 @@ function diffAndSetHTML(element, html) {
     }
 }
 
-function GetStoredData(key) {}
+function GetStoredData(key) {
+    return localStorage.getItem(key);
+}
 
-function SetStoredData(key, value) {}
+function SetStoredData(key, value) {
+    localStorage.setItem(key, value);
+}
