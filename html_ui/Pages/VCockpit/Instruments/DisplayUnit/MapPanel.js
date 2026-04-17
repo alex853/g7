@@ -22,8 +22,6 @@ class MapPanel {
         this.canvas = this.display.querySelector('#map-overlay');
         this.ctx = this.canvas.getContext("2d");
 
-        // this.counterToInitMap = 300;
-
         this.flightplanCounter = 0;
 
         this.state = {
@@ -269,22 +267,6 @@ class MapPanel {
     }
 
     updateUI() {
-        // if (this.counterToInitMap > 0) { // todo ak0
-        //     if (this.counterToInitMap === 1) { // todo ak0
-        //         if (this.map && this.map.roadNetwork && this.map.roadNetwork._visibleCanvas && this.map.roadNetwork._visibleCanvas.canvas) {
-        //             this.counterToInitMap--;
-        //
-        //             console.warn("MapPanel LETS START"); // todo ak0
-        //
-        //             this.initMapRanges(); // todo ak0
-        //
-        //             this.loadMapSettings(); // todo ak0
-        //         }
-        //     } else {
-        //         this.counterToInitMap--;
-        //     }
-        // }
-
         const state = this.state;
 
         diffAndSetHTML(this.display.querySelector('#map-panel-tat-label'), "TAT" + Tools.alignWithNbsp(Tools.toFixed0(state.tat), 4));
