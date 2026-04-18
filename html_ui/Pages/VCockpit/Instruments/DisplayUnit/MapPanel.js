@@ -12,6 +12,15 @@ class MapPanel {
         this.baseRingRadiusPx = 217;
         this.yOffsetInHdgMode = 0.1;
 
+        this.baseRanges = [this.feetToNm(1500), this.feetToNm(2000), this.feetToNm(3000), this.feetToNm(4500),
+            1, 2, 3, 4, 5, 7, 10, 15,
+            25, 50, 75, 100,
+            150, 250, 500];
+        this.baseRangeLabels = ["1500 FT", "2000 FT", "3000 FT", "4500 FT",
+            "1", "2", "3", "4", "5", "7", "10", "15",
+            "25", "50", "75", "100",
+            "150", "250", "500"];
+
         this.map = display.querySelector('#MapInstrument');
         if (this.map.init) {
             this.map.init(this);
@@ -39,7 +48,7 @@ class MapPanel {
             nextWaypointDist: 0
         }
 
-        this.frameCounter = 0;
+        // this.frameCounter = 0;
 
         this.skipFrames = 0;
 
@@ -138,29 +147,30 @@ class MapPanel {
 
     drawRings() {
         const baseRingRadiusPx = this.baseRingRadiusPx;
+        const lineWidth = 3;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.strokeStyle = this.whiteColor;
-        this.ctx.lineWidth = 3;
+        this.ctx.lineWidth = lineWidth;
 
         const rotationMode = this.map.getRotationMode();
         if (rotationMode === EMapRotationMode.NorthUp) {
             const centerX = this.canvas.width / 2;
             const centerY = this.canvas.height / 2;
 
-            this.ctx.beginPath();
-            this.ctx.arc(centerX, centerY, baseRingRadiusPx, 0, Math.PI * 2);
-            this.ctx.stroke();
+            const center = vector(centerX, centerY);
+
+            drawCircle(this.ctx, center, baseRingRadiusPx, this.whiteColor, lineWidth);
+            drawRangeLabel(this.ctx, center, baseRingRadiusPx, this.whiteColor, this.getRangeLabel());
         } else {
             const centerX = this.canvas.width / 2;
             const centerY = this.canvas.height / 2 + this.canvas.height * this.yOffsetInHdgMode;
 
             const center = vector(centerX, centerY);
 
-            this.ctx.beginPath();
-            this.ctx.arc(centerX, centerY, baseRingRadiusPx, 0, Math.PI * 2);
-            this.ctx.stroke();
+            drawCircle(this.ctx, center, baseRingRadiusPx, this.whiteColor, lineWidth);
+            drawRangeLabel(this.ctx, center, baseRingRadiusPx, this.whiteColor, this.getRangeLabel());
 
             drawSelectedHeadingBug(this.ctx, center, baseRingRadiusPx*2, this.magentaColor);
 
@@ -217,111 +227,143 @@ class MapPanel {
                 }
             }
 
-            drawTrackLine(this.ctx, this.magentaColor);
+            drawTrackLine(this.ctx, center, baseRingRadiusPx * 2, this.magentaColor);
+        }
 
-            function drawSelectedHeadingBug(ctx, center, ringRadius, color) {
-                const trackHdg = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "degrees");
-                const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degrees");
-                const relativeHdg = (720 + trackHdg - planeHeadingDeg) % 360;
+        function drawCircle(ctx, center, radius, color, lineWidth) {
+            ctx.save();
 
-                if (80 < relativeHdg && relativeHdg < 280) {
-                    // heading bug is out of screen
-                    return;
-                }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
 
-                ctx.save();
+            ctx.beginPath();
+            ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+            ctx.stroke();
 
-                ctx.fillStyle = color;
-                ctx.lineWidth = 0;
+            ctx.restore();
+        }
 
-                const ringRadiusV = vector(0, -ringRadius);
-                const ringRadiusVRotated = ringRadiusV.rotateDeg(relativeHdg);
-                const basePoint = ringRadiusVRotated.translate(center);
+        function drawRangeLabel(ctx, center, radius, color, label) {
+            ctx.save();
 
-                const angleVDeg = 30;
+            ctx.font = "20px RobotoMono";
+            ctx.fillStyle = color;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
 
-                const p1V = vector(0, -18);
-                const p2V = vector(15, 0);
-                const p3V = vector(0, 16);
+            const relativePosition = vector(radius, 0).rotateDeg(170);
+            const position = center.translate(relativePosition);
 
-                const leftP1V = p1V.rotateDeg(relativeHdg + angleVDeg);
-                const leftP2V = p2V.rotateDeg(relativeHdg);
-                const leftP3V = p3V.rotateDeg(relativeHdg);
+            const metrics = ctx.measureText(label);
+            const textWidth = Math.max(metrics.width, 30);
+            const textHeight = 20;
 
-                ctx.beginPath();
-                moveTo(ctx, basePoint);
-                lineTo(ctx, basePoint.translate(leftP1V));
-                lineTo(ctx, basePoint.translate(leftP1V).translate(leftP2V));
-                lineTo(ctx, basePoint.translate(leftP1V).translate(leftP2V).translate(leftP3V));
-                ctx.closePath();
-                ctx.fill();
+            const x = position.x + textWidth * 0.25;
+            const y = position.y;
 
-                const rightP1V = p1V.rotateDeg(relativeHdg - angleVDeg);
-                const rightP2V = p2V.negate().rotateDeg(relativeHdg);
-                const rightP3V = p3V.rotateDeg(relativeHdg);
+            const paddingX = 6;
+            const paddingY = 3;
 
-                ctx.beginPath();
-                moveTo(ctx, basePoint);
-                lineTo(ctx, basePoint.translate(rightP1V));
-                lineTo(ctx, basePoint.translate(rightP1V).translate(rightP2V));
-                lineTo(ctx, basePoint.translate(rightP1V).translate(rightP2V).translate(rightP3V));
-                ctx.closePath();
-                ctx.fill();
+            const rectX = x - textWidth / 2 - paddingX;
+            const rectY = y - textHeight / 2 - paddingY;
+            const rectW = textWidth + paddingX * 2;
+            const rectH = textHeight + paddingY * 2;
 
-                ctx.restore();
+            ctx.fillStyle = "black";
+            ctx.fillRect(rectX, rectY, rectW, rectH);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(rectX, rectY, rectW, rectH);
+
+            ctx.fillStyle = color;
+            ctx.fillText(label, x, y);
+
+            ctx.restore();
+        }
+
+        function drawSelectedHeadingBug(ctx, center, ringRadius, color) {
+            const trackHdg = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "degrees");
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degrees");
+            const relativeHdg = (720 + trackHdg - planeHeadingDeg) % 360;
+
+            if (80 < relativeHdg && relativeHdg < 280) {
+                // heading bug is out of screen
+                return;
             }
 
-            function moveTo(ctx, p) {
-                ctx.moveTo(p.x, p.y);
+            ctx.save();
+
+            ctx.fillStyle = color;
+            ctx.lineWidth = 0;
+
+            const ringRadiusV = vector(0, -ringRadius);
+            const ringRadiusVRotated = ringRadiusV.rotateDeg(relativeHdg);
+            const basePoint = ringRadiusVRotated.translate(center);
+
+            const angleVDeg = 30;
+
+            const p1V = vector(0, -18);
+            const p2V = vector(15, 0);
+            const p3V = vector(0, 16);
+
+            const leftP1V = p1V.rotateDeg(relativeHdg + angleVDeg);
+            const leftP2V = p2V.rotateDeg(relativeHdg);
+            const leftP3V = p3V.rotateDeg(relativeHdg);
+
+            ctx.beginPath();
+            moveTo(ctx, basePoint);
+            lineTo(ctx, basePoint.translate(leftP1V));
+            lineTo(ctx, basePoint.translate(leftP1V).translate(leftP2V));
+            lineTo(ctx, basePoint.translate(leftP1V).translate(leftP2V).translate(leftP3V));
+            ctx.closePath();
+            ctx.fill();
+
+            const rightP1V = p1V.rotateDeg(relativeHdg - angleVDeg);
+            const rightP2V = p2V.negate().rotateDeg(relativeHdg);
+            const rightP3V = p3V.rotateDeg(relativeHdg);
+
+            ctx.beginPath();
+            moveTo(ctx, basePoint);
+            lineTo(ctx, basePoint.translate(rightP1V));
+            lineTo(ctx, basePoint.translate(rightP1V).translate(rightP2V));
+            lineTo(ctx, basePoint.translate(rightP1V).translate(rightP2V).translate(rightP3V));
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawTrackLine(ctx, center, radius, color) {
+            const gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
+            if (gs < 30) {
+                // no track information while speed is low
+                return;
             }
 
-            function lineTo(ctx, p) {
-                ctx.lineTo(p.x, p.y);
-            }
+            const segmentLen = radius / 20.0;
 
-            function vector(x, y) {
-                return {
-                    x: x,
-                    y: y,
-                    rotate: function(angleRad) {
-                        return vector(x * Math.cos(angleRad) - y * Math.sin(angleRad), x * Math.sin(angleRad) + y * Math.cos(angleRad));
-                    },
-                    rotateDeg: function(angleDeg) {
-                        const angleRad = angleDeg * Math.PI / 180;
-                        return vector(x * Math.cos(angleRad) - y * Math.sin(angleRad), x * Math.sin(angleRad) + y * Math.cos(angleRad));
-                    },
-                    translate: function (p) {
-                        return vector(x + p.x, y + p.y);
-                    },
-                    negate: function () {
-                        return vector(-x, -y);
-                    }
-                };
-            }
+            const trackHdg = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degrees");
+            const relativeHdg = trackHdg - planeHeadingDeg;
+            const angleRad = (relativeHdg - 90) * Math.PI / 180;
 
-            function drawTrackLine(ctx, color) {
-                const gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
-                if (gs < 30) {
-                    // no track information while speed is low
-                    return;
-                }
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.setLineDash([segmentLen, segmentLen]);
+            ctx.moveTo(center.x + radius * Math.cos(angleRad), center.y + radius * Math.sin(angleRad));
+            ctx.lineTo(center.x, center.y);
+            ctx.stroke();
+            ctx.restore();
+        }
 
-                const trackLineLen = baseRingRadiusPx * 2;
-                const segmentLen = trackLineLen / 20.0;
+        function moveTo(ctx, p) {
+            ctx.moveTo(p.x, p.y);
+        }
 
-                const trackHdg = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
-                const relativeHdg = trackHdg - planeHeadingDeg;
-                const angleRad = (relativeHdg - 90) * Math.PI / 180;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.strokeStyle = color;
-                ctx.setLineDash([segmentLen, segmentLen]);
-                ctx.moveTo(centerX + trackLineLen * Math.cos(angleRad), centerY + trackLineLen * Math.sin(angleRad));
-                ctx.lineTo(centerX, centerY);
-                ctx.stroke();
-                ctx.restore();
-            }
+        function lineTo(ctx, p) {
+            ctx.lineTo(p.x, p.y);
         }
     }
 
@@ -413,11 +455,6 @@ class MapPanel {
     initMapRanges() {
         console.log("MapPanel initMapRanges")
 
-        this.baseRanges = [this.feetToNm(1500), this.feetToNm(2000), this.feetToNm(3000), this.feetToNm(4500),
-            1, 2, 3, 4, 5, 7, 10, 15,
-            25, 50, 75, 100,
-            150, 250, 500];
-
         const ringCoeff = this.canvas.height / (2 * this.baseRingRadiusPx) * 2;
         this.ranges = this.baseRanges.map(r => r * ringCoeff);
     }
@@ -504,6 +541,19 @@ class MapPanel {
     formatHdg(hdg) {
         const s = Tools.toFixed0(hdg).padStart(3, "0");
         return s === "000" ? "360" : s;
+    }
+
+    getRangeLabel() {
+        if (!this.map) {
+            return "";
+        }
+
+        const zoom = this.map.getZoom();
+        if (zoom < 0 || zoom > this.baseRangeLabels.length-1) {
+            return "???";
+        }
+
+        return this.baseRangeLabels[zoom];
     }
 
     getNavRoseHdgLabel(hdg) {

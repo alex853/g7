@@ -68,3 +68,23 @@ Tools = {
         };
     }
 }
+
+function vector(x, y) {
+    return {
+        x: x,
+        y: y,
+        rotate: function(angleRad) {
+            return vector(x * Math.cos(angleRad) - y * Math.sin(angleRad), x * Math.sin(angleRad) + y * Math.cos(angleRad));
+        },
+        rotateDeg: function(angleDeg) {
+            const angleRad = angleDeg * Math.PI / 180;
+            return vector(x * Math.cos(angleRad) - y * Math.sin(angleRad), x * Math.sin(angleRad) + y * Math.cos(angleRad));
+        },
+        translate: function (p) {
+            return vector(x + p.x, y + p.y);
+        },
+        negate: function () {
+            return vector(-x, -y);
+        }
+    };
+}
