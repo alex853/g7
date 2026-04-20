@@ -163,6 +163,7 @@ class MapPanel {
 
             drawCircle(this.ctx, center, baseRingRadiusPx, this.whiteColor, lineWidth);
             drawRangeLabel(this.ctx, center, baseRingRadiusPx, this.whiteColor, this.getRangeLabel());
+            drawCenterTestLines(this.ctx, center, this.canvas);
         } else {
             const centerX = this.canvas.width / 2;
             const centerY = this.canvas.height / 2 + this.canvas.height * this.yOffsetInHdgMode;
@@ -228,6 +229,7 @@ class MapPanel {
             }
 
             drawTrackLine(this.ctx, center, baseRingRadiusPx * 2, this.magentaColor);
+            drawCenterTestLines(this.ctx, center, this.canvas);
         }
 
         function drawCircle(ctx, center, radius, color, lineWidth) {
@@ -355,6 +357,23 @@ class MapPanel {
             ctx.moveTo(center.x + radius * Math.cos(angleRad), center.y + radius * Math.sin(angleRad));
             ctx.lineTo(center.x, center.y);
             ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawCenterTestLines(ctx, center, canvas) {
+            ctx.save();
+
+            ctx.strokeStyle = "#ff0000";
+            ctx.lineWidth = 0.25;
+
+            ctx.beginPath();
+
+            ctx.moveTo(center.x, 0);
+            ctx.lineTo(center.x, canvas.height);
+            ctx.moveTo(0, center.y);
+            ctx.lineTo(canvas.width, center.y);
+            ctx.stroke();
+
             ctx.restore();
         }
 
