@@ -51,6 +51,13 @@ class FlightPlanPanel {
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-dtg"), fp.dest ? Tools.toFixed0(fp.dest.cumDistance) : "");
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-eta"), fp.dest ? this.formatZuluTime(fp.dest.eta) : "");
         diffAndSetText(this.display.querySelector("#flight-plan-panel-footer-fuel"), fp.dest ? Tools.toFixed1(fp.dest.fuelRemaining * Tools.GALLONS_TO_LB / 1000) : "");
+
+        const waypointsRemained = fp.waypoints.length-1;
+        const waypointsVisible = Math.min(waypointsRemained, 12);
+        const waypointsRatio = waypointsRemained > 0 ? waypointsVisible / waypointsRemained : 0;
+        const verticalBarMaxHeight = this.display.querySelector("#flight-plan-vertical-bar-background").clientHeight;
+        const verticalBarCurrentHeight = Math.round(verticalBarMaxHeight * waypointsRatio);
+        this.display.querySelector("#flight-plan-vertical-bar-foreground").style.height = `${verticalBarCurrentHeight}px`;
     }
 
     formatZuluTime(time) {

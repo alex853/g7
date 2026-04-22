@@ -234,8 +234,9 @@ const StubMap = {
 
 const Coherent = {
     call: function (method, callback) {
-        const fpFilename = "3.json";
+        // const fpFilename = "3.json";
         // const fpFilename = "eglf-lfpo-1.json";
+        const fpFilename = "lebl-lira-1.json";
         if (method === "GET_FLIGHTPLAN") {
             return fetch(fpFilename).then(res => res.json());
         }
