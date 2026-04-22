@@ -399,7 +399,7 @@ class MapPanel {
             // this.map.setCenteredOnPlane();
             this.targetCenter = new LatLongAlt(planeLat, planeLon);
         } else {
-            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degrees");
+            const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
 
             const displayRange = this.map.getDisplayRange();
             const yOffsetNm = displayRange * this.yOffsetInHdgMode;
