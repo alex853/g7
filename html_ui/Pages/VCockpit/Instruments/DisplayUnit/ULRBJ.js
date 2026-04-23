@@ -26,12 +26,9 @@ ULRBJ = {
             const dt = Math.max(ULRBJ.now - ULRBJ.lastTime, 10);
             const tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
 
-            let minFuelTankTemp = Number.MAX_VALUE;
-            let maxFuelTankTemp = Number.MIN_VALUE;
-
             calcFuelTankTemp(1);
             calcFuelTankTemp(2);
-            checkFuelTankTempCasMessage();
+            updateFuelTankTempCasMessage();
 
             // todo ak3 sun heating, direction of flight and shadow from fuselage
             // todo ak3 fuel return simulation
@@ -53,21 +50,16 @@ ULRBJ = {
                 }
 
                 SimVar.SetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius", newTemp);
-
-                minFuelTankTemp = Math.min(minFuelTankTemp, newTemp);
-                maxFuelTankTemp = Math.max(maxFuelTankTemp, newTemp);
             }
 
-            function checkFuelTankTempCasMessage() {
-                // todo ak3 -37 and +54 are not so simple, implement it
-                let status = ULRBJ.CAS_LEVEL_0_NOTHING;
-                if (minFuelTankTemp < -37 || maxFuelTankTemp > 54) {
-                    status = ULRBJ.CAS_LEVEL_3_AMBER;
-                } else if (minFuelTankTemp < -34.5) {
-                    status = ULRBJ.CAS_LEVEL_2_CYAN;
-                }
+            function updateFuelTankTempCasMessage() {
+                const temp1 = ULRBJ.FuelSystem.getFuelTankTemp(1);
+                const temp2 = ULRBJ.FuelSystem.getFuelTankTemp(2);
 
-                SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", status);
+                const level1 = ULRBJ.FuelSystem.getFuelTempCasLevel(temp1);
+                const level2 = ULRBJ.FuelSystem.getFuelTempCasLevel(temp2);
+
+                SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", Math.max(level1, level2));
             }
         },
 
@@ -89,6 +81,26 @@ ULRBJ = {
                         : "FUEL TANK RIGHT MAIN QUANTITY",
                     "gallons");
         },
+
+        getTotalFuelGallons() {
+            return ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
+        },
+
+        getFuelTempCasLevel(temp) {
+            const totalFuelGallons = ULRBJ.FuelSystem.getTotalFuelGallons();
+            const minAllowedFuelTankTemp = totalFuelGallons > 5000 ? -37 : -30;
+
+            const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+            const maxAllowedFuelTankTemp = 54 - (54-47) / 51000 * alt;
+
+            if (temp < minAllowedFuelTankTemp || temp > maxAllowedFuelTankTemp) {
+                return ULRBJ.CAS_LEVEL_3_AMBER;
+            } else if (temp < minAllowedFuelTankTemp - 2.5) {
+                return ULRBJ.CAS_LEVEL_2_CYAN;
+            } else {
+                return ULRBJ.CAS_LEVEL_0_NOTHING;
+            }
+        }
     },
 
     updateFlightPlanState() {

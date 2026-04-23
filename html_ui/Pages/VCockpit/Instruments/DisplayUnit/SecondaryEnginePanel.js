@@ -48,8 +48,10 @@ class SecondaryEnginePanel {
 
         state.leftTank.quantity = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
         state.leftTank.temp = ULRBJ.FuelSystem.getFuelTankTemp(1);
+        state.leftTank.casLevel = ULRBJ.FuelSystem.getFuelTempCasLevel(state.leftTank.temp);
         state.rightTank.quantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
         state.rightTank.temp = ULRBJ.FuelSystem.getFuelTankTemp(2);
+        state.rightTank.casLevel = ULRBJ.FuelSystem.getFuelTempCasLevel(state.rightTank.temp);
 
         state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf");
         state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");
@@ -97,8 +99,13 @@ class SecondaryEnginePanel {
         this.display.querySelector('#secondary-engine-ptu-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.hydPtuPressure * Tools.PSF_TO_PSI), 4);
         this.display.querySelector('#secondary-engine-right-hyd-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.hydPressure * Tools.PSF_TO_PSI), 4);
 
-        this.display.querySelector('#secondary-engine-left-fuel-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftTank.temp), 4);
-        this.display.querySelector('#secondary-engine-right-fuel-temperature-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightTank.temp), 4);
+        const leftFuelTankTemp = this.display.querySelector('#secondary-engine-left-fuel-temperature-label');
+        leftFuelTankTemp.innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftTank.temp), 4);
+        Tools.applyAmberGaugeValueClass(leftFuelTankTemp, state.leftTank.casLevel);
+
+        const rightFuelTankTemp = this.display.querySelector('#secondary-engine-right-fuel-temperature-label');
+        rightFuelTankTemp.innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightTank.temp), 4);
+        Tools.applyAmberGaugeValueClass(rightFuelTankTemp, state.rightTank.casLevel);
 
         this.display.querySelector('#secondary-engine-left-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.leftEngine.bleedAirPressure), 4);
         this.display.querySelector('#secondary-engine-right-bleed-air-pressure-label').innerHTML = Tools.alignWithNbsp(Tools.toFixed0(state.rightEngine.bleedAirPressure), 4);

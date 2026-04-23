@@ -66,6 +66,14 @@ Tools = {
             lat: newLatRad * 180 / Math.PI,
             lon: newLonRad * 180 / Math.PI
         };
+    },
+
+    applyAmberGaugeValueClass: function (element, level) {
+        if (level === ULRBJ.CAS_LEVEL_3_AMBER) {
+            element.classList.add('amber-gauge-value');
+        } else {
+            element.classList.remove('amber-gauge-value');
+        }
     }
 }
 

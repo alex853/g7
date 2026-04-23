@@ -379,6 +379,11 @@ map-instrument {
     padding: 1px 4px;
 }
 
+.amber-gauge-value {
+    background: #ffcc00;
+    color: #000;
+}
+
 .text-placeholder {
     display: flex;
     justify-content: center;
