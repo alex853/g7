@@ -277,6 +277,16 @@ map-instrument {
     color: #ccc;
 }
 
+#flight-plan-panel #flight-plan-panel-dropdown-div {
+    position: relative;
+
+    background: #988;
+
+    box-shadow:
+            inset 2px 2px 0 #a99,
+            inset -3px -3px 0 #877;
+}
+
 #flight-plan-panel div.waypoint-row {
     height: 29px;
 
