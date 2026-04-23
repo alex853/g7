@@ -179,14 +179,7 @@ class MapPanel {
             this.ctx.arc(centerX, centerY, baseRingRadiusPx * 2, Math.PI * 1.1, Math.PI * 1.9);
             this.ctx.stroke();
 
-            const triangleSize = 16;
-            this.ctx.beginPath();
-            this.ctx.moveTo(centerX, centerY - baseRingRadiusPx * 2);
-            this.ctx.lineTo(centerX - triangleSize/2, centerY - baseRingRadiusPx * 2 - triangleSize);   // левая
-            this.ctx.lineTo(centerX + triangleSize/2, centerY - baseRingRadiusPx * 2 - triangleSize);   // левая
-            this.ctx.closePath();
-            this.ctx.fillStyle = this.whiteColor;
-            this.ctx.fill();
+            drawTriangle(this.ctx, center, baseRingRadiusPx * 2, this.whiteColor);
 
             const planeHeadingDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degrees");
             const roundedHeadingDeg = Math.round(planeHeadingDeg / 10) * 10;
@@ -281,6 +274,27 @@ class MapPanel {
             ctx.fillStyle = color;
             ctx.fillText(label, x, y);
 
+            ctx.restore();
+        }
+
+        function drawTriangle(ctx, center, ringRadius, color) {
+            const angleVDeg = 30;
+
+            const p1V = vector(0, -18);
+
+            const ringRadiusV = vector(0, -ringRadius);
+            const basePoint = ringRadiusV.translate(center);
+
+            const leftP1V = p1V.rotateDeg(angleVDeg);
+            const rightP1V = p1V.rotateDeg(-angleVDeg);
+
+            ctx.save();
+            ctx.beginPath();
+            moveTo(ctx, basePoint);
+            lineTo(ctx, basePoint.translate(leftP1V));
+            lineTo(ctx, basePoint.translate(rightP1V));
+            ctx.fillStyle = color;
+            ctx.fill();
             ctx.restore();
         }
 
