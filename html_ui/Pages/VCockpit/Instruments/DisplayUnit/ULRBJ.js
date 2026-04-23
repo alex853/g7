@@ -129,15 +129,15 @@ ULRBJ = {
                 },
 
                 calcLevel(temp) {
-                    const totalFuelGallons = ULRBJ.FuelSystem.getTotalFuelGallons();
-                    const minAllowedFuelTankTemp = totalFuelGallons > 5000 ? -37 : -30;
+                    const totalFuelLbs = ULRBJ.FuelSystem.getTotalFuelGallons() * Tools.GALLONS_TO_LB;
+                    const minAllowedFuelTankTemp = totalFuelLbs > 5000 ? -37 : -30;
 
                     const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
                     const maxAllowedFuelTankTemp = 54 - (54-47) / 51000 * alt;
 
                     if (temp < minAllowedFuelTankTemp || temp > maxAllowedFuelTankTemp) {
                         return ULRBJ.CAS_LEVEL_3_AMBER;
-                    } else if (temp < minAllowedFuelTankTemp - 2.5) {
+                    } else if (temp < minAllowedFuelTankTemp + 2.5) {
                         return ULRBJ.CAS_LEVEL_2_CYAN;
                     } else {
                         return ULRBJ.CAS_LEVEL_0_NOTHING;
