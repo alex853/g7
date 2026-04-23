@@ -21,7 +21,7 @@ class CasMessagesPanel {
         const messages = [];
 
         // todo ak1: (A) Fuel Imbalance
-        // todo ak1: (A) L-R Fuel Level Low
+        addIfAmber(ULRBJ.FuelSystem.getLRFuelLevelLowCas(), "L-R Fuel Level Low");
         addIfAmber(ULRBJ.FuelSystem.getFuelTankTempCas(), "Fuel Tank Temperature");
         // todo ak1: (C) Fuel Crossflow Valve Open
         // todo ak1: (C) Fuel Imbalance

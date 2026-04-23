@@ -28,6 +28,8 @@ ULRBJ = {
 
             calcFuelTankTemp(1);
             calcFuelTankTemp(2);
+
+            updateLRFuelLevelLowCasMessage();
             updateFuelTankTempCasMessage();
 
             // todo ak3 sun heating, direction of flight and shadow from fuselage
@@ -52,23 +54,37 @@ ULRBJ = {
                 SimVar.SetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius", newTemp);
             }
 
+            function updateLRFuelLevelLowCasMessage() {
+                const fuel1 = ULRBJ.FuelSystem.getFuelTankGallons(1);
+                const fuel2 = ULRBJ.FuelSystem.getFuelTankGallons(2);
+
+                const level1 = ULRBJ.FuelSystem.calcFuelLevelCasLevel(fuel1);
+                const level2 = ULRBJ.FuelSystem.calcFuelLevelCasLevel(fuel2);
+
+                SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number", Math.max(level1, level2));
+            }
+
             function updateFuelTankTempCasMessage() {
                 const temp1 = ULRBJ.FuelSystem.getFuelTankTemp(1);
                 const temp2 = ULRBJ.FuelSystem.getFuelTankTemp(2);
 
-                const level1 = ULRBJ.FuelSystem.getFuelTempCasLevel(temp1);
-                const level2 = ULRBJ.FuelSystem.getFuelTempCasLevel(temp2);
+                const level1 = ULRBJ.FuelSystem.calcFuelTempCasLevel(temp1);
+                const level2 = ULRBJ.FuelSystem.calcFuelTempCasLevel(temp2);
 
                 SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", Math.max(level1, level2));
             }
         },
 
-        getFuelTankTemp(tank) {
-            return SimVar.GetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius");
+        getLRFuelLevelLowCas() {
+            return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number");
         },
 
         getFuelTankTempCas() {
             return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number");
+        },
+
+        getFuelTankTemp(tank) {
+            return SimVar.GetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius");
         },
 
         getFuelTankMassKg(tank) {
@@ -86,7 +102,13 @@ ULRBJ = {
             return ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
         },
 
-        getFuelTempCasLevel(temp) {
+        calcFuelLevelCasLevel(fuelGallons) {
+            const thresholdLbs = 650;
+            const thresholdGallons = thresholdLbs / Tools.GALLONS_TO_LB;
+            return fuelGallons < thresholdGallons ? ULRBJ.CAS_LEVEL_3_AMBER : ULRBJ.CAS_LEVEL_0_NOTHING;
+        },
+
+        calcFuelTempCasLevel(temp) {
             const totalFuelGallons = ULRBJ.FuelSystem.getTotalFuelGallons();
             const minAllowedFuelTankTemp = totalFuelGallons > 5000 ? -37 : -30;
 

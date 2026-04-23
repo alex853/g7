@@ -48,10 +48,10 @@ class SecondaryEnginePanel {
 
         state.leftTank.quantity = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons");
         state.leftTank.temp = ULRBJ.FuelSystem.getFuelTankTemp(1);
-        state.leftTank.casLevel = ULRBJ.FuelSystem.getFuelTempCasLevel(state.leftTank.temp);
+        state.leftTank.casLevel = ULRBJ.FuelSystem.calcFuelTempCasLevel(state.leftTank.temp);
         state.rightTank.quantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons");
         state.rightTank.temp = ULRBJ.FuelSystem.getFuelTankTemp(2);
-        state.rightTank.casLevel = ULRBJ.FuelSystem.getFuelTempCasLevel(state.rightTank.temp);
+        state.rightTank.casLevel = ULRBJ.FuelSystem.calcFuelTempCasLevel(state.rightTank.temp);
 
         state.leftEngine.oilPressure = SimVar.GetSimVarValue("GENERAL ENG OIL PRESSURE:1", "psf");
         state.leftEngine.oilTemperature = SimVar.GetSimVarValue("GENERAL ENG OIL TEMPERATURE:1", "celsius");
