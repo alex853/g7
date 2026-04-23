@@ -29,8 +29,9 @@ ULRBJ = {
             calcFuelTankTemp(1);
             calcFuelTankTemp(2);
 
-            updateLRFuelLevelLowCasMessage();
-            updateFuelTankTempCasMessage();
+            ULRBJ.FuelSystem.CAS.FuelImbalance.update();
+            ULRBJ.FuelSystem.CAS.LRFuelLevelLow.update();
+            ULRBJ.FuelSystem.CAS.FuelTankTemp.update();
 
             // todo ak3 sun heating, direction of flight and shadow from fuselage
             // todo ak3 fuel return simulation
@@ -53,34 +54,96 @@ ULRBJ = {
 
                 SimVar.SetSimVarValue(`L:ULRBJ_FUEL_TANK_TEMP:${tank}`, "celsius", newTemp);
             }
-
-            function updateLRFuelLevelLowCasMessage() {
-                const fuel1 = ULRBJ.FuelSystem.getFuelTankGallons(1);
-                const fuel2 = ULRBJ.FuelSystem.getFuelTankGallons(2);
-
-                const level1 = ULRBJ.FuelSystem.calcFuelLevelCasLevel(fuel1);
-                const level2 = ULRBJ.FuelSystem.calcFuelLevelCasLevel(fuel2);
-
-                SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number", Math.max(level1, level2));
-            }
-
-            function updateFuelTankTempCasMessage() {
-                const temp1 = ULRBJ.FuelSystem.getFuelTankTemp(1);
-                const temp2 = ULRBJ.FuelSystem.getFuelTankTemp(2);
-
-                const level1 = ULRBJ.FuelSystem.calcFuelTempCasLevel(temp1);
-                const level2 = ULRBJ.FuelSystem.calcFuelTempCasLevel(temp2);
-
-                SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", Math.max(level1, level2));
-            }
         },
 
-        getLRFuelLevelLowCas() {
-            return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number");
-        },
+        CAS: {
+            FuelImbalance: {
+                get() {
+                    return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_IMBALANCE", "number");
+                },
 
-        getFuelTankTempCas() {
-            return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number");
+                update() {
+                    const fuel1 = ULRBJ.FuelSystem.getFuelTankGallons(1);
+                    const fuel2 = ULRBJ.FuelSystem.getFuelTankGallons(2);
+
+                    const differenceLbs = Math.abs(fuel1 - fuel2) * Tools.GALLONS_TO_LB;
+
+                    const onGround = SimVar.GetSimVarValue("SIM ON GROUND", "bool");
+
+                    let level = ULRBJ.CAS_LEVEL_0_NOTHING;
+                    if (onGround) {
+                        if (500 <= differenceLbs && differenceLbs < 1000) {
+                            level = ULRBJ.CAS_LEVEL_1_WHITE;
+                        } else if (1000 <= differenceLbs) {
+                            level = ULRBJ.CAS_LEVEL_3_AMBER;
+                        }
+                    } else {
+                        if (500 < differenceLbs && differenceLbs < 1000) {
+                            level = ULRBJ.CAS_LEVEL_1_WHITE;
+                        } else if (1000 <= differenceLbs && differenceLbs < 2000) {
+                            level = ULRBJ.CAS_LEVEL_2_CYAN;
+                        } else if (2000 <= differenceLbs) {
+                            level = ULRBJ.CAS_LEVEL_3_AMBER;
+                        }
+                    }
+
+                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_IMBALANCE", "number", level);
+                }
+            },
+
+            LRFuelLevelLow: {
+                get() {
+                    return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number");
+                },
+
+                update() {
+                    const fuel1 = ULRBJ.FuelSystem.getFuelTankGallons(1);
+                    const fuel2 = ULRBJ.FuelSystem.getFuelTankGallons(2);
+
+                    const level1 = ULRBJ.FuelSystem.CAS.LRFuelLevelLow.calcLevel(fuel1);
+                    const level2 = ULRBJ.FuelSystem.CAS.LRFuelLevelLow.calcLevel(fuel2);
+
+                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number", Math.max(level1, level2));
+                },
+
+                calcLevel(fuelGallons) {
+                    const thresholdLbs = 650;
+                    const thresholdGallons = thresholdLbs / Tools.GALLONS_TO_LB;
+                    return fuelGallons < thresholdGallons ? ULRBJ.CAS_LEVEL_3_AMBER : ULRBJ.CAS_LEVEL_0_NOTHING;
+                }
+            },
+
+            FuelTankTemp: {
+                get() {
+                    return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number");
+                },
+
+                update() {
+                    const temp1 = ULRBJ.FuelSystem.getFuelTankTemp(1);
+                    const temp2 = ULRBJ.FuelSystem.getFuelTankTemp(2);
+
+                    const level1 = ULRBJ.FuelSystem.CAS.FuelTankTemp.calcLevel(temp1);
+                    const level2 = ULRBJ.FuelSystem.CAS.FuelTankTemp.calcLevel(temp2);
+
+                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_TEMP", "number", Math.max(level1, level2));
+                },
+
+                calcLevel(temp) {
+                    const totalFuelGallons = ULRBJ.FuelSystem.getTotalFuelGallons();
+                    const minAllowedFuelTankTemp = totalFuelGallons > 5000 ? -37 : -30;
+
+                    const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+                    const maxAllowedFuelTankTemp = 54 - (54-47) / 51000 * alt;
+
+                    if (temp < minAllowedFuelTankTemp || temp > maxAllowedFuelTankTemp) {
+                        return ULRBJ.CAS_LEVEL_3_AMBER;
+                    } else if (temp < minAllowedFuelTankTemp - 2.5) {
+                        return ULRBJ.CAS_LEVEL_2_CYAN;
+                    } else {
+                        return ULRBJ.CAS_LEVEL_0_NOTHING;
+                    }
+                }
+            }
         },
 
         getFuelTankTemp(tank) {
@@ -101,28 +164,6 @@ ULRBJ = {
         getTotalFuelGallons() {
             return ULRBJ.FuelSystem.getFuelTankGallons(1) + ULRBJ.FuelSystem.getFuelTankGallons(2);
         },
-
-        calcFuelLevelCasLevel(fuelGallons) {
-            const thresholdLbs = 650;
-            const thresholdGallons = thresholdLbs / Tools.GALLONS_TO_LB;
-            return fuelGallons < thresholdGallons ? ULRBJ.CAS_LEVEL_3_AMBER : ULRBJ.CAS_LEVEL_0_NOTHING;
-        },
-
-        calcFuelTempCasLevel(temp) {
-            const totalFuelGallons = ULRBJ.FuelSystem.getTotalFuelGallons();
-            const minAllowedFuelTankTemp = totalFuelGallons > 5000 ? -37 : -30;
-
-            const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
-            const maxAllowedFuelTankTemp = 54 - (54-47) / 51000 * alt;
-
-            if (temp < minAllowedFuelTankTemp || temp > maxAllowedFuelTankTemp) {
-                return ULRBJ.CAS_LEVEL_3_AMBER;
-            } else if (temp < minAllowedFuelTankTemp - 2.5) {
-                return ULRBJ.CAS_LEVEL_2_CYAN;
-            } else {
-                return ULRBJ.CAS_LEVEL_0_NOTHING;
-            }
-        }
     },
 
     updateFlightPlanState() {

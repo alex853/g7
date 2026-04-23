@@ -12,21 +12,19 @@ class CasMessagesPanel {
     }
 
     updateState() {
-        // todo ak2 const messageCodes = ULRBJ.CAS.getMessageCodes();
-        // todo ak2 it reads and parses into suitable data
-        // todo ak2 updateUI iterates and updates dom elements
+        // noop
     }
 
     updateUI() {
         const messages = [];
 
-        // todo ak1: (A) Fuel Imbalance
-        addIfAmber(ULRBJ.FuelSystem.getLRFuelLevelLowCas(), "L-R Fuel Level Low");
-        addIfAmber(ULRBJ.FuelSystem.getFuelTankTempCas(), "Fuel Tank Temperature");
+        addIfAmber(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
+        addIfAmber(ULRBJ.FuelSystem.CAS.LRFuelLevelLow.get(), "L-R Fuel Level Low");
+        addIfAmber(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
         // todo ak1: (C) Fuel Crossflow Valve Open
-        // todo ak1: (C) Fuel Imbalance
+        addIfCyan(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
         // todo ak1: (C) Fuel Intertank Valve Open
-        addIfCyan(ULRBJ.FuelSystem.getFuelTankTempCas(), "Fuel Tank Temperature");
+        addIfCyan(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
         // todo ak1: (W) Fuel Crossflow Valve Open
         // todo ak1: (W) Fuel Intertank Valve Open
 
