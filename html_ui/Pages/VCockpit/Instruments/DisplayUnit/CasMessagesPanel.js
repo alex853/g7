@@ -18,13 +18,13 @@ class CasMessagesPanel {
     updateUI() {
         const messages = [];
 
-        addIfAmber(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
-        addIfAmberLR(ULRBJ.FuelSystem.CAS.LRFuelLevelLow.getLR(), "Fuel Level Low");
-        addIfAmber(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
+        amber(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
+        amberLR(ULRBJ.FuelSystem.CAS.LRFuelLevelLow.getLR(), "Fuel Level Low");
+        amber(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
         // todo ak1: (C) Fuel Crossflow Valve Open
-        addIfCyan(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
+        cyan(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
         // todo ak1: (C) Fuel Intertank Valve Open
-        addIfCyan(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
+        cyan(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
         // todo ak1: (W) L-R Alt Fuel Pump Off
         // todo ak1: (W) Fuel Crossflow Valve Open
         // todo ak1: (W) Fuel Intertank Valve Open
@@ -49,13 +49,13 @@ class CasMessagesPanel {
             rowElement.classList.add(color);
         }
 
-        function addIfAmber(level, message) {
+        function amber(level, message) {
             if (level === ULRBJ.CAS_LEVEL_3_AMBER) {
                 messages.push({ level: level, message: message });
             }
         }
 
-        function addIfAmberLR(levelLR, message) {
+        function amberLR(levelLR, message) {
             let prefix = null;
             if (levelLR[0] === ULRBJ.CAS_LEVEL_3_AMBER) {
                 prefix = "L";
@@ -69,7 +69,7 @@ class CasMessagesPanel {
             messages.push({ level: ULRBJ.CAS_LEVEL_3_AMBER, message: prefix + " " + message });
         }
 
-        function addIfCyan(level, message) {
+        function cyan(level, message) {
             if (level === ULRBJ.CAS_LEVEL_2_CYAN) {
                 messages.push({ level: level, message: message });
             }
