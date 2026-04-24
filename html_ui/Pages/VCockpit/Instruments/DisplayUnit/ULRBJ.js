@@ -92,8 +92,11 @@ ULRBJ = {
             },
 
             LRFuelLevelLow: {
-                get() {
-                    return SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number");
+                getLR() {
+                    return [
+                        SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL_L", "number"),
+                        SimVar.GetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL_R", "number")
+                    ];
                 },
 
                 update() {
@@ -103,7 +106,8 @@ ULRBJ = {
                     const level1 = ULRBJ.FuelSystem.CAS.LRFuelLevelLow.calcLevel(fuel1);
                     const level2 = ULRBJ.FuelSystem.CAS.LRFuelLevelLow.calcLevel(fuel2);
 
-                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL", "number", Math.max(level1, level2));
+                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL_L", "number", level1);
+                    SimVar.SetSimVarValue("L:ULRBJ_CAS_FUEL_TANK_LEVEL_R", "number", level2);
                 },
 
                 calcLevel(fuelGallons) {

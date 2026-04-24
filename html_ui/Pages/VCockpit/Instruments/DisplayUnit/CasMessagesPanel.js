@@ -19,14 +19,16 @@ class CasMessagesPanel {
         const messages = [];
 
         addIfAmber(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
-        addIfAmber(ULRBJ.FuelSystem.CAS.LRFuelLevelLow.get(), "L-R Fuel Level Low");
+        addIfAmberLR(ULRBJ.FuelSystem.CAS.LRFuelLevelLow.getLR(), "Fuel Level Low");
         addIfAmber(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
         // todo ak1: (C) Fuel Crossflow Valve Open
         addIfCyan(ULRBJ.FuelSystem.CAS.FuelImbalance.get(), "Fuel Imbalance");
         // todo ak1: (C) Fuel Intertank Valve Open
         addIfCyan(ULRBJ.FuelSystem.CAS.FuelTankTemp.get(), "Fuel Tank Temperature");
+        // todo ak1: (W) L-R Alt Fuel Pump Off
         // todo ak1: (W) Fuel Crossflow Valve Open
         // todo ak1: (W) Fuel Intertank Valve Open
+        // todo ak1: (W) L-R Main Fuel Pump Off
 
         for (let i = 1; i <= 12; i++) {
             let color = "white";
@@ -51,6 +53,20 @@ class CasMessagesPanel {
             if (level === ULRBJ.CAS_LEVEL_3_AMBER) {
                 messages.push({ level: level, message: message });
             }
+        }
+
+        function addIfAmberLR(levelLR, message) {
+            let prefix = null;
+            if (levelLR[0] === ULRBJ.CAS_LEVEL_3_AMBER) {
+                prefix = "L";
+            }
+            if (levelLR[1] === ULRBJ.CAS_LEVEL_3_AMBER) {
+                prefix = prefix != null ? "L-R" : "R";
+            }
+            if (prefix == null) {
+                return;
+            }
+            messages.push({ level: ULRBJ.CAS_LEVEL_3_AMBER, message: prefix + " " + message });
         }
 
         function addIfCyan(level, message) {
