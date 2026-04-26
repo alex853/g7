@@ -495,7 +495,7 @@ class MapPanel {
     loadMapSettings() {
         console.log("MapPanel loadMapSettings")
 
-        const rotationModeStr = GetStoredData("DU2.Map.Rotation");
+        const rotationModeStr = GetStoredData("ULRBJ.DU2.Map.Rotation");
         console.log("MapPanel loadMapSettings rotation " + rotationModeStr)
 
         const rotationMode = rotationModeStr === "HDGUp" ? EMapRotationMode.HDGUp : EMapRotationMode.NorthUp;
@@ -503,7 +503,7 @@ class MapPanel {
         this.rotationDirty = true;
         this.targetRotation = rotationMode;
 
-        const zoomStr = GetStoredData("DU2.Map.Zoom");
+        const zoomStr = GetStoredData("ULRBJ.DU2.Map.Zoom");
         console.log("MapPanel loadMapSettings zoom " + zoomStr)
 
         if (zoomStr !== undefined) {
@@ -522,22 +522,22 @@ class MapPanel {
             this.zoomDirty = true;
             this.targetZoom = newZoom;
 
-            SetStoredData("DU2.Map.Zoom", newZoom.toString());
+            SetStoredData("ULRBJ.DU2.Map.Zoom", newZoom.toString());
         } else if (action === 'zoom-minus') {
             const newZoom = Math.max(this.map.getZoom() - 1, 0);
 
             this.zoomDirty = true;
             this.targetZoom = newZoom;
 
-            SetStoredData("DU2.Map.Zoom", newZoom.toString());
+            SetStoredData("ULRBJ.DU2.Map.Zoom", newZoom.toString());
         } else if (action === 'rotation') {
             let rotationMode = this.map.getRotationMode();
             if (rotationMode === EMapRotationMode.NorthUp) {
                 rotationMode = EMapRotationMode.HDGUp;
-                SetStoredData("DU2.Map.Rotation", "HDGUp");
+                SetStoredData("ULRBJ.DU2.Map.Rotation", "HDGUp");
             } else {
                 rotationMode = EMapRotationMode.NorthUp;
-                SetStoredData("DU2.Map.Rotation", "NorthUp");
+                SetStoredData("ULRBJ.DU2.Map.Rotation", "NorthUp");
             }
 
             this.rotationDirty = true;

@@ -29,6 +29,7 @@ class CasMessagesPanel {
         // todo ak1: (W) Fuel Crossflow Valve Open
         // todo ak1: (W) Fuel Intertank Valve Open
         // todo ak1: (W) L-R Main Fuel Pump Off
+        cyan(ULRBJ.FuelSystem.CAS.FuelFlowDifference.get(), "Fuel Flow Diff (F)"); // fictitious
 
         for (let i = 1; i <= 12; i++) {
             let color = "white";
