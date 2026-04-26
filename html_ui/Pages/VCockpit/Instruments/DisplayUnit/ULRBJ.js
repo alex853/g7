@@ -226,8 +226,9 @@ ULRBJ = {
 
     updateFlightPlanState() {
         if (ULRBJ.firstRun) {
-            FlightPlanHelper.saveActiveWaypointState({ index: 0, dist: 10000 });
-            console.log("ULRBJ/Flightplan/WAYPOINT: resetting to (0, 10000)"); // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
+            FlightPlanHelper.saveActiveWaypointState({ index: -1, dist: 10000 });
+            // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
+            console.log("ULRBJ/Flightplan/WAYPOINT: resetting to (-1, 10000)");
         }
 
         const FLIGHTPLAN_REQUEST_IS_RUNNING = 11;
@@ -243,6 +244,8 @@ ULRBJ = {
 
         this.flightplanCounter = FLIGHTPLAN_REQUEST_IS_RUNNING;
         Coherent.call("GET_FLIGHTPLAN").then(simFlightplan => {
+            // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
+
             const fp = FlightPlanHelper.parseSnapshot(simFlightplan);
 
             const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
@@ -251,11 +254,11 @@ ULRBJ = {
             const newWpState = FlightPlanHelper.refreshActiveWaypointState(fp, planeLat, planeLon, fp.activeWaypoint);
             FlightPlanHelper.saveActiveWaypointState(newWpState);
 
-            if (newWpState.index !== fp.activeWaypoint.index) {
+            if (newWpState.index > fp.activeWaypoint.index) {
                 console.log("ULRBJ/Flightplan: progressing to waypoint " + newWpState.index + " (was " + fp.activeWaypoint.index + ")");
             }
 
-            if (newWpState.index !== simFlightplan.activeWaypointIndex/* && newWpState.index !== 0*/) {
+            if (newWpState.index > simFlightplan.activeWaypointIndex/* && newWpState.index !== 0*/) {
                 console.log("ULRBJ/Flightplan: setting Sim Flightplan active waypoint index to " + newWpState.index + " (was " + simFlightplan.activeWaypointIndex + ")");
                 Coherent.call("SET_ACTIVE_WAYPOINT_INDEX", newWpState.index);
             }
@@ -348,12 +351,10 @@ ULRBJ = {
 
 FlightPlanHelper = {
     parseSnapshot(r) {
-        // const planeLat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
-        // const planeLon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
-
         const fp = {
             waypoints: []
         };
+
         fp.waypoints = r.waypoints.map(w => {
             return {
                 icao: this.extractIcao(w),
@@ -364,14 +365,7 @@ FlightPlanHelper = {
             };
         })
 
-        // const newWpState = this.refreshActiveWaypointState(r, planeLat, planeLon, currWpState);
-
         fp.activeWaypoint = this.loadActiveWaypointState();
-
-        // if (fp.activeWaypointIndex > currWaypointIndex) { // todo ak1 support flightplan reloading, or flightplan changing, reset or update it somehow
-        //     SimVar.SetSimVarValue("L:ULRBJ_FLIGHTPLAN_ACTIVE_WAYPOINT_INDEX", "number", fp.activeWaypointIndex);
-        //     console.log("ULRBJ/Flightplan/WAYPOINT: changing to " + fp.activeWaypointIndex);
-        // }
 
         return fp;
     },
@@ -389,72 +383,92 @@ FlightPlanHelper = {
     },
 
     refreshActiveWaypointState(r, planeLat, planeLon, state) {
+        const EPS = 0.000001;
+
         const wps = r.waypoints;
 
         if (!wps || wps.length === 0) {
-            return 0;
+            return { index: -1, dist: 10000 };
         }
 
-        let startIndex = Math.max(1, state.index);
+        const endOfRoute = { index: wps.length, dist: 10000 };
 
-        let currState = state;
-        for (let i = startIndex; i < wps.length; i++) {
-            const prevWp = wps[i - 1];
-            const wp = wps[i];
+        const activeWaypointIndex = Math.max(1, state.index);
+
+        const activeLeg = getLeg(activeWaypointIndex);
+        const nextLeg = getLeg(activeWaypointIndex + 1);
+
+        if (!activeLeg) {
+            return endOfRoute;
+        }
+
+        if (activeLeg.before) {
+            // we even have not reached the beginning of the leg
+            return activeLeg.state;
+        }
+
+        if (activeLeg.after) {
+            // we have passed the end of the leg, lets switch to the next
+            console.log("ULRBJ/Flightplan/WAYPOINT: activeLeg.after - switching...");
+            return nextLeg ? nextLeg.state : endOfRoute;
+        }
+
+        if (nextLeg) {
+            // todo ak1 do I really need it?
+            // const gs = SimVar.GetSimVarValue("GROUND VELOCITY", "knots");
+            // const leadNm = Math.min(gs * 0.01, activeLeg.legDistance * 0.7);
+            //
+            // if (activeLeg.state.dist < leadNm) {
+            //     console.log("ULRBJ/Flightplan/WAYPOINT: activeLeg.state.dist < " + Tools.round3(leadNm) + " - switching...");
+            //     return nextLeg.state;
+            // }
+
+            if (activeLeg.passedMostOfLeg && nextLeg.inside) {
+                // we already can switch to the next leg, we are 'inside' of the turn
+                console.log("ULRBJ/Flightplan/WAYPOINT: activeLeg.passedMostOfLeg AND nextLeg.inside - switching...");
+                return nextLeg.state;
+            }
+
+            // todo ak1 should distance depend on airspeed?
+            if (activeLeg.state.dist < 3.0 && activeLeg.state.dist > state.dist) {
+                // we are starting to fly away from the waypoint, lets switch to the next
+                console.log("ULRBJ/Flightplan/WAYPOINT: flying away from the end - switching...");
+                return nextLeg.state;
+            }
+        }
+
+        // we are just continuing on this leg
+        return activeLeg.state;
+
+        function getLeg(index) {
+            if (index >= wps.length) {
+                return null;
+            }
+
+            const prevWp = wps[index - 1];
+            const wp = wps[index];
 
             const distAB = Tools.distanceNM(prevWp.lat, prevWp.long, wp.lat, wp.long);
             const distAP = Tools.distanceNM(prevWp.lat, prevWp.long, planeLat, planeLon);
             const distToWp = Tools.distanceNM(planeLat, planeLon, wp.lat, wp.long);
 
-            const bearingAB = this.toRad(this.bearingDeg(prevWp.lat, prevWp.long, wp.lat, wp.long));
-            const bearingAP = this.toRad(this.bearingDeg(prevWp.lat, prevWp.long, planeLat, planeLon));
+            const bearingAB = Tools.toRad(Tools.bearingDeg(prevWp.lat, prevWp.long, wp.lat, wp.long));
+            const bearingAP = Tools.toRad(Tools.bearingDeg(prevWp.lat, prevWp.long, planeLat, planeLon));
 
             const alongTrack = Math.cos(bearingAP - bearingAB) * distAP;
 
-            // console.log(`distAB ${distAB}, distAP ${distAP}, bAB ${bearingAB}, bAP ${bearingAP}, aT ${alongTrack}`);
-
-            if (alongTrack < 0) {
-                // we are still approaching even previous waypoint
-                return { index: currState.index, dist: distToWp };
-            } else if (alongTrack > distAB) {
-                // this wp passed, lets check next one
-                currState = { index: currState.index+1, dist: 100000 };
-            } else if (distToWp < 3.0 && this.round3(distToWp) > this.round3(currState.dist)) {
-                // we are in vicinity of waypoint and started to fly away from the state.index waypoint, lets switch to next one
-                currState = { index: currState.index+1, dist: 100000 };
-            } else if (distToWp < 1.0) {
-                // we are in close vicinity of waypoint, lets switch to next one
-                currState = { index: currState.index+1, dist: 100000 };
-            } else {
-                // we are still approaching the state.index waypoint
-                return { index: currState.index, dist: distToWp };
+            return {
+                before: alongTrack < -EPS,
+                inside: -EPS <= alongTrack && alongTrack < distAB + EPS,
+                passedMostOfLeg: distAB * 0.8 < alongTrack,
+                after: distAB + EPS <= alongTrack,
+                legDistance: distAB,
+                state: {
+                    index: index,
+                    dist: distToWp
+                }
             }
         }
-
-        return currState;
-    },
-
-    round3(v) {
-        return Math.round(v * 1e3) / 1e3;
-    },
-
-    toRad(deg) {
-        return deg * Math.PI / 180;
-    },
-
-    toDeg(rad) {
-        return rad * 180 / Math.PI;
-    },
-
-    bearingDeg(lat1, lon1, lat2, lon2) {
-        const dLon = this.toRad(lon2 - lon1);
-
-        const y = Math.sin(dLon) * Math.cos(this.toRad(lat2));
-        const x =
-            Math.cos(this.toRad(lat1)) * Math.sin(this.toRad(lat2)) -
-            Math.sin(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * Math.cos(dLon);
-
-        return (this.toDeg(Math.atan2(y, x)) + 360) % 360;
     },
 
     extractIcao(w) {

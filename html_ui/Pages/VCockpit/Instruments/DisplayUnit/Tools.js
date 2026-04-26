@@ -44,6 +44,29 @@ Tools = {
         return R * c;
     },
 
+    round3(v) {
+        return Math.round(v * 1e3) / 1e3;
+    },
+
+    toRad(deg) {
+        return deg * Math.PI / 180;
+    },
+
+    toDeg(rad) {
+        return rad * 180 / Math.PI;
+    },
+
+    bearingDeg(lat1, lon1, lat2, lon2) {
+        const dLon = this.toRad(lon2 - lon1);
+
+        const y = Math.sin(dLon) * Math.cos(this.toRad(lat2));
+        const x =
+            Math.cos(this.toRad(lat1)) * Math.sin(this.toRad(lat2)) -
+            Math.sin(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * Math.cos(dLon);
+
+        return (this.toDeg(Math.atan2(y, x)) + 360) % 360;
+    },
+
     offsetLatLon: function (latDeg, lonDeg, headingDeg, distanceNm) {
         const R = 6378137;
         const distMeters = distanceNm * 1852;
